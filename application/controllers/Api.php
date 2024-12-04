@@ -20,7 +20,7 @@ require 'application/libraries/REST_Controller.php';
 class Api extends REST_Controller{
 	
 	public function __construct(){
-		
+		 
 		parent::__construct();
 //		set_error_handler(array($this, 'errorHandler'));
 //		register_shutdown_function(array($this,"shutdownHandler"));
