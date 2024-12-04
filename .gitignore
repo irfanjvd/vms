@@ -1,0 +1,14 @@
+.htaccess
+.index.php
+.phpintel/
+/database/
+/new_uploads/
+/assets/uploads/
+/assets/timthumb/
+/assets/tunnel/
+/assets/frontend/images/uploads/
+/assets/frontend/images/profile_pics/
+/application/config/
+/application/logs/
+/application/cache/
+
