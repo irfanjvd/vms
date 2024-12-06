@@ -54,7 +54,7 @@
                 margin-right: auto;
                 position: relative;
                 margin-bottom: 54px;
-                margin-top: -100px;
+                
             }
 
         </style>
