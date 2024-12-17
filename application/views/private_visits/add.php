@@ -42,7 +42,7 @@
                 <!--<form name="add_private_visit" id="add_private_visit" action="" method="post" enctype="multipart/form-data">-->
                     <?php
                     $flash_message = $this->session->flashdata('message');
-                    if($flash_message['message']) {
+                    if(isset($flash_message['message']) && $flash_message['message']) {
                         if($flash_message['type']=="success"){
                             $class="alert-success";
                             $class1="fa-check";
@@ -113,7 +113,7 @@
                 <!--<form name="add_visit_data" id="add_visit_data" action="" method="post" enctype="multipart/form-data">-->
                     <?php
                     $flash_message = $this->session->flashdata('message');
-                    if($flash_message['message']) {
+                    if(isset($flash_message['message']) && $flash_message['message']) {
                         if($flash_message['type']=="success"){
                             $class="alert-success";
                             $class1="fa-check";

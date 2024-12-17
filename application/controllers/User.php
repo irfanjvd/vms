@@ -30,42 +30,54 @@ class User extends CI_Controller
     public function index()
     {
 		$this->load->library('recaptcha');
-        if($this->session->userdata('logged_in') ){
+
+        if($this->session->userdata('logged_in') )
+        {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['login_user_type']=="SUPER"){
+
+            if($session_data['login_user_type']=="SUPER")
+            {
                 redirect(base_url().'visitor');
+            }elseif($session_data['login_user_type']=="TENANT")
+            {
+                redirect(base_url().'visitor/private_visits');
             }else{
-                redirect(base_url().'visitor/addvisitor');
-            }
+                    redirect(base_url().'visitor/addvisitor');
+                 }
         }
 
-        if(!empty($_POST)){
-            $email=$this->input->post('email');
-            $password=$this->input->post('password');
-            $result = $this->user_model->login($email, $password);
-            $message = array();
-			$tenant=0;
-            if ($result) {
-                foreach ($result as $row) {
-                    if ($row->is_deleted == 1) {
+        if(!empty($_POST))
+        {
+            $email      = $this->input->post('email', true);
+            $password   = $this->input->post('password', true);
+            $result     = $this->user_model->login($email, $password);
+            $message    = array();
+			$tenant     = 0;
+
+            if ($result) 
+            { 
+                foreach ($result as $row) 
+                {
+                    if ($row->is_deleted == 1) 
+                    {
                         $message['status'] = 'Your account has been deleted by admin';
                     } else {
                         $message['status'] = 'success';
                     }
                 }
             } else {
-                //check user is a tenant user or not??
-                $tenant_result=$this->tenant_login($email,$password);
-				//echo "<pre>";
-				//print_r($tenant_result);die;
-                if($tenant_result){
-                    $message['status']='success';
-					$tenant=1;
-                    redirect(base_url().'visitor/private_visits');
-                }else{
-                    $message['status'] = 'Invalid Email or Password';    
-                } 
-            }
+                        //check user is a tenant user or not??
+                        // $tenant_result=$this->tenant_login($email,$password);
+        				// //echo "<pre>";
+        				// //print_r($tenant_result);die;
+                        // if($tenant_result){
+                        //     $message['status']='success';
+        				// 	$tenant=1;
+                        //     redirect(base_url().'visitor/private_visits');
+                        // }else{
+                        //     $message['status'] = 'Invalid Email or Password';    
+                        // } 
+                    }
 
             //$recaptcha = $this->input->post('g-recaptcha-response');
             //$response = $this->recaptcha->verifyResponse($recaptcha);
@@ -75,25 +87,33 @@ class User extends CI_Controller
             //}else{
                 //$message['status']="invalid captcha";
             //}
-            if($message['status']=="success"){
+            if($message['status']=="success")
+            {
                 $message['type']=$result[0]->type;
 				
                 //set session values...
                 $sess_array = array(
-                    'login_user_id' => $result[0]->id,
-                    'login_user_fullname' => $result[0]->first_name . ' ' . $result[0]->last_name,
-                    'login_user_image' => $result[0]->image_file,
-                    'login_username' => $result[0]->username,
-                    'login_user_email' => $result[0]->email,
-                    'login_user_type' => $result[0]->type,
-                    'login_user_location' => 1,
+                    'login_user_id'         => $result[0]->id,
+                    'login_user_fullname'   => $result[0]->first_name . ' ' . $result[0]->last_name,
+                    'login_user_image'      => $result[0]->image_file,
+                    'login_username'        => $result[0]->username,
+                    'login_user_email'      => $result[0]->email,
+                    'login_user_type'       => $result[0]->type,
+                    'login_user_location'   => 1,
                     'login_user_location_title' => "Main Reception",
-                    'login_user_issue_card' => 1
+                    'login_user_issue_card'     => 1,
+                    //For tenant user
+                    'login_employee_id' => $result[0]->id,
+                    'login_tenant_id'   => $result[0]->id,
                 );
+
                 $this->session->set_userdata('logged_in', $sess_array);
-				if($result[0]->type=="BARRIER"){
+
+				if($result[0]->type=="BARRIER")
+                {
 					redirect(base_url().'visitor/private_visits');
 				}
+
                 redirect(base_url());
             }else{
                 $this->session->set_flashdata('message', $message['status']);
@@ -442,58 +462,73 @@ class User extends CI_Controller
         return true;
     }
 
-    public function login(){
+    public function login()
+    {
 		$this->load->library('Recaptcha');
-        $location_title='';
-        $email = $this->input->post('email');
-        $password = $this->input->post('password');
-        $location = $this->input->post('location');
 
-            $result = $this->user_model->login($email, $password);
-            $message = array();
-            if ($result) {
-                foreach ($result as $row) {
-                    if ($row->is_deleted == 1) {
+        $location_title     =   '';
+        $email              = $this->input->post('email',true);
+        $password           = $this->input->post('password',true);
+        $location           = $this->input->post('location',true);
+
+        $result = $this->user_model->login($email, $password);
+        
+        $message = array();
+        
+        if ($result) 
+        { //die('sani');
+                foreach ($result as $row) 
+                {
+                    if ($row->is_deleted == 1) 
+                    {
                         $message['status'] = 'Your account has been deleted by admin';
                     } else {
-                        $message['status'] = 'success';
-                    }
+                                $message['status'] = 'success';
+                           }
                 }
-            } else {
-                $message['status'] = 'Invalid Email or Password';
-            }
-        if($result) {
-            if ($result[0]->type != "SUPER") {
-                if ($location == "") {
+        } else {
+                     $message['status'] = 'Invalid Email or Password';
+               }
+        
+        if($result) 
+        {
+            if ($result[0]->type != "SUPER") 
+            {
+                if ($location == "") 
+                {
                     $message['status'] = 'Location is required';
                 }
             }
         }
 
-        if($location!=''){
-            $location_result=$this->location_model->get_location($location);
-            $location_title=$location_result['location'];
-            $issue_card=$location_result['issue_card'];
+        if($location!='')
+        {
+            $location_result    = $this->location_model->get_location($location);
+            $location_title     = $location_result['location'];
+            $issue_card         = $location_result['issue_card'];
         }else{
-            $issue_card="";
-        }
+                $issue_card="";
+             }
 
 //        }else{
 //            $message['status'] = 'Location is required';
 //        }
 
-			$recaptcha = $this->input->post('g-recaptcha-response');
-			$response = $this->recaptcha->verifyResponse($recaptcha);
+			$recaptcha   = $this->input->post('g-recaptcha-response');
+			$response    = $this->recaptcha->verifyResponse($recaptcha);
 			
-			if (isset($response['success']) and $response['success'] === true) {
+			if (isset($response['success']) and $response['success'] === true) 
+            {
 				//echo "You got it!";die;
 			}else{
 				//$message['status']="invalid captcha";
 			}
 
+echo "<pre>"; print_r($message); echo "</pre>"; die(); 
 
-        if($message['status']=="success"){
-            $message['type']=$result[0]->type;
+        if(isset($message['status']) && $message['status'] == "success")
+        {
+            $message['type'] = $result[0]->type;
 //set session values...
             $sess_array = array(
                 'login_user_id' => $result[0]->id,
@@ -504,10 +539,19 @@ class User extends CI_Controller
                 'login_user_type' => $result[0]->type,
                 'login_user_location' => $location,
                 'login_user_location_title' => $location_title,
-                'login_user_issue_card' => $issue_card
+                'login_user_issue_card' => $issue_card,
+                //For tenant user
+                'login_employee_id' => $result[0]->id,
+                'login_tenant_id'   => $result[0]->id,
             );
 
+
+
+
             $this->session->set_userdata('logged_in', $sess_array);
+
+            //echo "<pre>"; print_r($this->session->userdata('logged_in')); echo "</pre>"; 
+            //die();
             echo json_encode($message);
         }else {
             echo json_encode($message);
