@@ -46,7 +46,7 @@
 //                            echo "<pre>";
 //                            print_r($post);die;
 //                        }
-                        if($flash_message['message']) {
+                        if(isset($flash_message['message'])) {
                             if($flash_message['type']=="success"){
                                 $class="alert-success";
                                 $class1="fa-check";
@@ -74,10 +74,10 @@
                                     <label class="form_label">Check Identity:</label>
 
                                     <select class="form-control" name="visitor_type" id="visitor_type">
-                                        <option <?php echo ($post['visitor_type']=="visitor_identity_no")?"selected":""; ?> value="visitor_identity_no">CNIC</option>
-                                        <option <?php echo ($post['visitor_type']=="visitor_employee_card")?"selected":""; ?> value="visitor_employee_card">Employee Card</option>
-                                        <option <?php echo ($post['visitor_type']=="visitor_driving_license")?"selected":""; ?> value="visitor_driving_license">Driving License</option>
-                                        <option <?php echo ($post['visitor_type']=="visitor_passport_id")?"selected":""; ?> value="visitor_passport_id">Passport ID</option>
+                                        <option <?php echo (isset($post['visitor_type']) && $post['visitor_type']=="visitor_identity_no")?"selected":""; ?> value="visitor_identity_no">CNIC</option>
+                                        <option <?php echo (isset($post['visitor_type']) && $post['visitor_type']=="visitor_employee_card")?"selected":""; ?> value="visitor_employee_card">Employee Card</option>
+                                        <option <?php echo (isset($post['visitor_type']) && $post['visitor_type']=="visitor_driving_license")?"selected":""; ?> value="visitor_driving_license">Driving License</option>
+                                        <option <?php echo (isset($post['visitor_type']) && $post['visitor_type']=="visitor_passport_id")?"selected":""; ?> value="visitor_passport_id">Passport ID</option>
 
                                     </select>
                                 </div>
@@ -183,11 +183,11 @@
                                 <div class="col-xs-2">
                                     <label class="form_label">Model of Transport:</label>
                                     <select class="form-control" name="visit_transport_mode" id="visit_transport_mode">
-                                        <option <?php echo ($post['visit_transport_mode']=="Car")?"selected":""; ?> value="Car">Car</option>
-                                        <option <?php echo ($post['visit_transport_mode']=="Motorcycle")?"selected":""; ?> value="Motorcycle">Motorcycle</option>
-                                        <option <?php echo ($post['visit_transport_mode']=="Taxi")?"selected":""; ?> value="Taxi">Taxi</option>
-										<option <?php echo ($post['visit_transport_mode']=="Pedestrian")?"selected":""; ?> value="Pedestrian">Pedestrian</option>
-                                        <option <?php echo ($post['visit_transport_mode']=="Other")?"selected":""; ?> value="Other">Other</option>
+                                        <option <?php echo (isset($post['visit_transport_mode']) && $post['visit_transport_mode']=="Car")?"selected":""; ?> value="Car">Car</option>
+                                        <option <?php echo (isset($post['visit_transport_mode']) && $post['visit_transport_mode']=="Motorcycle")?"selected":""; ?> value="Motorcycle">Motorcycle</option>
+                                        <option <?php echo (isset($post['visit_transport_mode']) && $post['visit_transport_mode']=="Taxi")?"selected":""; ?> value="Taxi">Taxi</option>
+										<option <?php echo (isset($post['visit_transport_mode']) && $post['visit_transport_mode']=="Pedestrian")?"selected":""; ?> value="Pedestrian">Pedestrian</option>
+                                        <option <?php echo (isset($post['visit_transport_mode']) && $post['visit_transport_mode']=="Other")?"selected":""; ?> value="Other">Other</option>
                                     </select>
 
                                 </div>

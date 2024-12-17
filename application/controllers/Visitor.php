@@ -1,7 +1,8 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+error_reporting(0);
+ini_set('display_errors', 0);
 class Visitor extends CI_Controller {
 
     /**

@@ -41,7 +41,7 @@
                     <?php
                     date_default_timezone_set('Asia/Karachi');
                     $flash_message = $this->session->flashdata('message');
-                    if($flash_message['message']) {
+                    if(isset($flash_message['message']) && $flash_message['message']) {
                         if($flash_message['type']=="success"){
                             $class="alert-success";
                             $class1='fa-check';

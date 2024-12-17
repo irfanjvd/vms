@@ -40,8 +40,8 @@
             <div class="tile-body table-custom">
                 <?php
                 $flash_message = $this->session->flashdata('message');
-                if($flash_message['message']) {
-                if($flash_message['type']=="success"){
+                if(isset($flash_message['message']) && $flash_message['message']) {
+                if(isset($flash_message['type']) && $flash_message['type']=="success"){
                     $class="alert-success";
                     $class1='fa-check';
                 }else{
