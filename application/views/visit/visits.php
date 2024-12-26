@@ -100,8 +100,8 @@
 
                       <th class="sorting" role="columnheader">Transport</th>
                       <th class="sorting" role="columnheader">Vehicle Number</th>
-                      <th class="sorting" role="columnheader">Tenant</th>
-                      <th class="sorting" role="columnheader">Employee</th>
+                      <th class="sorting" role="columnheader">Branches</th>
+                      <th class="sorting" role="columnheader">Officers</th>
                       <th class="sorting" role="columnheader">Issued Card</th>
                       <th class="sorting" role="columnheader">Company From</th>
                       <th class="sorting" role="columnheader">Check In</th>

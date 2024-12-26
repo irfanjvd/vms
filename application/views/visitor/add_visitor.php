@@ -196,13 +196,13 @@
                                     <input type="text" class="form-control" placeholder="Regitration No" name="visit_transport_registration_no" id="visit_transport_registration_no" value="<?php if(isset($post['visit_transport_registration_no'])){ echo $post['visit_transport_registration_no']; }else if(isset($member_info['number_plate'])){ echo $member_info['number_plate']; } ?>">
                                 </div>
                                 <div class="col-xs-3">
-                                    <label class="form_label">Tenant:</label>
+                                    <label class="form_label">Branches: *</label>
                                     <?php
                                     // echo  "<pre>";
                                     // print_r($_SERVER['REQUEST_URI']);die;
                                     ?>
 <!--                                    <input type="text" class="form-control" placeholder="visit to tenant" name="visit_to_tenant" id="visit_to_tenant" value="--><?php //echo (isset($post['visit_to_tenant']))?$post['visit_to_tenant']:""; ?><!--">-->
-                                    <select class="form-control chosen-select" name="tenant_id" id="tenant_id" onchange="get_employees(value)">
+                                    <select class="form-control chosen-select" name="tenant_id" required="required" id="tenant_id" onchange="get_employees(value)">
                                         <option value="">Select Tenant</option>
                                         <?php
                                         foreach($tenants as $key=>$val){
@@ -215,7 +215,7 @@
                                     </select>
                                 </div>
                                 <div class="col-xs-3">
-                                    <label class="form_label">Employee:</label>
+                                    <label class="form_label">Officers :</label>
                                     <select class="form-control chosen-select" name="employee_id" id="employee_id">
 
                                     </select>
@@ -240,8 +240,8 @@
                                 <div class="col-xs-2">
                                 </div>
                                 <div class="col-xs-2">
-                                    <label class="form_label">Issued Visitor Card <?php echo ($issue_card_required==1)?"*":""; ?>:</label>
-                                    <input type="text" <?php echo ($issue_card_required==1)?"required=required":""; ?> class="form-control" placeholder="Visitor Card" name="visit_issued_card" id="visit_issued_card" value="<?php echo (isset($post['visit_issued_card']))?$post['visit_issued_card']:""; ?>">
+                                    <label class="form_label">Issued Visitor Card <?php echo ($issue_card_required==1)?"":""; ?>:</label>
+                                    <input type="text" class="form-control" placeholder="Visitor Card" name="visit_issued_card" id="visit_issued_card" value="<?php echo (isset($post['visit_issued_card']))?$post['visit_issued_card']:""; ?>">
                                 </div>
 <!--                                <div class="col-xs-3 checkout">-->
 <!--                                    <label class="form_label">Next Location:</label>-->

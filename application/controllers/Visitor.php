@@ -516,24 +516,24 @@ class Visitor extends CI_Controller {
                 if (isset($_POST['employee_id']) && $_POST['employee_id'] == '') {
                     $message .= "Please select tenant employee <br>";
                 }
-                $issue_card_required=(isset($session_data['login_user_issue_card']))?$session_data['login_user_issue_card']:0;
-                if($issue_card_required==1) {
-                    if($_POST['visit_status']!="CHECK_OUT") {
-                        if (isset($_POST['visit_issued_card']) && $_POST['visit_issued_card'] == '') {
-                            $message .= "Visit issued card cannot be blank <br>";
-                        }
-                    }
-                    //issue card filed is required so check card already issued or not???
-                    $is_issued=$this->visit_model->find_visit_with_issue_card($_POST['visit_issued_card']);
-                    if($_POST['visit_status']!="CHECK_OUT") {
-                        if ($is_issued > 0) {
-                            $card = $_POST['visit_issued_card'];
-                            $message .= "Visit card $card already issued <br>";
-                        }
-                    }
-                    unset($_POST['visit_status']);
+                // $issue_card_required=(isset($session_data['login_user_issue_card']))?$session_data['login_user_issue_card']:0;
+                // if($issue_card_required==1) {
+                //     if($_POST['visit_status']!="CHECK_OUT") {
+                //         if (isset($_POST['visit_issued_card']) && $_POST['visit_issued_card'] == '') {
+                //             $message .= "Visit issued card cannot be blank <br>";
+                //         }
+                //     }
+                //     //issue card filed is required so check card already issued or not???
+                //     $is_issued=$this->visit_model->find_visit_with_issue_card($_POST['visit_issued_card']);
+                //     if($_POST['visit_status']!="CHECK_OUT") {
+                //         if ($is_issued > 0) {
+                //             $card = $_POST['visit_issued_card'];
+                //             $message .= "Visit card $card already issued <br>";
+                //         }
+                //     }
+                //     unset($_POST['visit_status']);
 
-                }
+                // }
 
                 $visitor_type = trim($this->input->post('visitor_type'));
                 if($visitor_type=="visitor_identity_no") {
