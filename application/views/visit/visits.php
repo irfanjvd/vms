@@ -107,10 +107,9 @@
                       <th class="sorting" role="columnheader">Check In</th>
                       <th class="sorting" role="columnheader">Check Out</th>
                       <th class="sorting" role="columnheader">Visit Date</th>
-                        <th class="sorting" role="columnheader">Location</th>
+                      <th class="sorting" role="columnheader">Location</th>
 <!--                        <th class="sorting" role="columnheader">Next Location</th>-->
-                        <th class="sorting" role="columnheader">Action</th>
-
+                      <th class="sorting" role="columnheader">Action</th>
 <!--                      <th class="sorting" role="columnheader">Check Out</th>-->
                     </tr>
                   </thead>

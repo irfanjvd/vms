@@ -100,7 +100,7 @@
 					
 
 					<div class="col-md-2" id="renderingTenantFilter">
-            <label>Tenant</label>
+            <label>Branches</label>
             <select id="tenant_id" class="form-control chosen-select" onchange="get_employees(value)">
               <option value="">Select One</option>
               <?php
@@ -115,7 +115,7 @@
             </select>
           </div>
 					<div class="col-md-2" id="renderingEmployeeFilter">
-            <label>Employees</label>
+            <label>Officers</label>
             <select id="employee_id" class="form-control chosen-select">
               <option value="">Select One</option>
               
@@ -177,8 +177,8 @@
                       <!-- <th class="sorting_asc" style="width:15%" role="columnheader">Title</th> -->
                       <th class="sorting_asc" style="width:15%" role="columnheader">Visit Purpose</th>
                       <th class="sorting" style="width:10%" role="columnheader">Date Time</th>
-                      <th class="sorting" style="width:15%" role="columnheader">Tenant</th>
-                      <th class="sorting" style="width:15%" role="columnheader">Employee</th>
+                      <th class="sorting" style="width:15%" role="columnheader">Branch</th>
+                      <th class="sorting" style="width:15%" role="columnheader">Officer</th>
                       <th class="sorting" style="width:5%" role="columnheader">Is Cargo</th>
                       <th class="sorting" style="width:5%" role="columnheader">Visit Code</th>
 					  <th class="sorting" style="width:5%" role="columnheader">No. Of Members</th>

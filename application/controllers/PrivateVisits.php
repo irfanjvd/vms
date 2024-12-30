@@ -144,7 +144,10 @@ class PrivateVisits extends CI_Controller {
 					redirect(base_url().'PrivateVisits/add_private_visit');	
 				}
 				
-				$visit_members=$_SESSION['private_visit']['p_members'];	
+				$p_members=$_SESSION['private_visit']['p_members'];
+                $visit_members = array_filter($p_members, function($item) {
+                    return !empty($item['name']);
+                });
 				$this->common_model->save('private_members',$visit_members,1);
 				//add notification...
 				$this->common_model->add_one('notifications','total',1);

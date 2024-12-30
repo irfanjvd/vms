@@ -207,7 +207,8 @@ function verify_data(form){
 }
 
 function add(div_id,form_id,method=''){
-		$('.popinfo').show();
+		// $('.popinfo').show();
+		$('#alert-info').removeClass('hide');
 		var datastring=$("#"+form_id).serialize();
 		
 		private_members_counter++;
@@ -215,45 +216,45 @@ function add(div_id,form_id,method=''){
 			method: "POST",
 			url: "<?php echo base_url();?>PrivateVisits/"+method+"/",
 			data: datastring+ '&private_members_counter=' + private_members_counter,
-			
-			success: function(result) {
-				final_result = JSON.parse(result);
-				if(final_result.status=='success'){
-					if(div_id=="visit_data"){
-						$('#private_visit_id').val(final_result.id); 
-						$('#visit_data').hide();
-						$('#member_data').show();
-						$('.popinfo').hide();
-					}else{
-						//$("#add_visit_data")[0].reset();
-						$('#name').val("");
-						$('#cnic_no').val("");
-						$('#mobile').val("");
-						$('#mode_transport').val("");
-						$('#number_plate').val("");
-						$('#date_from').val("");
-						$('#date_to').val("");
-						$('#visit_time').val("");
-						$('.save-button').show();
-						console.log(final_result.data.name);
-							t.row.add( [
-								final_result.data.name,
-								final_result.data.cnic,
-								final_result.data.mobile,
-								final_result.data.mode_transport,
-								final_result.data.number_plate,
-								final_result.data.date_from,
-								final_result.data.date_to,
-								"<i class='fa fa-remove' id='"+private_members_counter+"'></i></a>",
-							] ).draw( false );
-					 
-							
-						$('.popinfo').hide();
 
-					}
-					
-				}
-			},
+            success: function (result) {
+                final_result = JSON.parse(result);
+                if (final_result.status == 'success') {
+                    if (div_id == "visit_data") {
+                        $('#private_visit_id').val(final_result.id);
+                        $('#visit_data').hide();
+                        $('#member_data').show();
+                        $('.popinfo').hide();
+                    } else {
+                        //$("#add_visit_data")[0].reset();
+                        $('#name').val("");
+                        $('#cnic_no').val("");
+                        $('#mobile').val("");
+                        $('#mode_transport').val("");
+                        $('#number_plate').val("");
+                        // $('#date_from').val("");
+                        // $('#date_to').val("");
+                        // $('#visit_time').val("");
+                        $('.save-button').show();
+                        // console.log(final_result.data.name);
+                        t.row.add([
+                            final_result.data.name,
+                            final_result.data.cnic,
+                            final_result.data.mobile,
+                            final_result.data.mode_transport,
+                            final_result.data.number_plate,
+                            final_result.data.date_from,
+                            final_result.data.date_to,
+                            "<i class='fa fa-remove' id='" + private_members_counter + "'></i></a>",
+                        ]).draw(false);
+
+                        $('.popinfo').hide();
+                        $('#alert-info').addClass('hide');
+
+                    }
+
+                }
+            },
 			async: false
 
 		});
@@ -839,7 +840,7 @@ $(document).ready(function() {
             {column_number : 2,  filter_type: "text", filter_container_id: "renderingCellNoFilter",filter_default_label: "Visitor Cell No"},
             {column_number : 4, filter_type:"text", filter_container_id: "renderingIdentityNoFilter",filter_default_label: "Visitor Identity No"},
             {column_number : 7, filter_type:"text", filter_container_id: "renderingVehicleNoFilter",filter_default_label: "Visitor Vehicle No"},
-            {column_number : 8 ,filter_container_id: "renderingTenantFilter",filter_default_label: "Tenant",data:getTenants()},
+            {column_number : 8 ,filter_container_id: "renderingTenantFilter",filter_default_label: "Branch",data:getTenants()},
             {column_number : 10, filter_type:"text", filter_container_id: "renderingIssuedCardFilter",filter_default_label: "Issued Card"},
             {column_number : 11, filter_type:"text", filter_container_id: "renderingCompanyFromFilter",filter_default_label: "Company From"},
             {column_number : 13, filter_container_id: "renderingCheckoutFilter",filter_default_label: "Check Out", data: ["Not Checkout", "Critical"]},

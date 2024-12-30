@@ -13,8 +13,6 @@
 <!--        <h2>Add Location <span>VMS - Visitors Management System</span></h2>-->
       </div>
       
-     
-      
       <!-- row -->
       <div class="row"> 
         <!-- col -->
@@ -61,11 +59,6 @@
                     ?>
 					
 						<div class="row">
-
-							<!-- <div class="col-xs-4">
-							  <label class="form_label">Title *:</label>
-							  <input type="text" class="form-control required-field" id="title" name="title" placeholder="Enter Title" value="<?php echo (isset($info['title']))? $info['title']: '' ?>">
-							</div> -->
 							<div class="col-xs-4">
 							  <label class="form_label">Visit Purpose *:</label>
 							  <input type="text" class="form-control required-field" id="agenda" name="agenda" placeholder="Enter Agenda" value="<?php echo (isset($info['agenda']))? $info['agenda']: '' ?>">
@@ -87,6 +80,7 @@
 								?>
 							  </select>
 							</div> -->
+                        </div>
 							
 						
 						<!--</div><br>
@@ -130,22 +124,45 @@
                     <?php
                     }
                     ?>
-						<input type="hidden" name="private_visit_id" id="private_visit_id" value="">
-						<div class="row">
-
-							<div class="col-xs-4">
-							  <label class="form_label">Name *:</label>
-							  <input type="text" class="form-control required-field" name="name" id="name" placeholder="Enter name" value="<?php echo (isset($info['name']))? $info['name']: '' ?>">
-							</div>
-							<div class="col-xs-4">
-							  <label class="form_label">Cnic :</label>
-							  <input type="text" class="form-control" id="cnic_no" name="cnic" placeholder="Enter cnic" value="<?php echo (isset($info['cnic']))? $info['cnic']: '' ?>">
-							</div>
-							<div class="col-xs-4">
-							  <label class="form_label">Mobile :</label>
-							  <input type="text" class="form-control" name="mobile" placeholder="Enter mobile" id="mobile" value="<?php echo (isset($info['mobile']))? $info['mobile']: '' ?>">
-							</div>
-							
+				<input type="hidden" name="private_visit_id" id="private_visit_id" value="">
+                <div class="row">
+                    <div class="col-md-4 col-xs-4">
+                        <label class="form_label ">Date From *:</label>
+                        <input type="text" class="form-control my_date required-field" name="date_from" id="date_from"
+                               placeholder="Enter date_from" value="" readonly="">
+                    </div>
+                    <div class="col-md-4 col-xs-4">
+                        <label class="form_label ">Date To *:</label>
+                        <input type="text" class="form-control my_date required-field" name="date_to" id="date_to"
+                               onblur="verify_date()" placeholder="Enter date_to" value="" readonly="">
+                    </div>
+                    <div class="col-md-2 col-xs-2">
+                        <label class="form_label ">Time *:</label>
+                        <input type="text" class="form-control required-field" id="visit_time" name="time"
+                               placeholder="Enter time" value="">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <label class="form_label">Name *:</label>
+                        <input type="text" class="form-control required-field" name="name" id="name"
+                               placeholder="Enter name"
+                               value="<?php echo (isset($info['name'])) ? $info['name'] : '' ?>">
+                    </div>
+                    <div class="col-xs-4">
+                        <label class="form_label">Cnic :</label>
+                        <input type="text" class="form-control" id="cnic_no" name="cnic"
+                               placeholder="Enter cnic"
+                               value="<?php echo (isset($info['cnic'])) ? $info['cnic'] : '' ?>">
+                    </div>
+                    <div class="col-md-2 col-xs-4">
+                        <label class="form_label">Mobile :</label>
+                        <input type="text" class="form-control" name="mobile" placeholder="Enter mobile"
+                               id="mobile"
+                               value="<?php echo (isset($info['mobile'])) ? $info['mobile'] : '' ?>">
+                    </div>
+                </div>
+                <div class="row">
 							<div class="col-xs-4">
 							  <label class="form_label">Mode :</label>
 							  <select class="form-control required-field" name="mode_transport" id="mode_transport" onchange="if(value=='Pedestrian' || value=='Other'){ $('.number_plate_div').hide(); }else{ $('.number_plate_div').show() }">
@@ -161,19 +178,6 @@
 							  <label class="form_label">Number Plate :</label>
 							  <input type="text" class="form-control" name="number_plate" id="number_plate" placeholder="Enter number_plate" value="<?php echo (isset($info['number_plate']))? $info['number_plate']: '' ?>">
 							</div>
-							<div class="col-xs-4">
-							  <label class="form_label ">Date From *:</label>
-							  <input type="text" class="form-control my_date required-field" name="date_from" id="date_from" placeholder="Enter date_from" value="" readonly="">
-							</div>
-							<div class="col-xs-4">
-							  <label class="form_label ">Date To *:</label>
-							  <input type="text" class="form-control my_date required-field" name="date_to" id="date_to" onblur="verify_date()" placeholder="Enter date_to" value="" readonly="">
-							</div>
-							<div class="col-xs-4">
-							  <label class="form_label ">Time *:</label>
-							  <input type="text" class="form-control required-field" id="visit_time" name="time" placeholder="Enter time" value="">
-							</div>
-							
 						
 						</div>
 						<!--<div class="row" id="msg" style="color:green;padding:10px;"></div>-->
@@ -187,6 +191,11 @@
 								<input type="submit" value="Save"  class="btn btn-success col-xs-12" id="save-visit">
 							</div>
 						</div>	<br>
+                        <div class="row">
+                            <div class="col-md-4 col-xs-8">
+                                <div id="alert-info" class="alert alert-info hide">Please add visit/member detail!</div>
+                            </div>
+                        </div>
                 <!--</form>-->
 				<?php
 				  echo form_close();
@@ -224,12 +233,12 @@
 
       
     </div>
-      
-<div class="popinfo" style="display:none">
-	<h3>Please Wait !!!</h3>
+
+<div class="popinfo" style="display:none;">
+	<h3>Please fill visit detail !!!</h3>
 </div>
   </section>
-  
+
   <style>
 		.popinfo{
 			position: fixed;

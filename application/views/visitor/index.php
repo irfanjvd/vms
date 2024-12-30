@@ -444,7 +444,7 @@ $( document ).ready(function() {
             type: 'pie'
         },
         title: {
-            text: 'Today Tenant Visits Graph'
+            text: 'Today Branches Visits Graph'
         },
         subtitle: {
             text: ''
