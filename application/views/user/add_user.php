@@ -92,7 +92,7 @@
                           <select class="form-control" name="type">
                             <option value="NORMAL">Normal</option>
                             <option value="SUPER">Super Admin</option>
-
+                            <option value="TENANT">Tenant</option>
                           </select>
                         </div>
                     </div>

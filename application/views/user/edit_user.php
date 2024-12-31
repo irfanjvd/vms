@@ -105,6 +105,7 @@
                               <select class="form-control" name="type">
                               	<option value="NORMAL" <?php echo ($info['type'] == "NORMAL") ? "selected" : "" ?> >Normal</option>
                               	<option value="SUPER"  <?php echo ($info['type'] == "SUPER") ? "selected" : "" ?> >Super Admin</option>
+                              	<option value="TENANT"  <?php echo ($info['type'] == "TENANT") ? "selected" : "" ?> >Tenant</option>
 
                               </select>
                             </div>
