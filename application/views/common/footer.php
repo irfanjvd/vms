@@ -206,60 +206,85 @@ function verify_data(form){
 	return isValid;
 }
 
-function add(div_id,form_id,method=''){
-		// $('.popinfo').show();
-		$('#alert-info').removeClass('hide');
-		var datastring=$("#"+form_id).serialize();
-		
-		private_members_counter++;
-		$.ajax({
-			method: "POST",
-			url: "<?php echo base_url();?>PrivateVisits/"+method+"/",
-			data: datastring+ '&private_members_counter=' + private_members_counter,
+function add(div_id, form_id, method = '') {
+    // Show the alert info
+    $('#alert-info').removeClass('hide');
 
-            success: function (result) {
-                final_result = JSON.parse(result);
-                if (final_result.status == 'success') {
-                    if (div_id == "visit_data") {
-                        $('#private_visit_id').val(final_result.id);
-                        $('#visit_data').hide();
-                        $('#member_data').show();
-                        $('.popinfo').hide();
-                    } else {
-                        //$("#add_visit_data")[0].reset();
-                        $('#name').val("");
-                        $('#cnic_no').val("");
-                        $('#mobile').val("");
-                        $('#mode_transport').val("");
-                        $('#number_plate').val("");
-                        // $('#date_from').val("");
-                        // $('#date_to').val("");
-                        // $('#visit_time').val("");
-                        $('.save-button').show();
-                        // console.log(final_result.data.name);
-                        t.row.add([
-                            final_result.data.name,
-                            final_result.data.cnic,
-                            final_result.data.mobile,
-                            final_result.data.mode_transport,
-                            final_result.data.number_plate,
-                            final_result.data.date_from,
-                            final_result.data.date_to,
-                            "<i class='fa fa-remove' id='" + private_members_counter + "'></i></a>",
-                        ]).draw(false);
+    // Serialize form data
+    var datastring = $("#" + form_id).serialize();
 
-                        $('.popinfo').hide();
-                        $('#alert-info').addClass('hide');
+    // Increment the counter
+    private_members_counter++;
 
-                    }
+    // Perform AJAX request
+    $.ajax({
+        method: "POST",
+        url: "<?php echo base_url();?>PrivateVisits/" + method + "/",
+        data: datastring + '&private_members_counter=' + private_members_counter,
+        success: function (result) {
+            try {
+                var final_result = JSON.parse(result);
+                console.log(final_result);
 
+                if (final_result.status === 'success') {
+                    handleSuccess(final_result, div_id);
                 }
-            },
-			async: false
-
-		});
-	
+            } catch (e) {
+                console.error("Invalid JSON response:", result);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("AJAX Error:", status, error);
+        }
+    });
 }
+
+// Separate function to handle the success result
+function handleSuccess(final_result, div_id) {
+    if (div_id === "visit_data") {
+        $('#private_visit_id').val(final_result.id);
+        $('#visit_data').hide();
+        $('#member_data').show();
+        hidePopInfo();
+    } else {
+        resetFormFields();
+        if (final_result.data.name !== '' && final_result.data.mode_transport !== '') {
+            addRowToTable(final_result.data);
+        }
+        hidePopInfo();
+    }
+    $('#alert-info').addClass('hide');
+}
+
+// Function to reset form fields
+function resetFormFields() {
+    $('#name').val("");
+    $('#cnic_no').val("");
+    $('#mobile').val("");
+    $('#mode_transport').val("Car");
+    $('#number_plate').val("");
+    $('.save-button').show();
+}
+
+// Function to add row to the table
+function addRowToTable(data) {
+    t.row.add([
+        data.name,
+        data.cnic,
+        data.mobile,
+        data.mode_transport,
+        data.number_plate,
+        data.date_from,
+        data.date_to,
+        "<i class='fa fa-remove' id='" + private_members_counter + "'></i>"
+    ]).draw(false);
+}
+
+// Function to hide pop-up info
+function hidePopInfo() {
+    $('.popinfo').hide();
+}
+
 
 
 
