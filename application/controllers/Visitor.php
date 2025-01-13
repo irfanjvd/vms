@@ -481,24 +481,24 @@ class Visitor extends CI_Controller {
     public function addvisitor($id='') {
 		
         date_default_timezone_set('Asia/Karachi');
-		$private_visit_check = 0;
+        $private_visit_check = 0;
         $session_data = $this->session->userdata('logged_in');
-        if ($this->session->userdata('logged_in') && $session_data['login_user_type']!="SUPER") {
+        if ($this->session->userdata('logged_in') && $session_data['login_user_type'] != "SUPER") {
             $data = array();
-			
-			if($this->uri->segment(4)){
-                $private_visit_check = $this->uri->segment(4); 
+
+            if ($this->uri->segment(4)) {
+                $private_visit_check = $this->uri->segment(4);
                 $data['private_visit_check'] = $private_visit_check;
             }
-			$data = $private_visit_check;
-			
-			if($session_data['login_user_type']=="TENANT"){
-				redirect(base_url().'visitor/private_visits');
-			}
+
+            $data = $private_visit_check;
+            if ($session_data['login_user_type'] == "TENANT") {
+                redirect(base_url() . 'visitor/private_visits');
+            }
 
             if ($this->input->post()) {
-                $message="";
-                if (isset($_POST['visitor_identity_no']) && $_POST['visitor_identity_no'] == '' && $_POST['visitor_employee_card']=="" && $_POST['visitor_driving_license']=="" && $_POST['visitor_passport_id']=="") {
+                $message = "";
+                if (isset($_POST['visitor_identity_no']) && $_POST['visitor_identity_no'] == '' && $_POST['visitor_employee_card'] == "" && $_POST['visitor_driving_license'] == "" && $_POST['visitor_passport_id'] == "") {
                     $message .= "Visitor Identity cannot be blank <br>";
                 }
                 if (isset($_POST['visitor_name']) && $_POST['visitor_name'] == '') {
@@ -536,7 +536,7 @@ class Visitor extends CI_Controller {
                 // }
 
                 $visitor_type = trim($this->input->post('visitor_type'));
-                if($visitor_type=="visitor_identity_no") {
+                if ($visitor_type == "visitor_identity_no") {
                     $cnic = trim($this->input->post('visitor_identity_no'));
                     if (strlen($cnic) < 15 || strlen($cnic) > 15) {
                         $message .= "Enter a valid CNIC  <br>";
@@ -544,47 +544,47 @@ class Visitor extends CI_Controller {
                 }
 
 
-                if($message!=''){
+                if ($message != '') {
 
                     $this->session->set_flashdata('message', array('message' => "$message", 'type' => 'error'));
-                    $this->session->set_flashdata('post',$_POST);
+                    $this->session->set_flashdata('post', $_POST);
 
-                    if($this->uri->segment(3)!=''){
-                        $private_id=$this->uri->segment(3);
-                    }else{
-                        $private_id=0;
+                    if ($this->uri->segment(3) != '') {
+                        $private_id = $this->uri->segment(3);
+                    } else {
+                        $private_id = 0;
                     }
-                    redirect(base_url().'visitor/addvisitor/'.$private_id);
+                    redirect(base_url() . 'visitor/addvisitor/' . $private_id);
 
                 }
 
 
-                $visitor_info = $this->visitor_model->get_visitor($cnic,$visitor_type);
+                $visitor_info = $this->visitor_model->get_visitor($cnic, $visitor_type);
                 //print_r($visitor_info);
                 // exit;
-                
+
                 $im = $this->input->post('visitor_picture');
-                $imgName ='';
-				
-                if(strpos($im,"no_image.png")==false ){
+                $imgName = '';
+
+                if (strpos($im, "no_image.png") == false) {
                     echo "in";
                     $data = str_replace('data:image/png;base64,', '', $im);
                     $data = str_replace('[removed]', '', $data);
                     $data = trim($data);
                     $data = base64_decode($data);
                     $im = @imagecreatefromstring($data);
-					//echo "<pre>";
-					//print_r($im);die;
+                    //echo "<pre>";
+                    //print_r($im);die;
                     if ($im !== false) {
-                            $imgnae = $cnic;
-                            header('Content-Type: image/png');
-                            $path = './assets/data/visitor_profile/';
-                            imagepng($im, $path.'visitor_'.$imgnae.".png");
+                        $imgnae = $cnic;
+                        header('Content-Type: image/png');
+                        $path = './assets/data/visitor_profile/';
+                        imagepng($im, $path . 'visitor_' . $imgnae . ".png");
 
-                            $imgName = base_url() . 'assets/data/visitor_profile/visitor_'.$imgnae.".png";
-                            //$images_array[] = $imgName;
-                    }else {
-                                                echo 'Image upload error. zahid ';
+                        $imgName = base_url() . 'assets/data/visitor_profile/visitor_' . $imgnae . ".png";
+                        //$images_array[] = $imgName;
+                    } else {
+                        echo 'Image upload error. zahid ';
                     }
                 }
 //                die("dddd");
@@ -593,15 +593,15 @@ class Visitor extends CI_Controller {
 //                    $imgName = base_url() . 'assets/data/visitor_profile/no_image.png';
 //                }
 //                echo $imgName;die;
-                
+
                 if (!$visitor_info) {
 //                    $visitor_type=trim($this->input->post('visitor_type'));
-                    $foreign_no=$this->input->post('foreign_no');
-                    if(isset($foreign_no) && $foreign_no==1){
-                        $cell_no=$this->input->post('visitor_cell_no');
-                    }else{
-                        $cell_no=$this->input->post('visitor_cell_no');
-                        if($cell_no!='') {
+                    $foreign_no = $this->input->post('foreign_no');
+                    if (isset($foreign_no) && $foreign_no == 1) {
+                        $cell_no = $this->input->post('visitor_cell_no');
+                    } else {
+                        $cell_no = $this->input->post('visitor_cell_no');
+                        if ($cell_no != '') {
                             $cell_no = ltrim($cell_no, "0");
                             $cell_no = "+92" . $cell_no;
                         }
@@ -618,41 +618,41 @@ class Visitor extends CI_Controller {
 //                    print_r($add_visitor);die;
                     $this->db->insert('visitor_profile', $add_visitor);
                     $visitor_id_fk = $this->db->insert_id();
-                    $this->log_model->create_log("ADD VISITOR",$add_visitor,$visitor_id_fk);
-                    if($this->uri->segment(3)!=""){
-                        $private_id=$this->uri->segment(3);   
-						//get private visit id...
-						
+                    $this->log_model->create_log("ADD VISITOR", $add_visitor, $visitor_id_fk);
+                    if ($this->uri->segment(3) != "") {
+                        $private_id = $this->uri->segment(3);
+                        //get private visit id...
+
                         //get this visit mobile number to send message...
-                        $joins[]="private_visits pv";
-                        $joins[]="private_members pm";
-                        
-                        $joins_on=array(
+                        $joins[] = "private_visits pv";
+                        $joins[] = "private_members pm";
+
+                        $joins_on = array(
                             "pv.user_id=te.user_id",
                             "pm.private_visit_id=pv.id",
-                        
+
                         );
-                        $private_member_result= $this->common_model->find("tenant_employees te","te.mobile_no,pm.name,pm.private_visit_id",true,array('pm.id'=>$private_id),$joins,$joins_on);
-                        $private_id=$private_member_result['private_visit_id'];
-						//echo $this->db->last_query();die;
-                        if(!empty($private_member_result)){
-                            $mobile_no=$private_member_result['mobile_no'];
-                            $private_member_name=$private_member_result['name'];
+                        $private_member_result = $this->common_model->find("tenant_employees te", "te.mobile_no,pm.name,pm.private_visit_id", true, array('pm.id' => $private_id), $joins, $joins_on);
+                        $private_id = $private_member_result['private_visit_id'];
+                        //echo $this->db->last_query();die;
+                        if (!empty($private_member_result)) {
+                            $mobile_no = $private_member_result['mobile_no'];
+                            $private_member_name = $private_member_result['name'];
                             //send meesage...
-                            $sms_message="VMS <br>Your visitor $private_member_name checked in successfully !!!";
-                            send_sms($mobile_no,$sms_message);    
+                            $sms_message = "VMS <br>Your visitor $private_member_name checked in successfully !!!";
+                            send_sms($mobile_no, $sms_message);
                         }
-                        
-                    }else{
-                        $private_id=0;
+
+                    } else {
+                        $private_id = 0;
                     }
-                    
+
                     $add_visit = array(
-                        'private_visit_id'=>$private_id,
+                        'private_visit_id' => $private_id,
                         'visit_visitor_id_fk' => $visitor_id_fk,
                         'visit_reason' => trim($this->input->post('visit_reason')),
-                        'visit_checkin' => ($this->input->post('visit_checkin')=="")?date("Y-m-d H:i:s"):trim($this->input->post('visit_checkin')),
-                        'visit_checkout' => ($this->input->post('visit_checkout')=="")?null:trim($this->input->post('visit_checkout')),
+                        'visit_checkin' => ($this->input->post('visit_checkin') == "") ? date("Y-m-d H:i:s") : trim($this->input->post('visit_checkin')),
+                        'visit_checkout' => ($this->input->post('visit_checkout') == "") ? null : trim($this->input->post('visit_checkout')),
                         'visit_transport_mode' => trim($this->input->post('visit_transport_mode')),
                         'visit_transport_registration_no' => trim($this->input->post('visit_transport_registration_no')),
                         'tenant_id' => trim($this->input->post('tenant_id')),
@@ -664,17 +664,17 @@ class Visitor extends CI_Controller {
 //                        'next_location_id' => $this->input->post('next_location_id'),
                     );
                     $this->db->insert('visit', $add_visit);
-                    $visit_id=$this->db->insert_id();
-                    $this->log_model->create_log("ADD VISIT",$add_visit,$visit_id);
-					if($private_id!=0){
-						
-						//mark private visit as visited....
-						$this->db->where('id', $private_id);
-						$this->db->update('private_visits', array('status'=>'VISITED'));
-						
-					}
+                    $visit_id = $this->db->insert_id();
+                    $this->log_model->create_log("ADD VISIT", $add_visit, $visit_id);
+                    if ($private_id != 0) {
+
+                        //mark private visit as visited....
+                        $this->db->where('id', $private_id);
+                        $this->db->update('private_visits', array('status' => 'VISITED'));
+
+                    }
                     //insert into track table...
-                    $add_track=array(
+                    $add_track = array(
                         "visit_id_fk" => $visit_id,
                         "user_id" => $session_data['login_user_id'],
                         "location_id" => $session_data['login_user_location'],
@@ -683,35 +683,35 @@ class Visitor extends CI_Controller {
 
                     );
                     $this->db->insert('visit_track', $add_track);
-                    $track_id=$this->db->insert_id();
-                    $this->log_model->create_log("ADD VISIT TRACK",$add_track,$track_id);
-                    if($message==''){
-                        if($action=="CHECK_OUT"){
+                    $track_id = $this->db->insert_id();
+                    $this->log_model->create_log("ADD VISIT TRACK", $add_track, $track_id);
+                    if ($message == '') {
+                        if ($action == "CHECK_OUT") {
                             $this->session->set_flashdata('message', array('message' => "Visit checkout done successfully !!!", 'type' => 'success'));
-                        }else{
+                        } else {
                             $this->session->set_flashdata('message', array('message' => "Visit created successfully !!!", 'type' => 'success'));
                         }
 
 
                     }
-                    redirect(base_url().'visitor/addvisitor');
+                    redirect(base_url() . 'visitor/addvisitor');
                 } else {
 
-                    if($imgName==''){
+                    if ($imgName == '') {
                         $imgName = $visitor_info['visitor_picture'];
                     }
 
                     //checking other identifications...
-                    $other_identity='';
-                    if($this->input->post('visitor_employee_card')!=""){
-                        $other_identity="visitor_employee_card";
-                    }elseif($this->input->post('visitor_driving_license')!=""){
-                        $other_identity="visitor_driving_license";
-                    }elseif($this->input->post('visitor_passport_id')!=""){
-                        $other_identity="visitor_passport_id";
+                    $other_identity = '';
+                    if ($this->input->post('visitor_employee_card') != "") {
+                        $other_identity = "visitor_employee_card";
+                    } elseif ($this->input->post('visitor_driving_license') != "") {
+                        $other_identity = "visitor_driving_license";
+                    } elseif ($this->input->post('visitor_passport_id') != "") {
+                        $other_identity = "visitor_passport_id";
                     }
 
-                    if($other_identity!=''){
+                    if ($other_identity != '') {
                         //update visitor profile...
                         $update_visitor = array(
                             "$other_identity" => trim($this->input->post("$other_identity")),
@@ -731,31 +731,31 @@ class Visitor extends CI_Controller {
                     $this->db->where('visitor_id', $visitor_info['visitor_id']);
                     $this->db->update('visitor_profile', $edit_visitor);
 //                    if($imgName == ''){
-                    if($this->uri->segment(3)!=""){
-						$private_member_id=$this->uri->segment(3);  
-						//get this visit mobile number to send message...
-                        $joins[]="private_visits pv";
-                        $joins[]="private_members pm";
-                        
-                        $joins_on=array(
+                    if ($this->uri->segment(3) != "") {
+                        $private_member_id = $this->uri->segment(3);
+                        //get this visit mobile number to send message...
+                        $joins[] = "private_visits pv";
+                        $joins[] = "private_members pm";
+
+                        $joins_on = array(
                             "pv.user_id=te.user_id",
                             "pm.private_visit_id=pv.id",
-                        
-                        );						
-                        $private_member_result= $this->common_model->find("tenant_employees te","te.mobile_no,pm.name,pm.private_visit_id",true,array('pm.id'=>$private_member_id),$joins,$joins_on);
-                        $private_id=$private_member_result['private_visit_id'];
-						$joins=array();
-						$joins_on=array();
-                    }else{
-                        $private_id=0;
+
+                        );
+                        $private_member_result = $this->common_model->find("tenant_employees te", "te.mobile_no,pm.name,pm.private_visit_id", true, array('pm.id' => $private_member_id), $joins, $joins_on);
+                        $private_id = $private_member_result['private_visit_id'];
+                        $joins = array();
+                        $joins_on = array();
+                    } else {
+                        $private_id = 0;
                     }
-					
+
                     $add_visit = array(
-                        'private_visit_id'=>$private_id,
+                        'private_visit_id' => $private_id,
                         'visit_visitor_id_fk' => $visitor_info['visitor_id'],
                         'visit_reason' => trim($this->input->post('visit_reason')),
-                        'visit_checkin' => ($this->input->post('visit_checkin')=="")?date("Y-m-d H:i:s"):trim($this->input->post('visit_checkin')),
-                        'visit_checkout' => ($this->input->post('visit_checkout')=="")?null:trim($this->input->post('visit_checkout')),
+                        'visit_checkin' => ($this->input->post('visit_checkin') == "") ? date("Y-m-d H:i:s") : trim($this->input->post('visit_checkin')),
+                        'visit_checkout' => ($this->input->post('visit_checkout') == "") ? null : trim($this->input->post('visit_checkout')),
                         'visit_transport_mode' => trim($this->input->post('visit_transport_mode')),
                         'visit_transport_registration_no' => trim($this->input->post('visit_transport_registration_no')),
                         'tenant_id' => trim($this->input->post('tenant_id')),
@@ -765,16 +765,16 @@ class Visitor extends CI_Controller {
                         'location_id' => $session_data['login_user_location'],
 //                        'next_location_id' => trim($this->input->post('next_location_id')),
                     );
-					if($private_id!=0){
-						
-						//mark private visit as visited....
-						$this->db->where('id', $private_id);
-						$this->db->update('private_visits', array('status'=>'VISITED'));
-						
-					}
+                    if ($private_id != 0) {
+
+                        //mark private visit as visited....
+                        $this->db->where('id', $private_id);
+                        $this->db->update('private_visits', array('status' => 'VISITED'));
+
+                    }
                     //get last visit info of this visit....
-                    $last_visit_id=$this->input->post('visit_id');
-                    if(isset($last_visit_id) && $last_visit_id!=''){
+                    $last_visit_id = $this->input->post('visit_id');
+                    if (isset($last_visit_id) && $last_visit_id != '') {
                         /*
                          * get this visit location and compare it with current user location
                             if both locations are same mean user is goona check out and we will update this visit
@@ -782,24 +782,24 @@ class Visitor extends CI_Controller {
                         */
 //                        $last_visit_result=$this->visit_model->get_visit_by_id($last_visit_id);
                         //get visit info from visit track...
-                        $last_visit_track_result=$this->visit_model->get_visit_track_by_id($last_visit_id);
-                        $last_visit_track_action=$last_visit_track_result['action'];
+                        $last_visit_track_result = $this->visit_model->get_visit_track_by_id($last_visit_id);
+                        $last_visit_track_action = $last_visit_track_result['action'];
                         //get visit location info
-                        $visit_info=$this->visit_model->get_visit_by_id($last_visit_id);
-                        if($visit_info['location_id']==$last_visit_track_result['location_id'] && $visit_info['location_id']==$session_data['login_user_location']){
-                            if($last_visit_track_action=="CHECK_OUT"){
-                                $action="CHECK_IN";
-                            }else{
-                                $action="CHECK_OUT";
+                        $visit_info = $this->visit_model->get_visit_by_id($last_visit_id);
+                        if ($visit_info['location_id'] == $last_visit_track_result['location_id'] && $visit_info['location_id'] == $session_data['login_user_location']) {
+                            if ($last_visit_track_action == "CHECK_OUT") {
+                                $action = "CHECK_IN";
+                            } else {
+                                $action = "CHECK_OUT";
                             }
 //                        if($last_visit_result['location_id']==$session_data['login_user_location']){
                             //location is same mean user will checkout and we will update the visit.
-                            $visit_check_out=array(
-                                'visit_checkout' => ($this->input->post('visit_checkout')!='')?trim($this->input->post('visit_checkout')):date("Y-m-d H:i:s"),
+                            $visit_check_out = array(
+                                'visit_checkout' => ($this->input->post('visit_checkout') != '') ? trim($this->input->post('visit_checkout')) : date("Y-m-d H:i:s"),
                             );
                             $this->db->where('visit_id', $last_visit_id);
                             $this->db->update('visit', $visit_check_out);
-                            $add_track=array(
+                            $add_track = array(
                                 "visit_id_fk" => $last_visit_id,
                                 "user_id" => $session_data['login_user_id'],
                                 "location_id" => $session_data['login_user_location'],
@@ -808,36 +808,36 @@ class Visitor extends CI_Controller {
 
                             );
                             $this->db->insert('visit_track', $add_track);
-                            $track_id=$this->db->insert_id();
+                            $track_id = $this->db->insert_id();
                             //create log
-                            $this->log_model->create_log("ADD VISIT TRACK",$add_track,$track_id);
+                            $this->log_model->create_log("ADD VISIT TRACK", $add_track, $track_id);
 
-                        }else{
+                        } else {
                             //location is not same so new visit will be created...
 //                            $this->db->insert('visit', $add_visit);
 //                            $visit_id=$this->db->insert_id();
                             //insert in visit_trak table...
-                            if($last_visit_track_result['location_id']==$session_data['login_user_location']){
-                                if($last_visit_track_result['action']=="CHECK_OUT"){
-                                    $action="CHECK_IN";
-                                }else{
-                                    $action="CHECK_OUT";
+                            if ($last_visit_track_result['location_id'] == $session_data['login_user_location']) {
+                                if ($last_visit_track_result['action'] == "CHECK_OUT") {
+                                    $action = "CHECK_IN";
+                                } else {
+                                    $action = "CHECK_OUT";
                                 }
-                            }else{
-                                if($visit_info['location_id']==$session_data['login_user_location']){
-                                    $action="CHECK_OUT";
-                                    $visit_check_out=array(
-                                        'visit_checkout' => ($this->input->post('visit_checkout')!='')?trim($this->input->post('visit_checkout')):date("Y-m-d H:i:s"),
+                            } else {
+                                if ($visit_info['location_id'] == $session_data['login_user_location']) {
+                                    $action = "CHECK_OUT";
+                                    $visit_check_out = array(
+                                        'visit_checkout' => ($this->input->post('visit_checkout') != '') ? trim($this->input->post('visit_checkout')) : date("Y-m-d H:i:s"),
                                     );
                                     $this->db->where('visit_id', $last_visit_id);
                                     $this->db->update('visit', $visit_check_out);
-                                }else {
+                                } else {
                                     $action = "CHECK_IN";
                                 }
                             }
 
 
-                            $add_track=array(
+                            $add_track = array(
 //                                "visit_id_fk" => $visit_id,
                                 "visit_id_fk" => $last_visit_id,
                                 "user_id" => $session_data['login_user_id'],
@@ -847,52 +847,52 @@ class Visitor extends CI_Controller {
 
                             );
                             $this->db->insert('visit_track', $add_track);
-                            $track_id=$this->db->insert_id();
+                            $track_id = $this->db->insert_id();
                             //create log
-                            $this->log_model->create_log("ADD VISIT TRACK",$add_track,$track_id);
+                            $this->log_model->create_log("ADD VISIT TRACK", $add_track, $track_id);
 
                         }
 
 
-                    }else{
-                        if($this->uri->segment(3)!=""){
-                            $private_id=$this->uri->segment(3);
+                    } else {
+                        if ($this->uri->segment(3) != "") {
+                            $private_id = $this->uri->segment(3);
                             //get this visit mobile number to send message...
-                            $joins[]="private_visits pv";
-                            $joins[]="private_members pm";
-                            
-                            $joins_on=array(
+                            $joins[] = "private_visits pv";
+                            $joins[] = "private_members pm";
+
+                            $joins_on = array(
                                 "pv.user_id=te.user_id",
                                 "pm.private_visit_id=pv.id",
-                            
+
                             );
-                            $private_member_result= $this->common_model->find("tenant_employees te","te.mobile_no,pm.name,pm.private_visit_id",true,array('pm.id'=>$private_id),$joins,$joins_on);
+                            $private_member_result = $this->common_model->find("tenant_employees te", "te.mobile_no,pm.name,pm.private_visit_id", true, array('pm.id' => $private_id), $joins, $joins_on);
                             //echo $this->db->last_query();die;
-                            if(!empty($private_member_result)){
-								$private_id=$private_member_result['private_visit_id'];
-                                $mobile_no=$private_member_result['mobile_no'];
-                                $private_member_name=$private_member_result['name'];
+                            if (!empty($private_member_result)) {
+                                $private_id = $private_member_result['private_visit_id'];
+                                $mobile_no = $private_member_result['mobile_no'];
+                                $private_member_name = $private_member_result['name'];
                                 //send meesage...
-                                $sms_message="VMS <br>Your visitor $private_member_name checked in successfully !!!";
-                                send_sms($mobile_no,$sms_message);    
+                                $sms_message = "VMS <br>Your visitor $private_member_name checked in successfully !!!";
+                                send_sms($mobile_no, $sms_message);
                             }
-                        }else{
-                            $private_id=0;
+                        } else {
+                            $private_id = 0;
                         }
-						if($private_id!=0){
-							
-							//mark private visit as visited....
-							$this->db->where('id', $private_id);
-							$this->db->update('private_visits', array('status'=>'VISITED'));
-							
-						}
+                        if ($private_id != 0) {
+
+                            //mark private visit as visited....
+                            $this->db->where('id', $private_id);
+                            $this->db->update('private_visits', array('status' => 'VISITED'));
+
+                        }
                         //controll will come here if visitor comes here second time...
                         $add_visit = array(
-                            'private_visit_id'=>$private_id,
+                            'private_visit_id' => $private_id,
                             'visit_visitor_id_fk' => $visitor_info['visitor_id'],
                             'visit_reason' => trim($this->input->post('visit_reason')),
-                            'visit_checkin' => ($this->input->post('visit_checkin')=="")?date("Y-m-d H:i:s"):trim($this->input->post('visit_checkin')),
-                            'visit_checkout' => ($this->input->post('visit_checkout')=="")?null:trim($this->input->post('visit_checkout')),
+                            'visit_checkin' => ($this->input->post('visit_checkin') == "") ? date("Y-m-d H:i:s") : trim($this->input->post('visit_checkin')),
+                            'visit_checkout' => ($this->input->post('visit_checkout') == "") ? null : trim($this->input->post('visit_checkout')),
                             'visit_transport_mode' => trim($this->input->post('visit_transport_mode')),
                             'visit_transport_registration_no' => trim($this->input->post('visit_transport_registration_no')),
                             'tenant_id' => trim($this->input->post('tenant_id')),
@@ -905,12 +905,12 @@ class Visitor extends CI_Controller {
                         );
 
                         $this->db->insert('visit', $add_visit);
-                        $visit_id=$this->db->insert_id();
+                        $visit_id = $this->db->insert_id();
                         //create log
-                        $this->log_model->create_log("ADD VISIT",$add_visit,$visit_id);
+                        $this->log_model->create_log("ADD VISIT", $add_visit, $visit_id);
                         //insert into track table...
-                        $action="CHECK_IN";
-                        $add_track=array(
+                        $action = "CHECK_IN";
+                        $add_track = array(
                             "visit_id_fk" => $visit_id,
                             "user_id" => $session_data['login_user_id'],
                             "location_id" => $session_data['login_user_location'],
@@ -919,52 +919,52 @@ class Visitor extends CI_Controller {
 
                         );
                         $this->db->insert('visit_track', $add_track);
-                        $track_id=$this->db->insert_id();
+                        $track_id = $this->db->insert_id();
                         //create log
-                        $this->log_model->create_log("ADD VISIT TRACK",$add_track,$track_id);
+                        $this->log_model->create_log("ADD VISIT TRACK", $add_track, $track_id);
 
                     }
 //                    $this->db->insert('visit', $add_visit);
 //                }
-                    if($message==''){
-                        if($action=="CHECK_OUT"){
+                    if ($message == '') {
+                        if ($action == "CHECK_OUT") {
                             $this->session->set_flashdata('message', array('message' => "Visit checkout done successfully !!!", 'type' => 'success'));
-                        }else{
+                        } else {
                             $this->session->set_flashdata('message', array('message' => "Visit created successfully !!!", 'type' => 'success'));
                         }
 
 
                     }
-                redirect(base_url().'visitor/addvisitor');
+                    redirect(base_url() . 'visitor/addvisitor');
+                }
             }
-            }
-            $locations=$this->location_model->get_all_locations();
-            $cities=$this->location_model->get_all_cities();
-            $tenants=$this->tenant_model->get_all_tenants();
-            $issue_card_required=(isset($session_data['login_user_issue_card']))?$session_data['login_user_issue_card']:0;
-            $data=array();
-			if($id!=''){
-				//get this member details and populate the form...
-					$joins[]="private_members pm";
-					$joins[]="tenant_employees te";
-					$joins_on=array(
-						"private_visits.id=pm.private_visit_id",
-						"private_visits.user_id=te.user_id",
-					);
-				$member_info = $this->common_model->find("private_visits","private_visits.tenant_id,private_visits.agenda,private_visits.employee_id as emp_id,pm.*,te.employee_name,te.id as system_employee_id",true,array('pm.id'=>$id),$joins,$joins_on);
-                
-				$cnic=$member_info['cnic'];
-				//check this member already exist in our system or not???
-				$visitor_profile=$this->common_model->find("visitor_profile","*",true,array('visitor_identity_no'=>$cnic));
-				
-				if(!empty($visitor_profile)){
-					$member_info['already_member']=1;
-				}else{
-					$member_info['already_member']=0;
-				}
-				//get tenant name...
-				$tenant_result=$this->common_model->find("tenant","*",true,array('id'=>$member_info['tenant_id']));
-				$member_info['tenant_name']=$tenant_result['tenant_name'];
+            $locations = $this->location_model->get_all_locations();
+            $cities = $this->location_model->get_all_cities();
+            $tenants = $this->tenant_model->get_all_tenants();
+            $issue_card_required = (isset($session_data['login_user_issue_card'])) ? $session_data['login_user_issue_card'] : 0;
+            $data = array();
+            if ($id != '') {
+                //get this member details and populate the form...
+                $joins[] = "private_members pm";
+                $joins[] = "tenant_employees te";
+                $joins_on = array(
+                    "private_visits.id=pm.private_visit_id",
+                    "private_visits.user_id=te.user_id",
+                );
+                $member_info = $this->common_model->find("private_visits", "private_visits.tenant_id,private_visits.agenda,private_visits.employee_id as emp_id,pm.*,te.employee_name,te.id as system_employee_id", true, array('pm.id' => $id), $joins, $joins_on);
+
+                $cnic = $member_info['cnic'];
+                //check this member already exist in our system or not???
+                $visitor_profile = $this->common_model->find("visitor_profile", "*", true, array('visitor_identity_no' => $cnic));
+
+                if (!empty($visitor_profile)) {
+                    $member_info['already_member'] = 1;
+                } else {
+                    $member_info['already_member'] = 0;
+                }
+                //get tenant name...
+                $tenant_result = $this->common_model->find("tenant", "*", true, array('id' => $member_info['tenant_id']));
+				$member_info['tenant_name'] = is_array($tenant_result) && !empty($tenant_result) ? $tenant_result['tenant_name'] : '';
 				$data['member_info']=$member_info;
 			}
             $data['locations']=$locations;

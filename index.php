@@ -1,11 +1,12 @@
 <?php
-header("Content-Security-Policy: img-src 'self' https://*.googleapis.com https://*.gstatic.com .google.com  .googleusercontent.com data:;   connect-src 'self'; object-src 'slef'; frame-ancestors 'self';  form-action 'self';");
-header("X-Frame-Options: deny"); //SANI: securing click jecking (deny, sameorigin)
+// header("Content-Security-Policy: img-src 'self' https://*.googleapis.com https://*.gstatic.com .google.com  .googleusercontent.com data:;   connect-src 'self'; object-src 'slef'; frame-ancestors 'self';  form-action 'self';");
+// header("X-Frame-Options: deny"); //SANI: securing click jecking (deny, sameorigin)
 
-ini_set('session.cookie_secure', "1");   //SANI: specifies whether cookies should only be sent over secure connections (https)
-ini_set('session.cookie_httponly', "1"); //SANI: Refuses access to the session cookie from JavaScript 
-ini_set('session.cookie_samesite','lax'); //SANI: allow most cross-domain cookie-sharing  	
-
+// ini_set('session.cookie_secure', "1");   //SANI: specifies whether cookies should only be sent over secure connections (https)
+// ini_set('session.cookie_httponly', "1"); //SANI: Refuses access to the session cookie from JavaScript 
+// ini_set('session.cookie_samesite','lax'); //SANI: allow most cross-domain cookie-sharing  	
+error_reporting(0);
+ini_set('display_errors', 0);
 
 /**
  * CodeIgniter
@@ -61,7 +62,8 @@ ini_set('session.cookie_samesite','lax'); //SANI: allow most cross-domain cookie
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+	//define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+define('ENVIRONMENT', 'production');
 
 /*
  *---------------------------------------------------------------
@@ -74,21 +76,14 @@ ini_set('session.cookie_samesite','lax'); //SANI: allow most cross-domain cookie
 switch (ENVIRONMENT)
 {
 	case 'development':
-		error_reporting(-1);
-		ini_set('display_errors', 1);
+		error_reporting(0);
+        ini_set('display_errors', 0);
 	break;
 
 	case 'testing':
 	case 'production':
-		ini_set('display_errors', 0);
-		if (version_compare(PHP_VERSION, '5.3', '>='))
-		{
-			error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
-		}
-		else
-		{
-			error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
-		}
+		error_reporting(0);
+        ini_set('display_errors', 0);
 	break;
 
 	default:
