@@ -768,6 +768,7 @@ $(document).ready(function() {
             ,{"mDataProp":"visit_checkout","bSortable": false}
             ,{"mDataProp":"visit_date","bSortable": true}
             ,{"mDataProp":"location","bSortable": false}
+            ,{"mDataProp":"status","bSortable": false}
 //                   ,{"mDataProp":"next_location","bSortable": false}
             ,{"mDataProp":"action","bSortable": false}
 //                   ,{"mDataProp":"delete","bSortable": false}
@@ -1193,6 +1194,46 @@ $('#yadcf-filter--private_visits_listing-1').mask('00000-0000000-0');
       },
   });*/
 
+function populateBranch(type)
+{
+	if(type == 'TENANT')
+	{
+		$('#userBranch').show();
+	}else{
+			$('#userBranch').hide();
+	     }
+
+	var csrf_value = '<?php echo $this->security->get_csrf_hash(); ?>';
+    $.ajax({
+        method: "POST",
+        url: "<?php echo base_url();?>tenant/get_branches/",
+        data: "csrf_test_name="+ csrf_value,
+        success: function(data) 
+        {
+            $('#branch_id').empty();
+            tenants = JSON.parse(data);
+
+            var option = "";
+            
+            //option += '<option value="">Select One</option>';
+            $.each( tenants, function( key, val ) 
+            {
+
+				// if(employee_id==val.id){
+				// 	add_class="selected=selected";
+				// }else{
+				// 	add_class="";
+				// }
+                option += '<option  value="'+ val.id + '">' + val.tenant_name + '</option>';
+            });
+            
+            $('#branch_id').html(option);
+            //$('#branchesDD').trigger("chosen:updated");
+        },
+        async: false
+
+    });
+}
 </script>
 
 

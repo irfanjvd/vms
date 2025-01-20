@@ -124,6 +124,11 @@ class Visit extends CI_Controller
 			if($session_data['login_user_type']=="TENANT"){
 				redirect(base_url().'visitor/private_visits');
 			}
+
+            if($session_data['login_user_type']=="VIEW_ONLY"){
+                redirect(base_url().'visitor/visitors');
+            }
+
             $data = array();
             $data['page_title'] = 'Visits list';
             $this->load->view('common/header', $data);
@@ -165,7 +170,7 @@ class Visit extends CI_Controller
         }
 
 
-        foreach ($result as $key => $val) {
+        foreach ($result as $key => $val) { 
             $id = $val['visit_id'];
             if ($val['identity_type'] == "visitor_identity_no") {
                 $identity_no = $val['visitor_identity_no'];
@@ -194,6 +199,15 @@ class Visit extends CI_Controller
 //                }
 //            }
 
+
+            $current_status = '<span class="btn btn-warning">Pending</span>';
+
+            switch($val['status'])
+            {
+                case 'Approved': $current_status = '<span class="btn btn-success">Approved</span>'; break;
+                case 'Rejected': $current_status = '<span class="btn btn-warning">Rejected</span>'; break;
+            }
+
             $data2['aaData'][] = array(
                 'visitor_picture' => $this->create_image($val['visitor_picture']),
                 'visitor_name' => $val['visitor_name'],
@@ -214,6 +228,7 @@ class Visit extends CI_Controller
                 'visit_checkout' => $this->create_checkout_link($val,$id),
                 'visit_date' => $val['visit_date'],
                 'location' => $val['location'],
+                'status' => $current_status,
 //                'next_location' => $val['next_location'],
                 'action' => $this->create_visits_edit_button($id)
 //                'delete' => $this->create_delete_button($id),

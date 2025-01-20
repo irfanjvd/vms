@@ -97,7 +97,7 @@
                               <input type="password" class="form-control" name="password" placeholder="Password" value="">
                             </div>
                         <?php
-                        if($_SESSION['logged_in']['login_user_type']=="SUPER") {
+                        /*if($_SESSION['logged_in']['login_user_type']=="SUPER") {
                             ?>
                             <div class="col-xs-3">
                               <label class="form_label">Type:</label>
@@ -110,7 +110,7 @@
                               </select>
                             </div>
                             <?php
-                        }
+                        }*/
                         ?>
                     </div>
                           <!--owner profile form row ends here-->

@@ -79,6 +79,11 @@ Class Visitor_model extends CI_Model {
         $this->db->from('visitor_profile');
 //        $this->db->where('is_deleted', 0);
 
+        if($session_data['login_user_type'] != "VIEW_ONLY")
+        {
+            //$this->db->where('');
+        }
+
         if($visitor_name!=null){
             $this->db->like('visitor_name', "$visitor_name");
 

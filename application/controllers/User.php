@@ -38,6 +38,8 @@ class User extends CI_Controller
                 redirect(base_url() . 'visitor');
             } elseif ($session_data['login_user_type'] == "TENANT") {
                 redirect(base_url() . 'visitor/private_visits');
+            } elseif ($session_data['login_user_type'] == "VIEW_ONLY") {
+                redirect(base_url() . 'visitor/visitors');
             } else {
                 redirect(base_url() . 'visitor/addvisitor');
             }
@@ -145,17 +147,30 @@ class User extends CI_Controller
     public function add_user()
     {
         $session_data = $this->session->userdata('logged_in');
-        if ($this->session->userdata('logged_in') && $session_data['login_user_type'] == "SUPER") {
+
+        if ($this->session->userdata('logged_in') && $session_data['login_user_type'] == "SUPER") 
+        {
             $session_data = $this->session->userdata('logged_in');
-            if ($session_data['login_user_type'] == "TENANT") {
+
+            if ($session_data['login_user_type'] == "TENANT") 
+            {
                 redirect(base_url() . 'visitor/private_visits');
             }
 //            echo "<pre>";
 //            print_r($session_data['type']);die;
-            if ($session_data['login_user_type'] != "SUPER") {
+            if ($session_data['login_user_type'] != "SUPER") 
+            {
                 redirect(base_url() . 'visitor/visitors');
             }
-            if (!empty($_POST)) {
+
+
+            if ($session_data['login_user_type'] == "VIEW_ONLY") 
+            {
+                redirect(base_url() . 'visitor/visitors');
+            }
+
+            if (!empty($_POST)) 
+            {
                 unset($_POST['submit']);
                 $message = '';
 
@@ -175,7 +190,8 @@ class User extends CI_Controller
                 }
 
                 //upload profile picture...
-                if ($_FILES['image_file']['name'] != '') {
+                if ($_FILES['image_file']['name'] != '') 
+                {
                     $image_name = $_FILES['image_file']['name'];
                     $name_arr = explode(".", $image_name);
                     $image_type = strtolower($name_arr[1]);
@@ -208,14 +224,15 @@ class User extends CI_Controller
                         //already exist...
                         $this->session->set_flashdata('message', array('message' => 'Email Already Taken !!!', 'type' => 'error'));
                     } else {
-                        //save user...
-                        $insert_id = $this->user_model->add_user($_POST);
-                        if ($insert_id) {
-                            $this->session->set_flashdata('message', array('message' => 'User Created Successfully !!!', 'type' => 'success'));
-                            $this->log_model->create_log("ADD USER", $_POST, $insert_id);
-                            redirect(base_url() . 'user/add_user');
-                        }
-                    }
+                                //save user...
+                                $insert_id = $this->user_model->add_user($_POST);
+                                if ($insert_id) 
+                                {
+                                    $this->session->set_flashdata('message', array('message' => 'User Created Successfully !!!', 'type' => 'success'));
+                                    $this->log_model->create_log("ADD USER", $_POST, $insert_id);
+                                    redirect(base_url() . 'user/add_user');
+                                }
+                            }
                 } else {
                     $this->session->set_flashdata('message', array('message' => "$message", 'type' => 'error'));
                 }
@@ -223,31 +240,48 @@ class User extends CI_Controller
 
             }
 
-            $data = array();
+            $data               = array();
             $data['page_title'] = 'Add New User';
-            if (isset($_POST)) {
+
+            if (isset($_POST)) 
+            {
                 $data['info'] = $_POST;
             }
 
             $this->load->view('common/header', $data);
-            if ($session_data['login_user_type'] == "SUPER") {
+
+            if ($session_data['login_user_type'] == "SUPER") 
+            {
                 $this->load->view('user/add_user');
+            } else if ($session_data['login_user_type'] == "VIEW_ONLY") 
+            {
+                redirect(base_url() . 'visitor/visitors');
             } else {
                 redirect(base_url() . 'visitor/addvisitor');
             }
+
             $this->load->view('common/footer');
         } else {
-            redirect("visitor/visitors");
-        }
+                    redirect("visitor/visitors");
+               }
     }
 
     public function edit_user($id)
     {
-        if ($this->session->userdata('logged_in')) {
+        if ($this->session->userdata('logged_in')) 
+        {
             $session_data = $this->session->userdata('logged_in');
-            if ($session_data['login_user_type'] == "TENANT") {
+
+            if ($session_data['login_user_type'] == "TENANT") 
+            {
                 redirect(base_url() . 'visitor/private_visits');
             }
+
+            if ($session_data['login_user_type'] == "VIEW_ONLY") 
+            {
+                redirect(base_url() . 'visitor/visitors');
+            }
+
             if (!empty($_POST)) {
                 unset($_POST['submit']);
                 $message = '';

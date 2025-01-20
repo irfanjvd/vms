@@ -214,6 +214,11 @@
                 <!-- ================================================
                             ================= SIDEBAR Content ===================
                             ================================================= -->
+
+<?php 
+if($session_data['login_user_type'] != "VIEW_ONLY")
+{ 
+?>
                 <aside id="sidebar" class="scheme-black">
                     <div id="sidebar-wrap">
                         <div class="panel-group slim-scroll" role="tablist">
@@ -325,7 +330,7 @@
                     </div>
                 </aside>
                 <!--/ SIDEBAR Content --> 
-
+<?php } ?>
 <style>
 .badge {
     /*position: absolute;

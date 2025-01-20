@@ -33,6 +33,15 @@ class Tenant extends CI_Controller
 
     }
 
+
+    function get_branches()
+    {
+        $branches=$this->tenant_model->get_branches();
+        echo json_encode($branches);
+
+
+    }
+
     function get_tenants_for_filter(){
         $result=$this->tenant_model->get_tenants_for_filter();
         $tenant_array=array();

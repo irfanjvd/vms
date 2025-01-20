@@ -89,10 +89,18 @@
                         <div class="col-xs-3">
                           <label class="form_label">Type:</label>
 
-                          <select class="form-control" name="type">
-                            <option value="NORMAL">Normal</option>
-                            <option value="SUPER">Super Admin</option>
-                            <option value="TENANT">Tenant</option>
+                          <select class="form-control" name="type" onchange="populateBranch(this.value)" id="userTypes">
+                            <option value="SUPER">Admin</option>
+                            <option value="NORMAL">Operator</option>
+                            <option value="TENANT">Tenant/Department</option>
+                            <option value="VIEW_ONLY">View Only</option>
+                          </select>
+                        </div>
+
+                        <div class="col-xs-3" id="userBranch">
+                          <label class="form_label">Branch:</label>
+
+                          <select class="form-control" name="branch_id" id="branch_id">
                           </select>
                         </div>
                     </div>
@@ -101,6 +109,7 @@
                           <div class="row" style="margin-top:20px;">
                             <div class="col-xs-9"></div>
                             <div class="col-xs-1">
+                                <input type="hidden" name="status" value="1">
                                 <input type="submit" name="submit" value="Add User" class="btn btn-success col-xs-12">
 <!--                              <a href="#" class="btn btn-success col-xs-12">Save</a>-->
                             </div>
@@ -138,3 +147,6 @@
       
 
   </section>
+  <script type="text/javascript">
+    $('#userBranch').hide();
+  </script>
