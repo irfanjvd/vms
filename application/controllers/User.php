@@ -99,6 +99,7 @@ class User extends CI_Controller
                     //For tenant user
                     'login_employee_id' => $result[0]->employee_id,
                     'login_tenant_id' => $result[0]->tenant_id,
+                    'login_branch_id' => $result[0]->branch_id,
                 );
 
                 $this->session->set_userdata('logged_in', $sess_array);

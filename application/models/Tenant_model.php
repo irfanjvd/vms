@@ -80,6 +80,18 @@ Class Tenant_model extends CI_Model {
         $query = $this->db->get();
         return $query->row_array();
 	}
+
+
+    function get_branches()
+    {
+        $this->db->select('*');
+        $this->db->from('tenant');
+        $this->db->where('status', 1);
+        $this->db->order_by('tenant_name');
+        //$this->db->where('id', $id);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 	
 	function get_tenant_employee($id='',$name=''){
 		$this->db->select('*');
