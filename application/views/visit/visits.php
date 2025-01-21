@@ -110,7 +110,9 @@
                       <th class="sorting" role="columnheader">Location</th>
                       <th class="sorting" role="columnheader">Status</th>
 <!--                        <th class="sorting" role="columnheader">Next Location</th>-->
+<?php //if(sessiondata('login_user_type')!="VIEW_ONLY") { ?>
                       <th class="sorting" role="columnheader">Action</th>
+<?php //} ?>                      
 <!--                      <th class="sorting" role="columnheader">Check Out</th>-->
                     </tr>
                   </thead>

@@ -180,6 +180,18 @@ Class Visit_model extends CI_Model {
         $this->db->join('tenant t', 't.id = v.tenant_id', 'left');
         $this->db->join('tenant_employees te', 'te.id = v.employee_id', 'left');
         
+        //check if guard is logged-in. guard can only see approved requests
+        
+        if (sessiondata('login_user_type') == "VIEW_ONLY") 
+        {
+            $this->db->where('v.status', 'Approved');
+        }
+
+        //check if guard / viewonly has assigned any branch
+        if (sessiondata('login_branch_id') > 0) 
+        {
+            $this->db->where('v.tenant_id', sessiondata('login_branch_id'));
+        }
 
         if($sort_column!=null && $sort_order!=null){
             $this->db->order_by("$all_columns[$sort_column]", ucwords($sort_order));

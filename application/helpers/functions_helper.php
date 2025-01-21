@@ -436,5 +436,17 @@ function send_sms($mobile_no,$message){
     curl_close ($ch);
 }
 
+
+function sessiondata($session_index)
+{
+    $_ci =& get_instance();
+
+    $all_session_data = $_ci->session->userdata;
+    $logged_in_data   = $all_session_data['logged_in'];
+
+    return $logged_in_data[$session_index];
+
+}
+
 /* End of file array_helper.php */
 /* Location: ./system/helpers/array_helper.php */

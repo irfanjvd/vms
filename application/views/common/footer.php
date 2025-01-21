@@ -1234,6 +1234,50 @@ function populateBranch(type)
 
     });
 }
+
+
+function approved_requests(id)
+{
+	perform_action(id, 'Approve');
+}
+
+function rejected_requests(id)
+{
+	perform_action(id, 'Reject');
+}
+
+function perform_action(id, actions)
+{
+	const userConfirmed = confirm("Are you sure you want to perform this action?");
+
+	if(userConfirmed)
+	{
+		var csrf_value = '<?php echo $this->security->get_csrf_hash(); ?>';
+	    $.ajax({
+			        method: "POST",
+			        url: "<?php echo base_url();?>Visit/perform_visit_action/",
+			        data: "csrf_test_name="+ csrf_value+"&id="+id+"&actions="+actions+"",
+			        success: function(responseData) 
+			        {
+			        	//const decodeObject = JSON.stringify(responseData); 
+			        	const parsedObject = JSON.parse(responseData); 
+
+			        	//alert(decodeObject, parsedObject);
+
+			        	if(parsedObject.code == 200)
+			        	{
+			        		location.reload();
+			        	}else{
+			        			alert(parsedObject.message);
+			        	     }
+			           
+			        },
+			        async: false
+
+			    });
+	}
+	
+}
 </script>
 
 

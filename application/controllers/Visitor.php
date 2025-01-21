@@ -1,8 +1,7 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
-error_reporting(0);
-ini_set('display_errors', 0);
+
 class Visitor extends CI_Controller {
 
     /**
@@ -26,13 +25,26 @@ class Visitor extends CI_Controller {
 		
     }*/
 
+     public function __construct()
+    {
+        parent::__construct();
+        
+           if(sessiondata('login_user_type')=="VIEW_ONLY")
+            {
+                redirect(base_url().'visit/visits');
+            }
+    }
+
     public function index($type=null) {
 		
-        if ($this->session->userdata('logged_in')) {
-			$session_data=$this->session->userdata('logged_in');
+        if ($this->session->userdata('logged_in')) 
+        {
+			$session_data=$this->session->userdata('logged_in'); 
 			if($session_data['login_user_type']=="TENANT"){
 				redirect(base_url().'visitor/private_visits');
 			}
+
+            
             if ($type == null) {
                 $type = "today";
             }
