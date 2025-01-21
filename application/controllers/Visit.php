@@ -120,12 +120,12 @@ class Visit extends CI_Controller
     public function visits()
     {
         if ($this->session->userdata('logged_in')) {
-			$session_data=$this->session->userdata('logged_in');
+
+            $session_data=$this->session->userdata('logged_in');
 			if($session_data['login_user_type']=="TENANT"){
 				redirect(base_url().'visitor/private_visits');
 			}
-
-            if($session_data['login_user_type']=="VIEW_ONLY"){
+            elseif($session_data['login_user_type'] != "VIEW_ONLY"){
                 redirect(base_url().'visitor/visitors');
             }
 

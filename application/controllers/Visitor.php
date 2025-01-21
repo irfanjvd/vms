@@ -4,47 +4,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Visitor extends CI_Controller {
 
-    /**
-     * Index Page for this controller.
-     *
-     * Maps to the following URL
-     * 		http://example.com/index.php/welcome
-     * 	- or -
-     * 		http://example.com/index.php/welcome/index
-     * 	- or -
-     * Since this controller is set as the default controller in
-     * config/routes.php, it's displayed at http://example.com/
-     *
-     * So any other public methods not prefixed with an underscore will
-     * map to /index.php/welcome/<method_name>
-     * @see http://codeigniter.com/user_guide/general/urls.html
-     */
-   /* public function __construct() {
-        
-		parent::__construct();
-		
-    }*/
-
-     public function __construct()
+    public function __construct()
     {
         parent::__construct();
-        
-           if(sessiondata('login_user_type')=="VIEW_ONLY")
-            {
-                redirect(base_url().'visit/visits');
-            }
+
+        if (sessiondata('login_user_type') == "VIEW_ONLY") {
+            redirect(base_url() . 'visit/visits');
+        }
     }
 
     public function index($type=null) {
-		
-        if ($this->session->userdata('logged_in')) 
-        {
-			$session_data=$this->session->userdata('logged_in'); 
-			if($session_data['login_user_type']=="TENANT"){
-				redirect(base_url().'visitor/private_visits');
-			}
 
-            
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if ($session_data['login_user_type'] == "TENANT") {
+                redirect(base_url() . 'visitor/private_visits');
+            }
+
             if ($type == null) {
                 $type = "today";
             }
@@ -453,7 +429,6 @@ class Visitor extends CI_Controller {
         }else{
             redirect(base_url());
         }
-//        die("dddd");
     }
 	
 	public function private_visits() {
