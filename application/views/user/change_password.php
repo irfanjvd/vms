@@ -41,7 +41,7 @@
                 <!--<form name="add_user" action="" method="post" enctype="multipart/form-data">-->
                     <?php
                     $flash_message = $this->session->flashdata('message');
-                    if($flash_message['message']) {
+                    if(isset($flash_message['message'])) {
                         if($flash_message['type']=="success"){
                             $class="alert-success";
                             $class1="fa-check";
