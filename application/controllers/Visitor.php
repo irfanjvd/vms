@@ -490,7 +490,8 @@ class Visitor extends CI_Controller {
     }
     
 
-    public function addvisitor($id='') {
+    public function addvisitor($id='') 
+    {
 		
         date_default_timezone_set('Asia/Karachi');
         $private_visit_check = 0;
@@ -508,8 +509,20 @@ class Visitor extends CI_Controller {
                 redirect(base_url() . 'visitor/private_visits');
             }
 
-            if ($this->input->post()) {
+            if ($this->input->post()) 
+            {
                 $message = "";
+
+                if($this->input->post('visitor_identity_no'))
+                {
+                    $is_blacklist = $this->verify_black_listed($this->input->post('visitor_identity_no'));
+
+                    if($is_blacklist)
+                    {
+                        $message .= "This user is back listed. <br>";
+                    }
+                }
+
                 if (isset($_POST['visitor_identity_no']) && $_POST['visitor_identity_no'] == '' && $_POST['visitor_employee_card'] == "" && $_POST['visitor_driving_license'] == "" && $_POST['visitor_passport_id'] == "") {
                     $message .= "Visitor Identity cannot be blank <br>";
                 }
@@ -955,7 +968,8 @@ class Visitor extends CI_Controller {
             $tenants = $this->tenant_model->get_all_tenants();
             $issue_card_required = (isset($session_data['login_user_issue_card'])) ? $session_data['login_user_issue_card'] : 0;
             $data = array();
-            if ($id != '') {
+            if ($id != '') 
+            {
                 //get this member details and populate the form...
                 $joins[] = "private_members pm";
                 $joins[] = "tenant_employees te";
@@ -963,21 +977,33 @@ class Visitor extends CI_Controller {
                     "private_visits.id=pm.private_visit_id",
                     "private_visits.user_id=te.user_id",
                 );
+
                 $member_info = $this->common_model->find("private_visits", "private_visits.tenant_id,private_visits.agenda,private_visits.employee_id as emp_id,pm.*,te.employee_name,te.id as system_employee_id", true, array('pm.id' => $id), $joins, $joins_on);
 
-                $cnic = $member_info['cnic'];
-                //check this member already exist in our system or not???
-                $visitor_profile = $this->common_model->find("visitor_profile", "*", true, array('visitor_identity_no' => $cnic));
+                if($member_info && !empty($member_info))
+                {
+                    $cnic = $member_info['cnic'];
+                    //check this member already exist in our system or not???
+                    $visitor_profile = $this->common_model->find("visitor_profile", "*", true, array('visitor_identity_no' => $cnic));
 
-                if (!empty($visitor_profile)) {
-                    $member_info['already_member'] = 1;
-                } else {
-                    $member_info['already_member'] = 0;
+                    if (!empty($visitor_profile)) {
+                        $member_info['already_member'] = 1;
+                    } else {
+                        $member_info['already_member'] = 0;
+                    }
+                    //get tenant name...
+                    if(isset($member_info['tenant_id']))
+                    {
+                         $tenant_result = $this->common_model->find("tenant", "*", true, array('id' => $member_info['tenant_id']));
+                     }else{
+                             $tenant_result = [];  
+                          }
+                   
+                    $member_info['tenant_name'] = is_array($tenant_result) && !empty($tenant_result) ? $tenant_result['tenant_name'] : '';
+                    $data['member_info']=$member_info;
                 }
-                //get tenant name...
-                $tenant_result = $this->common_model->find("tenant", "*", true, array('id' => $member_info['tenant_id']));
-				$member_info['tenant_name'] = is_array($tenant_result) && !empty($tenant_result) ? $tenant_result['tenant_name'] : '';
-				$data['member_info']=$member_info;
+
+                
 			}
             $data['locations']=$locations;
             $data['cities']=$cities;
@@ -1221,6 +1247,21 @@ class Visitor extends CI_Controller {
         }
 
 
+    }
+
+
+    function verify_black_listed($cnic)
+    {
+        $query = "SELECT * FROM black_listed WHERE visitor_cnic = '".$cnic."'";
+
+        $execution = $this->db->query($query);
+
+        if($execution->num_rows()>0)
+        {
+            return true;
+        }else{
+                return false;
+             }
     }
 
 }

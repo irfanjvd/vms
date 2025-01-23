@@ -119,15 +119,14 @@ class Visit extends CI_Controller
 
     public function visits()
     {
-        if ($this->session->userdata('logged_in')) {
+        if ($this->session->userdata('logged_in')) 
+        {
 			$session_data=$this->session->userdata('logged_in');
 			if($session_data['login_user_type']=="TENANT"){
 				redirect(base_url().'visitor/private_visits');
 			}
 
-            if($session_data['login_user_type']=="VIEW_ONLY"){
-                redirect(base_url().'visitor/visitors');
-            }
+            
 
             $data = array();
             $data['page_title'] = 'Visits list';
@@ -169,7 +168,7 @@ class Visit extends CI_Controller
             }
         }
 
-
+        $loop_index = 0;
         foreach ($result as $key => $val) { 
             $id = $val['visit_id'];
             if ($val['identity_type'] == "visitor_identity_no") {
@@ -205,10 +204,11 @@ class Visit extends CI_Controller
             switch($val['status'])
             {
                 case 'Approved': $current_status = '<span class="btn btn-success">Approved</span>'; break;
-                case 'Rejected': $current_status = '<span class="btn btn-warning">Rejected</span>'; break;
+                case 'Rejected': $current_status = '<span class="btn btn-danger">Rejected</span>'; break;
+                case 'Blacklisted': $current_status = '<span class="btn btn-default">Blacklisted</span>'; break;
             }
 
-            $data2['aaData'][] = array(
+            $data2['aaData'][$loop_index] = array(
                 'visitor_picture' => $this->create_image($val['visitor_picture']),
                 'visitor_name' => $val['visitor_name'],
                 'visitor_address' => $val['visitor_address'],
@@ -230,10 +230,21 @@ class Visit extends CI_Controller
                 'location' => $val['location'],
                 'status' => $current_status,
 //                'next_location' => $val['next_location'],
-                'action' => $this->create_visits_edit_button($id)
+//                'action' => $this->create_visits_edit_button($id)
 //                'delete' => $this->create_delete_button($id),
 
             );
+
+            if(sessiondata('login_user_type')!="VIEW_ONLY")
+            {
+                if($val['status'] == 'Pending')
+                {
+                    $data2['aaData'][$loop_index]['action'] = $this->create_visits_edit_button($id);
+                }
+                
+            }
+
+            $loop_index++;
         }
 
         if ($total_visits == 0) {
@@ -347,13 +358,19 @@ class Visit extends CI_Controller
 
     }
 
-    public function create_visits_edit_button($id){
-        $session_data = $this->session->userdata('logged_in');
-        $url=base_url()."visit/edit_visit/$id";
-        $track_url=base_url()."visit/track_visit/$id";
-        $visit_info_url=base_url()."visit/visit_info/$id";
+    public function create_visits_edit_button($id)
+    {
+        $session_data   = $this->session->userdata('logged_in');
+        $url            = base_url()."visit/edit_visit/$id";
+        $track_url      = base_url()."visit/track_visit/$id";
+        $visit_info_url = base_url()."visit/visit_info/$id";
+        $visit_blacklist= base_url()."visit/black_list/$id";
+
+        //$approve_url    = base_url()."visit/approved_requests/$id";
+        //$reject_url    = base_url()."visit/reject_requests/$id";
+
 //        if($session_data['login_user_type']=="SUPER"){
-            return "
+            $links = "
             <a href='$url'><i class='fa fa-pencil'></i></a>
             <a href='javascript:void(0)' rel='$track_url' onclick='open_track(rel)' title='Open track'>
                 <i class='fa fa-book track_color_box' ></i>
@@ -362,6 +379,21 @@ class Visit extends CI_Controller
                 <i class='fa fa-eye track_color_box' ></i>
             </a>
             ";
+
+            
+            if($session_data['login_user_type']=="SUPER")
+            {
+                $btn_approved = " <a href='javascript:void(0)' rel='$id' onclick='approved_requests(rel)' title='Approve it'><i class='fa fa-check-circle' aria-hidden='true'></i></a> ";
+
+                $btn_rejected = " <a href='javascript:void(0)' rel='$id' onclick='rejected_requests(rel)' title='Reject it'><i class='fa fa-times-circle' aria-hidden='true'></i></a> ";
+
+                $btn_blacklist= " <a href='javascript:void(0)' rel='$id' onclick='blacklist_requests(rel)' title='Blacklist him'><i class='fa fa-ban' aria-hidden='true'></i></a> ";
+
+                $links .= $btn_approved." ".$btn_rejected." ".$btn_blacklist;
+            }
+
+            return $links;
+
 //        }else{
 //            return "
 //            <a href='javascript:void(0)' rel='$track_url' onclick='open_track(rel)' title='Open track'>
@@ -543,6 +575,85 @@ class Visit extends CI_Controller
             }
         }
         echo $critical;
+    }
+
+
+    function perform_visit_action()
+    {
+        $id = (int)$this->input->post('id');
+        $actions = $this->input->post('actions');
+
+        $response = [];
+
+        if($id > 0 && sessiondata('login_user_type') == 'SUPER')
+        {
+            $updateData = [];
+
+            if($actions == 'Approve' || $actions == 'Reject'  || $actions == 'Blacklist')
+            {
+                switch($actions)
+                {
+                    case 'Approve':   $updateData['status'] = 'Approved'; break;
+                    case 'Reject':    $updateData['status'] = 'Rejected'; break;
+                    case 'Blacklist': $updateData['status'] = 'Blacklisted'; $this->blacklist($id); break;
+                }
+
+                
+
+                $where = array('visit_id' => $id);
+
+
+                $this->db->update('visit', $updateData, $where);
+                //echo $this->db->last_query();
+
+
+                $response['code']    = 200;
+                $response['message'] = 'success';
+                $response['data']    = "Action has been performed successfully.";
+            }else{
+                    $response['code']    = 403;
+                    $response['message'] = 'error';
+                    $response['data']    = "Invalid action.";
+                 }
+
+            
+
+
+            
+        }else{
+                $response['code']    = 403;
+                $response['message'] = 'error';
+                $response['data']    =  "You do not have permissions to perform this action.";
+             }
+
+        //header('Content-Type: application/json');
+        echo json_encode($response);
+    }
+
+
+    function blacklist($id)
+    {
+        $query = "SELECT * FROM visit v INNER JOIN visitor_profile vf ON (vf.visitor_id = v.visit_visitor_id_fk) WHERE visit_id = '".$id."'";
+
+        $get_visitor_Detail = $this->db->query($query)->row();
+
+        if($get_visitor_Detail)
+        {
+            $cnic           = $get_visitor_Detail->visitor_identity_no;
+            $visitor_id     = $get_visitor_Detail->visit_visitor_id_fk;
+            $black_list_by  = sessiondata('login_user_id');
+            $action_date    = date('Y-m-d H:i:s'); 
+
+            $insert_data = array('visitor_id'   => $visitor_id, 
+                                 'visitor_cnic' => $cnic, 
+                                 'created_by'   => $black_list_by, 
+                                 'created_at'   => $action_date, 
+                                );
+
+            $this->db->insert('black_listed', $insert_data);
+        }
+
+
     }
 
 }

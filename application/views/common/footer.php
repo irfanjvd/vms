@@ -1246,6 +1246,11 @@ function rejected_requests(id)
 	perform_action(id, 'Reject');
 }
 
+function blacklist_requests(id)
+{
+	perform_action(id, 'Blacklist');
+}
+
 function perform_action(id, actions)
 {
 	const userConfirmed = confirm("Are you sure you want to perform this action?");
