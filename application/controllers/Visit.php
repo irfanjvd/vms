@@ -240,9 +240,13 @@ class Visit extends CI_Controller
                 if($val['status'] == 'Pending')
                 {
                     $data2['aaData'][$loop_index]['action'] = $this->create_visits_edit_button($id);
-                }
+                }else{
+                        $data2['aaData'][$loop_index]['action'] = '';
+                     }
                 
-            }
+            }else{
+                    $data2['aaData'][$loop_index]['action'] = '';
+                 }
 
             $loop_index++;
         }
