@@ -199,6 +199,11 @@ Class Visit_model extends CI_Model {
             $this->db->order_by("v.visit_id", 'DESC');
         }
 
+        if(sessiondata('login_user_type') == "TENANT")
+        {
+            $this->db->where('v.created_by', sessiondata('login_user_id'));
+        }
+
         if($length!=-1) {
             if ($limit != null && $length != null) {
                 $this->db->limit($length, $limit);

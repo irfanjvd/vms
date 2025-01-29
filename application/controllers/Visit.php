@@ -122,9 +122,9 @@ class Visit extends CI_Controller
         if ($this->session->userdata('logged_in')) 
         {
 			$session_data=$this->session->userdata('logged_in');
-			if($session_data['login_user_type']=="TENANT"){
-				redirect(base_url().'visitor/private_visits');
-			}
+			// if($session_data['login_user_type']=="TENANT"){
+			// 	redirect(base_url().'visitor/private_visits');
+			// }
 
             
 
@@ -142,7 +142,9 @@ class Visit extends CI_Controller
     {
                                                                                                                                                                   //visitor_name      visitor_cell        identity number       vehiclenumber       tenant               issue card           company from        checkout             visit date           location
         $result = $this->visit_model->get_all_visits($_GET['iDisplayStart'], $_GET['iDisplayLength'], $_GET['sSearch'], $_GET['iSortCol_0'], $_GET['sSortDir_0'], $_GET['sSearch_1'], $_GET['sSearch_2'], $_GET['sSearch_4'], $_GET['sSearch_7'], $_GET['sSearch_8'], $_GET['sSearch_10'], $_GET['sSearch_11'], $_GET['sSearch_13'], $_GET['sSearch_14'], $_GET['sSearch_15']);
+
         $total_visits = $this->visit_model->get_all_visits(null, null, $_GET['sSearch'], $_GET['iSortCol_0'], $_GET['sSortDir_0'], $_GET['sSearch_1'], $_GET['sSearch_2'], $_GET['sSearch_4'], $_GET['sSearch_7'], $_GET['sSearch_8'], $_GET['sSearch_10'], $_GET['sSearch_11'], $_GET['sSearch_13'], $_GET['sSearch_14'], $_GET['sSearch_15']);
+        
         //$total_visits = count($total_result);
         //get not checkout visits....
         $not_checkout_result = $this->visit_model->get_not_checkout_visits();

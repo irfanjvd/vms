@@ -24,6 +24,12 @@ Class Tenant_model extends CI_Model {
         $this->db->select('*');
         $this->db->from('tenant');
         $this->db->where('status', 1);
+
+        if(sessiondata('login_branch_id'))
+        {
+            $this->db->where('id', sessiondata('login_branch_id'));
+        }
+
         $this->db->order_by('tenant_name', 'ASC');
         $query = $this->db->get();
         return $query->result_array();

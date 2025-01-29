@@ -470,19 +470,23 @@ class Visitor extends CI_Controller {
 		
         date_default_timezone_set('Asia/Karachi');
         $private_visit_check = 0;
-        $session_data = $this->session->userdata('logged_in');
-        if ($this->session->userdata('logged_in') && $session_data['login_user_type'] != "SUPER") {
+        $session_data        = $this->session->userdata('logged_in');
+        
+
+        if ($this->session->userdata('logged_in') && $session_data['login_user_type'] != "SUPER") 
+        {
             $data = array();
 
-            if ($this->uri->segment(4)) {
+            if ($this->uri->segment(4)) 
+            {
                 $private_visit_check = $this->uri->segment(4);
                 $data['private_visit_check'] = $private_visit_check;
             }
 
             $data = $private_visit_check;
-            if ($session_data['login_user_type'] == "TENANT") {
-                redirect(base_url() . 'visitor/private_visits');
-            }
+            // if ($session_data['login_user_type'] == "TENANT") {
+            //     redirect(base_url() . 'visitor/private_visits');
+            // }
 
             if ($this->input->post()) 
             {
@@ -504,9 +508,9 @@ class Visitor extends CI_Controller {
                 if (isset($_POST['visitor_name']) && $_POST['visitor_name'] == '') {
                     $message .= "Visitor name cannot be blank <br>";
                 }
-                if (isset($_POST['visitor_cell_no']) && $_POST['visitor_cell_no'] == '') {
-                    $message .= "Visitor cell no cannot be blank <br>";
-                }
+                // if (isset($_POST['visitor_cell_no']) && $_POST['visitor_cell_no'] == '') {
+                //     $message .= "Visitor cell no cannot be blank <br>";
+                // }
                 if (isset($_POST['visitor_city']) && $_POST['visitor_city'] == '') {
                     $message .= "Visitor city cannot be blank <br>";
                 }
@@ -633,6 +637,7 @@ class Visitor extends CI_Controller {
 
                         );
                         $private_member_result = $this->common_model->find("tenant_employees te", "te.mobile_no,pm.name,pm.private_visit_id", true, array('pm.id' => $private_id), $joins, $joins_on);
+                        //print_r($private_member_result); die();
                         $private_id = $private_member_result['private_visit_id'];
                         //echo $this->db->last_query();die;
                         if (!empty($private_member_result)) {
@@ -648,31 +653,81 @@ class Visitor extends CI_Controller {
                     }
 
                     $add_visit = array(
-                        'private_visit_id' => $private_id,
-                        'visit_visitor_id_fk' => $visitor_id_fk,
-                        'visit_reason' => trim($this->input->post('visit_reason')),
-                        'visit_checkin' => ($this->input->post('visit_checkin') == "") ? date("Y-m-d H:i:s") : trim($this->input->post('visit_checkin')),
-                        'visit_checkout' => ($this->input->post('visit_checkout') == "") ? null : trim($this->input->post('visit_checkout')),
-                        'visit_transport_mode' => trim($this->input->post('visit_transport_mode')),
+                        'private_visit_id'      => $private_id,
+                        'visit_visitor_id_fk'   => $visitor_id_fk,
+                        'visit_reason'          => trim($this->input->post('visit_reason')),
+                        'visit_checkin'         => ($this->input->post('visit_checkin') == "") ? date("Y-m-d H:i:s") : trim($this->input->post('visit_checkin')),
+                        'visit_checkout'        => ($this->input->post('visit_checkout') == "") ? null : trim($this->input->post('visit_checkout')),
+                        'visit_transport_mode'  => trim($this->input->post('visit_transport_mode')),
                         'visit_transport_registration_no' => trim($this->input->post('visit_transport_registration_no')),
-                        'tenant_id' => trim($this->input->post('tenant_id')),
-                        'employee_id' => trim($this->input->post('employee_id')),
-                        'visit_issued_card' => trim($this->input->post('visit_issued_card')),
-                        'visit_from_company' => trim($this->input->post('visit_from_company')),
-                        'location_id' => $session_data['login_user_location'],
-                        'identity_type' => $visitor_type,
-//                        'next_location_id' => $this->input->post('next_location_id'),
+                        'tenant_id'             => trim($this->input->post('tenant_id')),
+                        'employee_id'           => trim($this->input->post('employee_id')),
+                        'visit_issued_card'     => trim($this->input->post('visit_issued_card')),
+                        'visit_from_company'    => trim($this->input->post('visit_from_company')),
+                        'location_id'           => $session_data['login_user_location'],
+                        'identity_type'         => $visitor_type,
+//                        'next_location_id'    => $this->input->post('next_location_id'),
                     );
+
+
+                    //Add new columns
+                    if($this->input->post('is_cargo'))
+                    {
+                        $add_visit['is_cargo'] = $this->input->post('is_cargo');
+                    }
+
+                    if($this->input->post('visit_types'))
+                    {
+                        $add_visit['visit_types'] = $this->input->post('visit_types');
+                    } 
+
+                    if($this->input->post('number_of_minors'))
+                    {
+                        $add_visit['number_of_minors'] = $this->input->post('number_of_minors');
+                    }
+
+                    if($this->input->post('date_from'))
+                    {
+                        $add_visit['date_from'] = $this->input->post('date_from');
+                    }
+
+
+                    if($this->input->post('date_to'))
+                    {
+                        $add_visit['date_to'] = $this->input->post('date_to');
+                    }
+
+
+                    if($this->input->post('visit_time'))
+                    {
+                        $add_visit['visit_time'] = $this->input->post('visit_time');
+                    }
+
+
+                    if($this->input->post('gate_number'))
+                    {
+                        $add_visit['gate_number'] = $this->input->post('gate_number');
+                    }
+
+
+                    $add_visit['created_by'] = sessiondata('login_user_id');
+                    $add_visit['created_at'] = date('Y-m-d H:i:s');
+
+//print_r($add_visit); die();
                     $this->db->insert('visit', $add_visit);
                     $visit_id = $this->db->insert_id();
+
                     $this->log_model->create_log("ADD VISIT", $add_visit, $visit_id);
-                    if ($private_id != 0) {
+
+                    if ($private_id != 0) 
+                    {
 
                         //mark private visit as visited....
                         $this->db->where('id', $private_id);
                         $this->db->update('private_visits', array('status' => 'VISITED'));
 
                     }
+
                     //insert into track table...
                     $add_track = array(
                         "visit_id_fk" => $visit_id,
@@ -682,6 +737,7 @@ class Visitor extends CI_Controller {
                         "action" => "CHECK_IN"
 
                     );
+
                     $this->db->insert('visit_track', $add_track);
                     $track_id = $this->db->insert_id();
                     $this->log_model->create_log("ADD VISIT TRACK", $add_track, $track_id);
@@ -986,6 +1042,9 @@ class Visitor extends CI_Controller {
             $data['issue_card_required']=$issue_card_required;
 			$data['private_visit_check'] = $private_visit_check;
             $data['page_title'] = 'Add New Visitor';
+            $data['visit_types'] = $this->visitor_model->visit_types(); //print_r($data['visit_types']); die();
+            $data['visit_gates'] = $this->visitor_model->visit_gates();
+
             $this->load->view('common/header', $data);
             $this->load->view('visitor/add_visitor',$data);
             $this->load->view('common/footer');

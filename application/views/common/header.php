@@ -301,8 +301,38 @@ if($session_data['login_user_type'] != "VIEW_ONLY")
                                         
                                             ?>
 
+                                            <?php
+                                            if($session_data['login_user_type']=="SUPER") 
+                                            {
+                                                ?>
+                                                <li> <a href="#"><i class="fa fa-group"></i> <span>Visit Types</span> </a>
+                                                <ul>
+                                                    <li>
+                                                        <a href="<?= base_url() ?>Visit_Types/adding"><i class="fa fa-user"></i> Add</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="<?= base_url() ?>Visit_Types/listing"><i class="fa fa-user"></i> List</a>
+                                                    </li>
+                                                    
+                                                </ul>
+                                            </li>
+                                            <li> <a href="#"><i class="fa fa-group"></i> <span>Visit Gates</span> </a>
+                                                <ul>
+                                                    <li>
+                                                        <a href="<?= base_url() ?>Visit_Gates/adding"><i class="fa fa-user"></i> Add</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="<?= base_url() ?>Visit_Gates/listing"><i class="fa fa-user"></i> List</a>
+                                                    </li>
+                                                    
+                                                </ul>
+                                            </li>
+                                                <?php 
+                                            }
+                                                ?>
+
                                             <?php if($session_data['login_user_type']=="TENANT") { ?>
-                                            <li><a href="<?= base_url() ?>PrivateVisits/add_private_visit"><i class="fa fa-user"></i> Add Visits</a></li>
+                                            <li><a href="<?= base_url() ?>visitor/addvisitor"><i class="fa fa-user"></i> Add Visits</a></li>
                                             <?php
                                             //if($session_data['login_tenant_id']==33 || $session_data['login_tenant_id']==34 || $session_data['login_tenant_id']==36){
                                             ?>
@@ -316,7 +346,7 @@ if($session_data['login_user_type'] != "VIEW_ONLY")
                                             }
                                             ?>
                                             <li>
-                                                <a href="<?= base_url() ?>visitor/private_visits"><i class="fa fa-user"></i>Visit Details</a>
+                                                <a href="<?= base_url() ?>visit/visits"><i class="fa fa-user"></i>Visit Details</a>
                                                 
                                             </li>
                                             

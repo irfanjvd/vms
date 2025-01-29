@@ -46,14 +46,17 @@
 //                            echo "<pre>";
 //                            print_r($post);die;
 //                        }
-                        if(isset($flash_message['message'])) {
-                            if($flash_message['type']=="success"){
+                        if(isset($flash_message['message'])) 
+                        {
+                            if($flash_message['type']=="success")
+                            {
                                 $class="alert-success";
                                 $class1="fa-check";
                             }else{
                                 $class="alert-danger";
                                 $class1="fa-ban";
                             }
+
                             ?>
                             <div class="alert <?php echo $class; ?> alert-dismissable">
                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -62,15 +65,31 @@
                             </div>
                         <?php
                         }
-                        ?>
-                            <div class="row">
-                                <div class="col-xs-2 pull-left text-center">
-                                    <label class="form_label"></label>
-                                    <img id="img_visitor" src="<?php echo (isset($post['visitor_picture']))? $post['visitor_picture'] : base_url().'assets/data/visitor_profile/no_image.png'; ?>"  style="width: 124px;height:124px;border: 1px solid blue;"/>
-                                    <input type="hidden"  name="visitor_picture" id="visitor_picture" value="<?php echo (isset($post['visitor_picture']))? $post['visitor_picture'] : base_url().'assets/data/visitor_profile/no_image.png'; ?>">
-                                </div>
 
-                                <div class="col-xs-3">
+                        ?>
+<div class="row">
+    <div class="col-xs-2 pull-left text-center">
+        <label class="form_label"></label>
+        <img id="img_visitor" src="<?php echo (isset($post['visitor_picture']))? $post['visitor_picture'] : base_url().'assets/data/visitor_profile/no_image.png'; ?>"  style="width: 124px;height:124px;border: 1px solid blue;"/>
+        
+        <input type="hidden"  name="visitor_picture" id="visitor_picture" value="<?php echo (isset($post['visitor_picture']))? $post['visitor_picture'] : base_url().'assets/data/visitor_profile/no_image.png'; ?>">
+    </div>
+    <div class="col-xs-10">
+        <div class="col-xs-12">
+            <div class="col-xs-10">&nbsp;</div>
+            <div class="col-xs-1">
+                                    <input class="btn btn-success col-xs-12" type="submit" value="Save">
+<!--                                    <a href="#" class="btn btn-success col-xs-12 save_visitor" id="">Save</a>-->
+                                </div>
+                                <div class="col-xs-1">
+                                    <a href="<?php echo base_url() . 'visitor/addvisitor'; ?>" class="btn btn-warning col-xs-12">Reset</a>
+                                </div>
+        </div>
+
+        <div class="col-xs-12">
+            <div class="row">
+                
+                <div class="col-xs-3">
                                     <label class="form_label">Check Identity:</label>
 
                                     <select class="form-control" name="visitor_type" id="visitor_type">
@@ -81,23 +100,49 @@
 
                                     </select>
                                 </div>
+                                <div class="col-xs-2">
+                                    <label class="form_label">Visit types <span class="redcolor">*</span>:</label>
+                                    <select name="visit_types" id="visit_types" class="form-control" required="required">
+                                        <?php foreach ($visit_types as $vt): ?>
+                                            <option value="<?php echo  $vt['id']; ?>"><?php echo $vt['name']; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>   
+                                <div class="col-xs-2">
+                                    
+                                    <label class="form_label">Cargo/Parcel?</label><input type="checkbox" value="1" name="is_cargo" > 
+                                </div> 
+
                                 <div class="col-xs-3">
                                     <input type="hidden" id="visit_id" name="visit_id" value="">
                                     <input type="hidden" id="visit_status" name="visit_status" value="">
-                                    <label class="form_label">Identity No *:</label>
+                                    <label class="form_label">Identity No <span class="redcolor">*</span>:</label>
                                     <input type="text" required="required"  class="form-control" placeholder="Identity No" name="visitor_identity_no" id="visitor_identity_no" value="<?php if(isset($post['visitor_identity_no'])){ echo $post['visitor_identity_no']; }else if(isset($member_info) && !empty($member_info)){ echo $member_info['cnic']; } ?>">
                                 </div>
                                 <div class="col-xs-2">
                                     <a style="display: none;" href="#" class="btn btn-success col-xs-12 other_identity_button" id="" onclick="$('.other_identity').toggle()">Other Identity</a>
                                 </div>
-                                <div class="col-xs-1">
-                                    <input class="btn btn-success col-xs-12" type="submit" value="Save">
-<!--                                    <a href="#" class="btn btn-success col-xs-12 save_visitor" id="">Save</a>-->
-                                </div>
-                                <div class="col-xs-1">
-                                    <a href="<?php echo base_url() . 'visitor/addvisitor'; ?>" class="btn btn-warning col-xs-12">Reset</a>
-                                </div>
-                            </div>
+
+                                                            
+                                
+
+            </div>
+
+
+            <div class="row">
+
+            </div>
+        </div>
+
+        
+
+        <div class="col-xs-12">
+            
+        </div>
+    </div>    
+</div>    
+
+                            
 
                             <div class="row checkcout other_identity" style="display: none;">
                                 <div class="col-xs-2">
@@ -121,14 +166,14 @@
                                 <div class="col-xs-2">
                                 </div>
                                 <div class="col-xs-3">
-                                    <label class="form_label">Visitor Name *:</label>
+                                    <label class="form_label">Visitor Name <span class="redcolor">*</span>:</label>
                                     <input type="text" required="required" class="form-control" placeholder="Visitor Name" name="visitor_name" id="visitor_name" value="<?php if(isset($post['visitor_name'])){ echo $post['visitor_name']; }else if(isset($member_info['name'])){ echo $member_info['name']; }; ?>">
                                 </div>
                                 <div class="col-xs-3">
-                                    <label class="form_label">Cell No *:
+                                    <label class="form_label">Cell No :
                                         <div style="float:right;text-align: right; width: 238px;">Foreign No: <input type="checkbox" name="foreign_no" value="1"></div>
                                     </label>
-                                    <input required="required" type="text"  class="form-control" placeholder="Cell No" name="visitor_cell_no" id="visitor_cell_no" value="<?php if(isset($post['visitor_cell_no'])){ echo $post['visitor_cell_no']; }else if(isset($member_info['mobile'])){ echo $member_info['mobile']; } ?>">
+                                    <input  type="text"  class="form-control" placeholder="Cell No" name="visitor_cell_no" id="visitor_cell_no" value="<?php if(isset($post['visitor_cell_no'])){ echo $post['visitor_cell_no']; }else if(isset($member_info['mobile'])){ echo $member_info['mobile']; } ?>">
                                 </div>
                                 <div class="col-xs-4">
                                     <label class="form_label">Address:</label>
@@ -143,15 +188,15 @@
                             <div class="row">
                                 <div class="col-xs-2">
                                 </div>
-                                <div class="col-xs-3 checkout">
-                                    <label class="form_label">From Company *:</label>
+                                <div class="col-xs-3 checkout marginTop20">
+                                    <label class="form_label">From Company <span class="redcolor">*</span>:</label>
                                     <input required="required" type="text" class="form-control" placeholder="Company Name" name="visit_from_company" id="visit_from_company" value="<?php echo (isset($post['visit_from_company']))?$post['visit_from_company']:""; ?>">
                                 </div>
-                                <div class="col-xs-3 checkout" >
+                                <!-- <div class="col-xs-3 checkout marginTop20" style="display:none;" >
                                     <label class="form_label">Check In Time:</label>
                                     <input type="text" class="form-control checkin_datepicker" placeholder="Check In Time" name="visit_checkin" id="visit_checkin" value="" readonly="">
-                                </div>
-                                <div class="col-xs-3 checkout" >
+                                </div> -->
+                                <div class="col-xs-3 checkout marginTop20" >
                                     <label class="form_label">Visitor City *:</label>
                                     <select required="required" class="form-control" placeholder="Visitor City" name="visitor_city" id="visitor_city">
                                     <option value="">Please Select</option>
@@ -172,15 +217,16 @@
                             </div>
                             <!--owner profile form row ends here-->
 
-                            <div class="row" style="margin-top:20px;">
-                                <div class="col-xs-12">
+                            <div class="row">
+                                <div class="col-xs-12 ">
+
                                 </div>
                             </div>
 
-                            <div class="row checkout" style="margin-top:20px;">
-                                <div class="col-xs-2">
+                            <div class="row checkout">
+                                <div class="col-xs-2 ">
                                 </div>
-                                <div class="col-xs-2">
+                                <div class="col-xs-2 marginTop20">
                                     <label class="form_label">Model of Transport:</label>
                                     <select class="form-control" name="visit_transport_mode" id="visit_transport_mode">
                                         <option <?php echo (isset($post['visit_transport_mode']) && $post['visit_transport_mode']=="Car")?"selected":""; ?> value="Car">Car</option>
@@ -191,14 +237,14 @@
                                     </select>
 
                                 </div>
-                                <div class="col-xs-2">
+                                <div class="col-xs-2 marginTop20">
                                     <label class="form_label">Registration No:</label>
                                     <input type="text" class="form-control" placeholder="Registration No" name="visit_transport_registration_no" id="visit_transport_registration_no" value="<?php if(isset($post['visit_transport_registration_no'])){ echo $post['visit_transport_registration_no']; }else if(isset($member_info['number_plate'])){ echo $member_info['number_plate']; } ?>">
                                 </div>
-                                <div class="col-xs-3">
-                                    <label class="form_label">Branches: *</label>
+                                <div class="col-xs-3 marginTop20">
+                                    <label class="form_label">Branches: <span class="redcolor">*</span></label>
                                     <select class="form-control chosen-select" name="tenant_id" required="required" id="tenant_id" onchange="get_employees(value)">
-                                        <option value="">Select Branch</option>
+                                       
                                         <?php
                                         foreach ($tenants as $key => $val) {
                                             ?>
@@ -212,32 +258,71 @@
                                         ?>
                                     </select>
                                 </div>
-                                <div class="col-xs-3">
+                                <div class="col-xs-3 marginTop20">
                                     <label class="form_label">Officers :</label>
                                     <select class="form-control chosen-select" name="employee_id" id="employee_id">
 
                                     </select>
                                 </div>
                             </div>
+                            <div class="row checkout" >
+                                <div class="col-xs-2 marginTop20"></div>
+                                <div class="col-xs-2 marginTop20">
+                                <label class="form_label">No. of Minors (If any):</label>
+                                    <input type="number" name="number_of_minors" value="0" min="0" class="form-control" />
+                                </div>
 
-                            <div class="row checkout" style="margin-top:20px;">
+                                <div class="col-md-2 col-xs-2">
+                                <label class="form_label ">Date From <span class="text-red">*</span>:</label>
+                                <input type="text" class="form-control my_date required-field" name="date_from"
+                                       id="date_from"
+                                       placeholder="Enter date_from" value="" readonly="">
+                            </div>
+                            <div class="col-md-2 col-xs-2">
+                                <label class="form_label ">Date To <span class="text-red">*</span>:</label>
+                                <input type="text" class="form-control my_date required-field" name="date_to"
+                                       id="date_to"
+                                       onblur="verify_date()" placeholder="Enter date_to" value="" readonly="">
+                            </div>
+                            <div class="col-md-2 col-xs-2">
+                                <label class="form_label ">Time <span class="text-red">*</span>:</label>
+                                <input type="text" class="form-control required-field" id="visit_time" name="visit_time"
+                                       placeholder="Enter time" value="">
+                            </div>
+                            </div>
+
+                            <div class="row" >
+                                <div class="col-xs-2"></div>
+                                <div class="col-xs-10 marginTop20">
+                                    <label class="form_label ">Gate <span class="text-red">*</span>:</label>
+
+                                    <input type="radio" name="gate_number" value="" checked="checked" /> Any
+                                    <?php if($visit_gates) { foreach ($visit_gates as $gate) { ?> 
+                                    <input type="radio" name="gate_number" value="<?php echo $gate['id']; ?>" /> <?php echo $gate['name']; ?>
+                                    <?php } } ?>
+                                     
+                                </div>
+                            </div>
+                            
+
+                            <div class="row" >
                                 <div class="col-xs-2">
                                 </div>
-                                <div class="col-xs-6">
+                                <div class="col-xs-6 marginTop20">
                                     <label class="form_label">Reason for Visit:</label>
                                     <textarea class="form-control" id="visit_reason" name="visit_reason" placeholder="Enter Comments" style="width:100%; height:100px; border-bottom:" ><?php if(isset($post['visit_reason'])){ echo $post['visit_reason']; }else if(isset($member_info['agenda'])){ echo $member_info['agenda']; } ?></textarea>
                                 </div>
 
                             </div>
 
-                            <div class="row" style="margin-top:20px;">
-                                <div class="col-xs-12">
+                            <div class="row" >
+                                <div class="col-xs-12 marginTop20">
                                 </div>
                             </div>
-                            <div class="row" style="margin-top:20px;">
+                            <div class="row">
                                 <div class="col-xs-2">
                                 </div>
-                                <div class="col-xs-2">
+                                <div class="col-xs-2 marginTop20">
                                     <label class="form_label">Issued Visitor Card <?php echo ($issue_card_required==1)?"":""; ?>:</label>
                                     <input type="text" class="form-control" placeholder="Visitor Card" name="visit_issued_card"
                                            id="visit_issued_card" value="<?php echo (isset($post['visit_issued_card']))?$post['visit_issued_card']:""; ?>">
@@ -336,6 +421,16 @@ $( document ).ready(function() {
 	<?php	
 	}
 	?>
+
+    <?php
+    if(sessiondata('login_branch_id'))
+    {
+        
+    ?>
+        get_employees("<?php echo sessiondata('login_branch_id'); ?>","<?php echo sessiondata('login_employee_id'); ?>");
+    <?php   
+    }
+    ?>
 
     <?php
     if(isset($post['tenant_id']) && $post['tenant_id']!=""){
@@ -554,3 +649,7 @@ $( document ).ready(function() {
 
 
 </script>
+<style type="text/css">
+    .redcolor { color:#ff0000; }
+    .marginTop20 { margin-top:20px; }
+</style>

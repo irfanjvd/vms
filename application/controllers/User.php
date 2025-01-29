@@ -31,13 +31,14 @@ class User extends CI_Controller
     {
         $this->load->library('recaptcha');
 
-        if ($this->session->userdata('logged_in')) {
+        if ($this->session->userdata('logged_in')) 
+        {
             $session_data = $this->session->userdata('logged_in');
 
             if ($session_data['login_user_type'] == "SUPER") {
                 redirect(base_url() . 'visitor');
             } elseif ($session_data['login_user_type'] == "TENANT") {
-                redirect(base_url() . 'visitor/private_visits');
+                redirect(base_url() . 'visitor/addvisitor');
             } elseif ($session_data['login_user_type'] == "VIEW_ONLY") {
                 redirect(base_url() . 'visit/visits');
             } else {
@@ -55,7 +56,7 @@ class User extends CI_Controller
             if ($result) {
                 foreach ($result as $row) {
                     if ($row->is_deleted == 1) {
-                        $message['status'] = 'Your account has been deleted by admin';
+                        $message['status'] = 'Your account has been deleted by admin.';
                     } else {
                         $message['status'] = 'success';
                     }
