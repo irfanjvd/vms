@@ -327,6 +327,15 @@ if($session_data['login_user_type'] != "VIEW_ONLY")
                                                     
                                                 </ul>
                                             </li>
+
+                                            <li> <a href="#"><i class="fa fa-group"></i> <span>Black listed</span> </a>
+                                                <ul>
+                                                   <li>
+                                                        <a href="<?= base_url() ?>blacklisted/listing"><i class="fa fa-user"></i> List</a>
+                                                    </li>
+                                                    
+                                                </ul>
+                                            </li>
                                                 <?php 
                                             }
                                                 ?>
