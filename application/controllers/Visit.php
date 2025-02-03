@@ -239,12 +239,23 @@ class Visit extends CI_Controller
 
             if(sessiondata('login_user_type')!="VIEW_ONLY")
             {
-                if($val['status'] == 'Pending')
+                $data2['aaData'][$loop_index]['action'] = '';
+
+                switch($val['status'])
                 {
-                    $data2['aaData'][$loop_index]['action'] = $this->create_visits_edit_button($id);
-                }else{
-                        $data2['aaData'][$loop_index]['action'] = '';
-                     }
+                    case 'Pending':
+                            $data2['aaData'][$loop_index]['action'] = $this->create_visits_edit_button($id); 
+                            break;
+                    case 'Approved':
+                            $data2['aaData'][$loop_index]['action'] = $this->create_visits_onapproved_button($id); 
+                            break;
+                }
+                // if($val['status'] == 'Pending')
+                // {
+                //     $data2['aaData'][$loop_index]['action'] = $this->create_visits_edit_button($id);
+                // }else{
+                //         $data2['aaData'][$loop_index]['action'] = '';
+                //      }
                 
             }else{
                     $data2['aaData'][$loop_index]['action'] = '';
@@ -385,6 +396,57 @@ class Visit extends CI_Controller
                 <i class='fa fa-eye track_color_box' ></i>
             </a>
             ";
+
+            
+            //if($session_data['login_user_type']=="SUPER")
+            //{
+                $btn_approved = " <a href='javascript:void(0)' rel='$id' onclick='approved_requests(rel)' title='Approve it'><i class='fa fa-check-circle' aria-hidden='true'></i></a> ";
+
+                $btn_rejected = " <a href='javascript:void(0)' rel='$id' onclick='rejected_requests(rel)' title='Reject it'><i class='fa fa-times-circle' aria-hidden='true'></i></a> ";
+
+                $btn_blacklist= " <a href='javascript:void(0)' rel='$id' onclick='blacklist_requests(rel)' title='Blacklist him'><i class='fa fa-ban' aria-hidden='true'></i></a> ";
+
+                $links .= $btn_approved." ".$btn_rejected." ".$btn_blacklist;
+           // }
+
+            return $links;
+
+//        }else{
+//            return "
+//            <a href='javascript:void(0)' rel='$track_url' onclick='open_track(rel)' title='Open track'>
+//                <i class='fa fa-book track_color_box' ></i>
+//            </a>
+//            <a href='javascript:void(0)' rel='$visit_info_url' onclick='open_visit_info(rel)' title='Open visit info'>
+//                <i class='fa fa-eye track_color_box' ></i>
+//            </a>
+//            ";
+//        }
+
+    }
+
+
+    public function create_visits_onapproved_button($id)
+    {
+        $session_data   = $this->session->userdata('logged_in');
+        $url            = base_url()."visit/edit_visit/$id";
+        $track_url      = base_url()."visit/track_visit/$id";
+        $visit_info_url = base_url()."visit/visit_info/$id";
+        $visit_blacklist= base_url()."visit/black_list/$id";
+
+        //$approve_url    = base_url()."visit/approved_requests/$id";
+        //$reject_url    = base_url()."visit/reject_requests/$id";
+
+//        if($session_data['login_user_type']=="SUPER"){
+        $links = "";
+            // $links = "
+            // <a href='$url'><i class='fa fa-pencil'></i></a>
+            // <a href='javascript:void(0)' rel='$track_url' onclick='open_track(rel)' title='Open track'>
+            //     <i class='fa fa-book track_color_box' ></i>
+            // </a>
+            // <a href='javascript:void(0)' rel='$visit_info_url' onclick='open_visit_info(rel)' title='Open visit info'>
+            //     <i class='fa fa-eye track_color_box' ></i>
+            // </a>
+            // ";
 
             
             if($session_data['login_user_type']=="SUPER")

@@ -656,8 +656,8 @@ class Visitor extends CI_Controller {
                         'private_visit_id'      => $private_id,
                         'visit_visitor_id_fk'   => $visitor_id_fk,
                         'visit_reason'          => trim($this->input->post('visit_reason')),
-                        'visit_checkin'         => ($this->input->post('visit_checkin') == "") ? date("Y-m-d H:i:s") : trim($this->input->post('visit_checkin')),
-                        'visit_checkout'        => ($this->input->post('visit_checkout') == "") ? null : trim($this->input->post('visit_checkout')),
+                        //'visit_checkin'         => ($this->input->post('visit_checkin') == "") ? date("Y-m-d H:i:s") : trim($this->input->post('visit_checkin')),
+                        //'visit_checkout'        => ($this->input->post('visit_checkout') == "") ? null : trim($this->input->post('visit_checkout')),
                         'visit_transport_mode'  => trim($this->input->post('visit_transport_mode')),
                         'visit_transport_registration_no' => trim($this->input->post('visit_transport_registration_no')),
                         'tenant_id'             => trim($this->input->post('tenant_id')),
@@ -707,6 +707,12 @@ class Visitor extends CI_Controller {
                     if($this->input->post('gate_number'))
                     {
                         $add_visit['gate_number'] = $this->input->post('gate_number');
+                    }
+
+                    if ($this->session->userdata('logged_in') && $session_data['login_user_type'] != "NORMAL") 
+                    {
+                        //$add_visit['visit_checkin'] = ($this->input->post('visit_checkin') == "") ? date("Y-m-d H:i:s") : trim($this->input->post('visit_checkin'));
+                        //$add_visit['visit_checkout'] = ($this->input->post('visit_checkout') == "") ? null : trim($this->input->post('visit_checkout'));
                     }
 
 

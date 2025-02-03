@@ -281,9 +281,9 @@ if($session_data['login_user_type'] != "VIEW_ONLY")
                                                     <li>
                                                         <a href="<?= base_url() ?>user/list_users"><i class="fa fa-user"></i> List Users</a>
                                                     </li>
-                                                    <li>
-                                                        <a href="<?= base_url() ?>user/user_visit_details"><i class="fa fa-user"></i> User Visits Details</a>
-                                                    </li>
+                                                    <!-- <li>
+                                                        <a href="<?php  //base_url() ?>user/user_visit_details"><i class="fa fa-user"></i> User Visits Details</a>
+                                                    </li> -->
                                                 </ul>
                                             </li>
                                             <!-- <li> <a href="#"><i class="fa fa-globe"></i> <span>Locations</span> </a>
