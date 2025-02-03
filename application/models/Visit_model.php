@@ -203,7 +203,7 @@ Class Visit_model extends CI_Model {
         }
 
         //check if guard / viewonly has assigned any branch
-        if (sessiondata('login_branch_id') > 0) 
+        if (sessiondata('login_user_type') == "VIEW_ONLY" && sessiondata('login_branch_id') > 0) 
         {
             $this->db->where('v.tenant_id', sessiondata('login_branch_id'));
         }
