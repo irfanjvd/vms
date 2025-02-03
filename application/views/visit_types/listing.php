@@ -38,7 +38,7 @@
 
 <?php if($this->session->flashdata('success')) { echo "<p style='color:#0ad41d' >".$this->session->flashdata('success')."</p>"; } ?>
 
- <input type="button" value="Add Record" onclick="window.location='<?php echo base_url().'visit_types/adding'; ?>'" class='btn btn-primary pull-right' />
+ <input type="button" value="Add Record" onclick="window.location='<?php echo base_url().'Visit_Types/adding'; ?>'" class='btn btn-primary pull-right' />
  
                         		<table id='example1' class='table table-bordered table-striped'>
                                 <thead>
@@ -66,8 +66,8 @@ if(isset($record) && is_array($record))
 <td><?php echo $loopIndex; ?></td>
  <td><?php echo $rec->name; ?></td>
  <td>
-                        <a href="<?php echo base_url().'visit_types/updating/'.$rec->id; ?>">Edit</a> 
-                        <!-- <a href="<?php echo base_url().'visit_types/detail/'.$rec->id; ?>">Detail</a> /  -->
+                        <a href="<?php echo base_url().'Visit_Types/adding/updating/'.$rec->id; ?>">Edit</a> 
+                        <!-- <a href="<?php echo base_url().'Visit_Types/adding/detail/'.$rec->id; ?>">Detail</a> /  -->
                         
                           
                         </td>
