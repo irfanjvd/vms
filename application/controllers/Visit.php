@@ -453,7 +453,7 @@ class Visit extends CI_Controller
 //echo "<pre>".print_r($result); die();
             if($result['visit_checkin'] == "")
             {
-                $links .= "<a href='$edit_visit'><i class='fa fa-pencil'></i></a>";
+                $links .= "<a href='$edit_visit'>Check-in</a>";
             }
             
 
