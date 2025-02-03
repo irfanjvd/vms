@@ -39,7 +39,7 @@ class User extends CI_Controller
                 redirect(base_url() . 'visitor');
             } elseif ($session_data['login_user_type'] == "TENANT") {
                 redirect(base_url() . 'visitor/addvisitor');
-            } elseif ($session_data['login_user_type'] == "VIEW_ONLY") {
+            } elseif ($session_data['login_user_type'] == "VIEW_ONLY" || $session_data['login_user_type'] == "NORMAL") {
                 redirect(base_url() . 'visit/visits');
             } else {
                 redirect(base_url() . 'visitor/addvisitor');

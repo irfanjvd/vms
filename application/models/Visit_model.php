@@ -182,7 +182,7 @@ Class Visit_model extends CI_Model {
         
         //check if guard is logged-in. guard can only see approved requests
         
-        if (sessiondata('login_user_type') == "VIEW_ONLY") 
+        if (sessiondata('login_user_type') == "VIEW_ONLY" || sessiondata('login_user_type') == "NORMAL") 
         {
             $this->db->where('v.status', 'Approved');
         }

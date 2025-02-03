@@ -233,47 +233,9 @@ if($session_data['login_user_type'] != "VIEW_ONLY")
                                                                 ================= NAVIGATION Content ===================
                                                                 ==================================================== -->
                                         <ul id="navigation">
-                                        <?php if($session_data['login_user_type']!="TENANT" && $session_data['login_user_type']!="BARRIER") { ?>
-                                            <li><a href="<?= base_url() ?>visitor/index"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
-                                            <li><a href="<?= base_url() ?>visitor/visitors"><i class="fa fa-list-alt"></i> Visitors</a></li>
-                                            <li><a href="<?=base_url() ?>visit/visits"><i class="fa fa-list-ol"></i> Visits</a></li>
-<!--                                            <li> <a href="#"><i class="fa fa-list"></i> <span>List View</span> </a>-->
-<!--                                                <ul>-->
-<!--                                                    <li><a href="--><?//= base_url() ?><!--visit/visits"><i class="fa fa-list-ol"></i> Visit Listings</a></li>-->
-<!--                                                    <li><a href="--><?//= base_url() ?><!--visitor/visitors"><i class="fa fa-list-alt"></i> Visitors Listing</a></li>-->
-<!--                                                </ul>-->
-<!--                                            </li>-->
-                                            <?php
-                                            if($session_data['login_user_type']!="SUPER") {
-                                                ?>
-                                            <!--<li> <a href="#"><i class="fa fa-group"></i> <span>Visits(Phone Call)</span> </a>
-                                                <ul>
-                                                    <li><a href="<?= base_url() ?>CallVisitor/addvisitor"><i
-                                                            class="fa fa-user-plus"></i>
-                                                        <span>Add Visit</span></a>
-                                                    </li>
-                                                    
-                                                    <li>
-                                                    <a href="<?=base_url() ?>CallVisit/visits"><i class="fa fa-list-ol"></i>List</a>
-                                                    </li>
-
-                                                    <li>
-                                                    <a href="<?=base_url() ?>CallVisitor/import_csv"><i class="fa fa-upload"></i>Import Data</a>
-                                                    </li>
-                                                </ul>
-                                            </li>-->
-
-                                                <li><a href="<?= base_url() ?>visitor/addvisitor"><i
-                                                            class="fa fa-user-plus"></i>
-                                                        <span>Add Visit</span></a>
-                                                    </li>
-                                                
-                                                
-                                            <?php
-                                            }
-                                            if($session_data['login_user_type']=="SUPER") {
-                                            ?>
-                                            <li> <a href="#"><i class="fa fa-group"></i> <span>Users</span> </a>
+                                            <?php if($session_data['login_user_type'] == "SUPER") { ?>
+                                                <li><a href="<?= base_url() ?>visitor/index"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+                                                <li> <a href="#"><i class="fa fa-group"></i> <span>Users</span> </a>
                                                 <ul>
                                                     <li>
                                                         <a href="<?= base_url() ?>user/add_user"><i class="fa fa-user"></i> Add User</a>
@@ -282,30 +244,11 @@ if($session_data['login_user_type'] != "VIEW_ONLY")
                                                         <a href="<?= base_url() ?>user/list_users"><i class="fa fa-user"></i> List Users</a>
                                                     </li>
                                                     <!-- <li>
-                                                        <a href="<?php  //base_url() ?>user/user_visit_details"><i class="fa fa-user"></i> User Visits Details</a>
+                                                        <a href="<?php  base_url() ?>user/user_visit_details"><i class="fa fa-user"></i> User Visits Details</a>
                                                     </li> -->
                                                 </ul>
                                             </li>
-                                            <!-- <li> <a href="#"><i class="fa fa-globe"></i> <span>Locations</span> </a>
-                                                <ul>
-                                                    <li><a href="<?= base_url() ?>location/add_location"><i
-                                                                class="fa fa-user"></i> Add Location</a>
-                                                    </li>
-                                                    <li><a href="<?= base_url() ?>location/list_locations"><i class="fa fa-user"></i> List Locations</a></li>
-                                                </ul>
-                                            </li> -->
-                                            
-                                            <?php
-                                            }
-                                        }
-                                        
-                                            ?>
-
-                                            <?php
-                                            if($session_data['login_user_type']=="SUPER") 
-                                            {
-                                                ?>
-                                                <li> <a href="#"><i class="fa fa-group"></i> <span>Visit Types</span> </a>
+                                            <li> <a href="#"><i class="fa fa-group"></i> <span>Visit Types</span> </a>
                                                 <ul>
                                                     <li>
                                                         <a href="<?= base_url() ?>Visit_Types/adding"><i class="fa fa-user"></i> Add</a>
@@ -336,12 +279,57 @@ if($session_data['login_user_type'] != "VIEW_ONLY")
                                                     
                                                 </ul>
                                             </li>
-                                                <?php 
-                                            }
+                                            <?php } ?>
+
+
+                                            
+                                        <?php if($session_data['login_user_type']!="TENANT" && $session_data['login_user_type']!="BARRIER") { ?>
+                                            
+                                            <!-- <li><a href="<?= base_url() ?>visitor/visitors"><i class="fa fa-list-alt"></i> Visitors</a></li> -->
+                                            <li><a href="<?=base_url() ?>visit/visits"><i class="fa fa-list-ol"></i> Visits</a></li>
+<!--                                            <li> <a href="#"><i class="fa fa-list"></i> <span>List View</span> </a>-->
+<!--                                                <ul>-->
+<!--                                                    <li><a href="--><?php //base_url() ?><!--visit/visits"><i class="fa fa-list-ol"></i> Visit Listings</a></li>-->
+<!--                                                    <li><a href="--><?php //base_url() ?><!--visitor/visitors"><i class="fa fa-list-alt"></i> Visitors Listing</a></li>-->
+<!--                                                </ul>-->
+<!--                                            </li>-->
+                                            <?php
+                                            if($session_data['login_user_type']!="SUPER") {
                                                 ?>
+                                            <!--<li> <a href="#"><i class="fa fa-group"></i> <span>Visits(Phone Call)</span> </a>
+                                                <ul>
+                                                    <li><a href="<?= base_url() ?>CallVisitor/addvisitor"><i
+                                                            class="fa fa-user-plus"></i>
+                                                        <span>Add Visit</span></a>
+                                                    </li>
+                                                    
+                                                    <li>
+                                                    <a href="<?=base_url() ?>CallVisit/visits"><i class="fa fa-list-ol"></i>List</a>
+                                                    </li>
+
+                                                    <li>
+                                                    <a href="<?=base_url() ?>CallVisitor/import_csv"><i class="fa fa-upload"></i>Import Data</a>
+                                                    </li>
+                                                </ul>
+                                            </li>-->
+
+                                                <!-- <li><a href="<?php // base_url() ?>visitor/addvisitor"><i
+                                                            class="fa fa-user-plus"></i>
+                                                        <span>Add Visit</span></a>
+                                                    </li> -->
+                                                
+                                                
+                                            <?php
+                                            }
+                                           
+                                        }
+                                        
+                                            ?>
+
+                                            
 
                                             <?php if($session_data['login_user_type']=="TENANT") { ?>
-                                            <li><a href="<?= base_url() ?>visitor/addvisitor"><i class="fa fa-user"></i> Add Visits</a></li>
+                                            <!-- <li><a href="<?= base_url() ?>visitor/addvisitor"><i class="fa fa-user"></i> Add Visits</a></li> -->
                                             <?php
                                             //if($session_data['login_tenant_id']==33 || $session_data['login_tenant_id']==34 || $session_data['login_tenant_id']==36){
                                             ?>
@@ -354,10 +342,10 @@ if($session_data['login_user_type'] != "VIEW_ONLY")
                                             <?php 
                                             }
                                             ?>
-                                            <li>
-                                                <a href="<?= base_url() ?>visit/visits"><i class="fa fa-user"></i>Visit Details</a>
+                                            <!-- <li>
+                                                <a href="<?php // base_url() ?>visit/visits"><i class="fa fa-user"></i>Visit Details</a>
                                                 
-                                            </li>
+                                            </li> -->
                                             
                                         </ul>
                                         <!--/ NAVIGATION Content --> 

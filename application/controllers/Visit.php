@@ -432,6 +432,7 @@ class Visit extends CI_Controller
         $track_url      = base_url()."visit/track_visit/$id";
         $visit_info_url = base_url()."visit/visit_info/$id";
         $visit_blacklist= base_url()."visit/black_list/$id";
+        $edit_visit     = base_url()."visitor/edit_visitor/$id";
 
         //$approve_url    = base_url()."visit/approved_requests/$id";
         //$reject_url    = base_url()."visit/reject_requests/$id";
@@ -448,7 +449,14 @@ class Visit extends CI_Controller
             // </a>
             // ";
 
+            $result = $this->visit_model->get_visit_by_id($id); //print_r($result);
+
+            if($result['visit_checkin'] == "")
+            {
+                $links .= "<a href='$edit_visit'><i class='fa fa-pencil'></i></a>";
+            }
             
+
             if($session_data['login_user_type']=="SUPER")
             {
                 $btn_approved = " <a href='javascript:void(0)' rel='$id' onclick='approved_requests(rel)' title='Approve it'><i class='fa fa-check-circle' aria-hidden='true'></i></a> ";

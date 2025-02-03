@@ -58,7 +58,12 @@
                 }
                 ?>
                     <div class="row">
-                        <div class="col-xs-3">
+                            <div class="col-xs-3 checkout marginTop20"  >
+                                    <label class="form_label">Check In Time:</label>
+                                    <input type="text" class="form-control checkin_datepicker" placeholder="Check In Time" name="visit_checkin" id="visit_checkin" value="<?php echo ($info['visit_checkin'])?$info['visit_checkin']:''; ?>" readonly="">
+                                </div>
+
+                        <!-- <div class="col-xs-3">
                             <label class="form_label">Check Identity:</label>
 
                             <select class="form-control" name="visitor_type" id="visitor_type">
@@ -68,23 +73,23 @@
                                 <option value="visitor_passport_id">Passport ID</option>
 
                             </select>
-                        </div>
-                            <div class="col-xs-3">
+                        </div> -->
+                           <!--  <div class="col-xs-3">
                               <label class="form_label">Visitor Identity No *:</label>
-                              <input type="text" class="form-control" placeholder="Visitor Identity No" Name="visitor_identity_no" value="<?php echo (isset($info['visitor_identity_no']))? $info['visitor_identity_no']: '' ?>">
-                            </div>
+                              <input type="text" class="form-control" placeholder="Visitor Identity No" Name="visitor_identity_no" value="<?php //echo (isset($info['visitor_identity_no']))? $info['visitor_identity_no']: '' ?>">
+                            </div> -->
 <!--                            <div class="col-xs-4">-->
 <!--                              <label class="form_label">Visitor Family No :</label>-->
 <!--                              <input type="text"  class="form-control" placeholder="Visitor Family No" name="visitor_family_no" value="--><?php //echo (isset($info['visitor_family_no']))? $info['visitor_family_no']: '' ?><!--">-->
 <!--                            </div>-->
-                            <div class="col-xs-3">
+                            <!-- <div class="col-xs-3">
                               <label class="form_label">Visitor Name *:</label>
-                              <input type="text"  class="form-control" placeholder="Visitor Name" name="visitor_name" value="<?php echo (isset($info['visitor_name']))? $info['visitor_name']: '' ?>">
-                            </div>
-                            <div class="col-xs-3">
+                              <input type="text"  class="form-control" placeholder="Visitor Name" name="visitor_name" value="<?php //echo (isset($info['visitor_name']))? $info['visitor_name']: '' ?>">
+                            </div> -->
+                            <!-- <div class="col-xs-3">
                                 <label class="form_label">Cell No :</label>
-                                <input type="text"  class="form-control" placeholder="Cell No" name="visitor_cell_no" value="<?php echo (isset($info['visitor_cell_no']))? $info['visitor_cell_no']: '' ?>">
-                            </div>
+                                <input type="text"  class="form-control" placeholder="Cell No" name="visitor_cell_no" value="<?php //echo (isset($info['visitor_cell_no']))? $info['visitor_cell_no']: '' ?>">
+                            </div> -->
                     </div>
                           <!--owner profile form row ends here-->
                           
@@ -94,14 +99,14 @@
 <!--                              <input type="text" class="form-control" placeholder="Visitor Fater Name" name="visitor_father_name" value="--><?php //echo (isset($info['visitor_father_name']))? $info['visitor_father_name']: '' ?><!--">-->
 <!--                            </div>-->
 
-                               <div class="col-xs-3">
+                               <!-- <div class="col-xs-3">
                                    <label class="form_label">Visitor City :</label>
-                                   <input type="text"  class="form-control" placeholder="Visitor City" name="visitor_city" value="<?php echo (isset($info['visitor_city']))? $info['visitor_city']: '' ?>">
+                                   <input type="text"  class="form-control" placeholder="Visitor City" name="visitor_city" value="<?php //echo (isset($info['visitor_city']))? $info['visitor_city']: '' ?>">
                                </div>
                                <div class="col-xs-6">
                                    <label class="form_label">Address *:</label>
-                                   <textarea class="form-control" placeholder="Enter Address" name="visitor_address" style="width:100%; height:100px; border-bottom:" ><?php echo (isset($info['visitor_address']))? $info['visitor_address']: '' ?></textarea>
-                               </div>
+                                   <textarea class="form-control" placeholder="Enter Address" name="visitor_address" style="width:100%; height:100px; border-bottom:" ><?php //echo (isset($info['visitor_address']))? $info['visitor_address']: '' ?></textarea>
+                               </div> -->
                           </div>
                           <!--owner profile form row ends here-->
 

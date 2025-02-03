@@ -106,108 +106,122 @@ class Visitor extends CI_Controller {
 
     public function edit_visitor($id)
     {
-        if ($this->session->userdata('logged_in')) {
-            if (!empty($_POST)) {
+        if ($this->session->userdata('logged_in')) 
+        {
+            if (!empty($_POST)) 
+            {
+                $update_visit = array(
+                   'visit_checkin'         => ($this->input->post('visit_checkin') == "") ? date("Y-m-d H:i:s") : trim($this->input->post('visit_checkin')),
+                                    );
 
-                $visitor_type=$_POST['visitor_type'];
+                if($this->db->update('visit', $update_visit, array('visit_id' => $id)))
+                {
+                    $this->log_model->create_log("EDIT VISIT",$update_visit,$id);
+                    $this->session->set_flashdata('message', array('message' => 'Visit Info Updated Successfully !!!', 'type' => 'success'));
+                         redirect(base_url().'visit/visits');
+                }else{
+                        $this->session->set_flashdata('message', array('message' => 'Unable to update record.', 'type' => 'error'));
+                     }
+
+//                 $visitor_type=$_POST['visitor_type'];
 
 
-                unset($_POST['submit']);
-                $message = '';
-                if (isset($_POST['visitor_identity_no']) && $_POST['visitor_identity_no'] == '') {
-                    $message .= "Identity number cannot be blank <br>";
-                }
-                if (isset($_POST['visitor_name']) && $_POST['visitor_name'] == '') {
-                    $message .= "Visitor name cannot be blank <br>";
-                }
-//                if (isset($_POST['visitor_father_name']) && $_POST['visitor_father_name'] == '') {
-//                    $message .= "Father name cannot be blank <br>";
-//                }
-//                if (isset($_POST['visitor_address']) && $_POST['visitor_address'] == '') {
-//                    $message .= "Address cannot be blank <br>";
-//                }
-                if (isset($_POST['visitor_city']) && $_POST['visitor_city'] == '') {
-                    $message .= "Visitor city cannot be blank <br>";
-                }
+//                 unset($_POST['submit']);
+//                 $message = '';
+//                 if (isset($_POST['visitor_identity_no']) && $_POST['visitor_identity_no'] == '') {
+//                     $message .= "Identity number cannot be blank <br>";
+//                 }
+//                 if (isset($_POST['visitor_name']) && $_POST['visitor_name'] == '') {
+//                     $message .= "Visitor name cannot be blank <br>";
+//                 }
+// //                if (isset($_POST['visitor_father_name']) && $_POST['visitor_father_name'] == '') {
+// //                    $message .= "Father name cannot be blank <br>";
+// //                }
+// //                if (isset($_POST['visitor_address']) && $_POST['visitor_address'] == '') {
+// //                    $message .= "Address cannot be blank <br>";
+// //                }
+//                 if (isset($_POST['visitor_city']) && $_POST['visitor_city'] == '') {
+//                     $message .= "Visitor city cannot be blank <br>";
+//                 }
 
 
                 //upload profile picture...
-                if(isset($_FILES['image_file'])) {
-                    if ($_FILES['image_file']['name'] != '') {
-                        $image_name = $_FILES['image_file']['name'];
-                        $name_arr = explode(".", $image_name);
-                        $image_type = strtolower($name_arr[1]);
-                        if ($image_type == "jpg" || $image_type == "jpeg" || $image_type == "png") {
-                            $size = $_FILES['image_file']['size'] / 1048576;
-                            if ($size <= 1.0) {
-                                //upload file...
-                                $old_image = $_POST['old_image'];
-                                unlink(FCPATH . "assets" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "user_images" . DIRECTORY_SEPARATOR . $old_image);
-                                unset($_POST['old_image']);
-                                $file_name = time() . $_FILES["image_file"]["name"];
-                                $target_file = FCPATH . "assets" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "user_images" . DIRECTORY_SEPARATOR . $file_name;
-                                move_uploaded_file($_FILES["image_file"]["tmp_name"], $target_file);
-                                $_POST['image_file'] = $file_name;
-                            } else {
-                                //exceding size...
-                                $message .= "File size must be less or equal to 1mb !!!";
-                                $this->session->set_flashdata('message', array('message' => "$message", 'type' => 'error'));
-                            }
-                        } else {
-                            //Only jpg and png files types are allowed...
-                            $message .= "Only JPG and PNG images are allowed !!!";
-                            $this->session->set_flashdata('message', array('message' => "$message", 'type' => 'error'));
-                        }
+                // if(isset($_FILES['image_file'])) {
+                //     if ($_FILES['image_file']['name'] != '') {
+                //         $image_name = $_FILES['image_file']['name'];
+                //         $name_arr = explode(".", $image_name);
+                //         $image_type = strtolower($name_arr[1]);
+                //         if ($image_type == "jpg" || $image_type == "jpeg" || $image_type == "png") {
+                //             $size = $_FILES['image_file']['size'] / 1048576;
+                //             if ($size <= 1.0) {
+                //                 //upload file...
+                //                 $old_image = $_POST['old_image'];
+                //                 unlink(FCPATH . "assets" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "user_images" . DIRECTORY_SEPARATOR . $old_image);
+                //                 unset($_POST['old_image']);
+                //                 $file_name = time() . $_FILES["image_file"]["name"];
+                //                 $target_file = FCPATH . "assets" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "user_images" . DIRECTORY_SEPARATOR . $file_name;
+                //                 move_uploaded_file($_FILES["image_file"]["tmp_name"], $target_file);
+                //                 $_POST['image_file'] = $file_name;
+                //             } else {
+                //                 //exceding size...
+                //                 $message .= "File size must be less or equal to 1mb !!!";
+                //                 $this->session->set_flashdata('message', array('message' => "$message", 'type' => 'error'));
+                //             }
+                //         } else {
+                //             //Only jpg and png files types are allowed...
+                //             $message .= "Only JPG and PNG images are allowed !!!";
+                //             $this->session->set_flashdata('message', array('message' => "$message", 'type' => 'error'));
+                //         }
 
-                    } else {
-                        unset($_POST['old_image']);
-                    }
-                }
+                //     } else {
+                //         unset($_POST['old_image']);
+                //     }
+                // }
 
 
-                if ($message == '') {
-                    //update user...
-//                    echo "<pre>";
-//                    print_r($_POST);die;
-                    try {
-                        //PDO query execution goes here.
-                        $update_visitor = array(
-                            'visitor_name' => trim($this->input->post('visitor_name')),
-                            "$visitor_type" => trim($this->input->post('visitor_identity_no')),
-                            'visitor_address' => trim($this->input->post('visitor_address')),
-                            'visitor_cell_no' => trim($this->input->post('visitor_cell_no')),
-                            'visitor_city' => trim($this->input->post('visitor_city')),
-//                            'visitor_picture' => $imgName,
-                        );
-                        $result = $this->visitor_model->update_visitor($update_visitor, $id);
-                        $this->log_model->create_log("EDIT VISITOR",$update_visitor,$id);
-                        if($result==""){
-                            throw new Exception();
-                        }
-                    }
-                    catch (Exception $e) {
-//                        echo "<pre>";
-//                        print_r($e->error);die;
-                        $this->session->set_flashdata('message', array('message' => 'Visitor Identity Already exist !!!', 'type' => 'error'));
-                        redirect(base_url().'visitor/edit_visitor/'.$id);
-                    }
+//                 if ($message == '') {
+//                     //update user...
+// //                    echo "<pre>";
+// //                    print_r($_POST);die;
+//                     try {
+//                         //PDO query execution goes here.
+//                         $update_visitor = array(
+//                             'visitor_name' => trim($this->input->post('visitor_name')),
+//                             "$visitor_type" => trim($this->input->post('visitor_identity_no')),
+//                             'visitor_address' => trim($this->input->post('visitor_address')),
+//                             'visitor_cell_no' => trim($this->input->post('visitor_cell_no')),
+//                             'visitor_city' => trim($this->input->post('visitor_city')),
+// //                            'visitor_picture' => $imgName,
+//                         );
+//                         $result = $this->visitor_model->update_visitor($update_visitor, $id);
+//                         $this->log_model->create_log("EDIT VISITOR",$update_visitor,$id);
+//                         if($result==""){
+//                             throw new Exception();
+//                         }
+//                     }
+//                     catch (Exception $e) {
+// //                        echo "<pre>";
+// //                        print_r($e->error);die;
+//                         $this->session->set_flashdata('message', array('message' => 'Visitor Identity Already exist !!!', 'type' => 'error'));
+//                         redirect(base_url().'visitor/edit_visitor/'.$id);
+//                     }
 
-                    if ($result) {
-                        $this->session->set_flashdata('message', array('message' => 'Visitor Info Updated Successfully !!!', 'type' => 'success'));
-                        redirect(base_url().'visitor/edit_visitor/'.$id);
-                    }
+//                     if ($result) {
+//                         $this->session->set_flashdata('message', array('message' => 'Visitor Info Updated Successfully !!!', 'type' => 'success'));
+//                         redirect(base_url().'visitor/edit_visitor/'.$id);
+//                     }
 
-                } else {
-                    $this->session->set_flashdata('message', array('message' => "$message", 'type' => 'error'));
-                    redirect(base_url().'visitor/edit_visitor/'.$id);
-                }
+//                 } else {
+//                     $this->session->set_flashdata('message', array('message' => "$message", 'type' => 'error'));
+//                     redirect(base_url().'visitor/edit_visitor/'.$id);
+//                 }
 
             }
 
             $data = array();
             $data['page_title'] = "Edit Visitor";
             //get users details...
-            $result = $this->visitor_model->get_visitor_by_id($id);
+            $result = $this->visit_model->get_visit_by_id($id);
 
             $data['info'] = $result;
             $this->load->view('common/header', $data);
