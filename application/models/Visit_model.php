@@ -51,6 +51,21 @@ Class Visit_model extends CI_Model {
         return $query->row_array();
     }
 
+
+    function get_single_visit_by_id($visit_id)
+    {
+
+        $this->db->select('*');
+        $this->db->from('visit v');
+        $this->db->where('v.visit_id', $visit_id);
+        //$this->db->where('v.visit_checkout', null);
+        //$this->db->limit(1);
+        //$this->db->order_by('visit_id','desc');
+        $query = $this->db->get();
+        //echo $this->db->last_query();
+        return $query->row_array();
+    }
+
     function get_visit_track_by_id($visit_id) {
 
         $this->db->select('vt.*');

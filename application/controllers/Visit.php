@@ -449,8 +449,8 @@ class Visit extends CI_Controller
             // </a>
             // ";
 
-            $result = $this->visit_model->get_visit_by_id($id); //print_r($result);
-
+            $result = $this->visit_model->get_single_visit_by_id($id); //print_r($result);
+//echo "<pre>".print_r($result); die();
             if($result['visit_checkin'] == "")
             {
                 $links .= "<a href='$edit_visit'><i class='fa fa-pencil'></i></a>";
