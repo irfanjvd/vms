@@ -525,9 +525,14 @@ class Visitor extends CI_Controller {
                 // if (isset($_POST['visitor_cell_no']) && $_POST['visitor_cell_no'] == '') {
                 //     $message .= "Visitor cell no cannot be blank <br>";
                 // }
-                if (isset($_POST['visitor_city']) && $_POST['visitor_city'] == '') {
-                    $message .= "Visitor city cannot be blank <br>";
+
+                if(sessiondata('login_user_type') != "TENANT") 
+                { 
+                    if (isset($_POST['visitor_city']) && $_POST['visitor_city'] == '') {
+                        $message .= "Visitor city cannot be blank <br>";
+                    }
                 }
+                
                 if (isset($_POST['tenant_id']) && $_POST['tenant_id'] == '') {
                     $message .= "Visitor tenant cannot be blank <br>";
                 }
