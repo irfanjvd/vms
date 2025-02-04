@@ -227,7 +227,7 @@ class Visit extends CI_Controller
                 'visit_to_employee' => $val['employee_name'],
                 'visit_issued_card' => $val['visit_issued_card'],
                 'visit_checkin' => $val['visit_checkin'],
-                'visit_checkout' => $this->create_checkout_link($val,$id),
+                //'visit_checkout' => $this->create_checkout_link($val,$id),
                 'visit_date' => $val['visit_date'],
                 'location' => $val['location'],
                 'status' => $current_status,
@@ -237,7 +237,15 @@ class Visit extends CI_Controller
 
             );
 
-            if(sessiondata('login_user_type') =="NORMAL"|| sessiondata('login_user_type') =="SUPER")
+            if(sessiondata('login_user_type') =="NORMAL")
+            {
+                $data2['aaData'][$loop_index]['visit_checkout'] = $this->create_checkout_link($val,$id);
+            }else{
+                    $data2['aaData'][$loop_index]['visit_checkout'] = null;
+                 }
+
+
+            if(sessiondata('login_user_type') =="NORMAL" || sessiondata('login_user_type') =="SUPER")
             {
                 $data2['aaData'][$loop_index]['action'] = '';
 
