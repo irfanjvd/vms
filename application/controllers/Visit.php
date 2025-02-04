@@ -241,7 +241,7 @@ class Visit extends CI_Controller
             {
                 $data2['aaData'][$loop_index]['visit_checkout'] = $this->create_checkout_link($val,$id);
             }else{
-                    $data2['aaData'][$loop_index]['visit_checkout'] = null;
+                    $data2['aaData'][$loop_index]['visit_checkout'] = '';
                  }
 
 
