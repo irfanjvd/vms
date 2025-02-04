@@ -328,7 +328,7 @@ if($session_data['login_user_type'] != "VIEW_ONLY")
 
                                             
 
-                                            <?php if($session_data['login_user_type']=="TENANT") { ?>
+                                            <?php if($session_data['login_user_type']=="TENANT" || $session_data['login_user_type']=="NORMAL") { ?>
                                             <li><a href="<?= base_url() ?>visitor/addvisitor"><i class="fa fa-user"></i> Add Visits</a></li>
                                             <li>
                                                 <a href="<?php echo base_url() ?>visit/visits"><i class="fa fa-user"></i>Visit Details</a>
