@@ -237,7 +237,7 @@ class Visit extends CI_Controller
 
             );
 
-            if(sessiondata('login_user_type')!="VIEW_ONLY")
+            if(sessiondata('login_user_type') =="VIEW_ONLY" || sessiondata('login_user_type') =="NORMAL")
             {
                 $data2['aaData'][$loop_index]['action'] = '';
 
