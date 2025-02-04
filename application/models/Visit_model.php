@@ -214,7 +214,7 @@ Class Visit_model extends CI_Model {
             $this->db->order_by("v.visit_id", 'DESC');
         }
 
-        if(sessiondata('login_user_type') == "TENANT" || sessiondata('login_user_type') == "NORMAL")
+        if(sessiondata('login_user_type') == "TENANT")
         {
             $this->db->where('v.created_by', sessiondata('login_user_id'));
         }
