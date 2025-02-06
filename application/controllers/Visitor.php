@@ -521,17 +521,17 @@ class Visitor extends CI_Controller {
 
                 if(sessiondata('login_user_type') != "TENANT") 
                 { 
-                    if (isset($_POST['visitor_city']) && $_POST['visitor_city'] == '') {
-                        $message .= "Visitor city cannot be blank <br>";
-                    }
+//                    if (isset($_POST['visitor_city']) && $_POST['visitor_city'] == '') {
+//                        $message .= "Visitor city cannot be blank <br>";
+//                    }
                 }
                 
                 if (isset($_POST['tenant_id']) && $_POST['tenant_id'] == '') {
                     $message .= "Visitor tenant cannot be blank <br>";
                 }
-                if (isset($_POST['employee_id']) && $_POST['employee_id'] == '') {
-                    $message .= "Please select tenant employee <br>";
-                }
+//                if (isset($_POST['employee_id']) && $_POST['employee_id'] == '') {
+//                    $message .= "Please select tenant employee <br>";
+//                }
                 // $issue_card_required=(isset($session_data['login_user_issue_card']))?$session_data['login_user_issue_card']:0;
                 // if($issue_card_required==1) {
                 //     if($_POST['visit_status']!="CHECK_OUT") {

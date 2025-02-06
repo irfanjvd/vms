@@ -286,7 +286,10 @@ if($session_data['login_user_type'] != "VIEW_ONLY")
                                         <?php if($session_data['login_user_type']!="TENANT" && $session_data['login_user_type']!="BARRIER") { ?>
                                             
                                             <!-- <li><a href="<?= base_url() ?>visitor/visitors"><i class="fa fa-list-alt"></i> Visitors</a></li> -->
-                                            <li><a href="<?=base_url() ?>visit/visits"><i class="fa fa-list-ol"></i> Visits</a></li>
+                                            <?php if ($session_data['login_user_type'] != "NORMAL") { ?>
+                                                <li><a href="<?= base_url() ?>visit/visits"><i
+                                                                class="fa fa-list-ol"></i> Visits</a></li>
+                                            <?php } ?>
 <!--                                            <li> <a href="#"><i class="fa fa-list"></i> <span>List View</span> </a>-->
 <!--                                                <ul>-->
 <!--                                                    <li><a href="--><?php //base_url() ?><!--visit/visits"><i class="fa fa-list-ol"></i> Visit Listings</a></li>-->
@@ -337,12 +340,13 @@ if($session_data['login_user_type'] != "VIEW_ONLY")
                                             <?php
                                             //if($session_data['login_tenant_id']==33 || $session_data['login_tenant_id']==34 || $session_data['login_tenant_id']==36){
                                             ?>
-                                            <li><a href="<?= base_url() ?>PrivateVisits/import_csv"><i class="fa fa-user"></i> Import Visitor Data</a></li>
-                                            <?php    
+                                                <?php if ($session_data['login_user_type'] != "NORMAL") { ?>
+                                                    <li><a href="<?= base_url() ?>PrivateVisits/import_csv"><i
+                                                                    class="fa fa-user"></i> Import Visitor Data</a></li>
+                                                <?php } ?>
+                                            <?php
                                             //}
                                             ?>
-                                            
-                                            
                                             <?php 
                                             }
                                             ?>

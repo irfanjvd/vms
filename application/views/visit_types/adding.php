@@ -5,7 +5,7 @@
           <ul class="page-breadcrumb">
             <li> <a href="#"><i class="fa fa-home"></i> VMS</a> </li>
             <li> <a href="<?php echo base_url().'visitor/'; ?>"><i class="fa fa-dashboard" style="margin-right:6px;"></i>Dashboard</a> </li>
-            <li> <a href="#"><i class="fa fa-user-plus" style="margin-right:6px;"></i>Add Visit types</a> </li>
+            <li> <a href="#"><i class="fa fa-plus-square" style="margin-right:6px;"></i>Add Visit Type</a> </li>
           </ul>
           
         </div>

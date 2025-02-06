@@ -5,14 +5,12 @@
           <ul class="page-breadcrumb">
             <li> <a href="#"><i class="fa fa-home"></i> VMS</a> </li>
             <li> <a href="<?php echo base_url().'visitor/'; ?>"><i class="fa fa-dashboard" style="margin-right:6px;"></i>Dashboard</a> </li>
-            <li> <a href="#"><i class="fa fa-user-plus" style="margin-right:6px;"></i>update Visit types</a> </li>
+            <li> <a href="#"><i class="fa fa-pencil-square" style="margin-right:6px;"></i>Update Visit Type</a> </li>
           </ul>
           
         </div>
         <h2>Visit types <span>VMS - Visitors Management System</span></h2>
       </div>
-      
-     
       
       <!-- row -->
       <div class="row"> 
