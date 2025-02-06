@@ -338,31 +338,25 @@ class Visitor extends CI_Controller {
             );
         }
 
-        if($total_visitors==0){
-            echo json_encode(array(
+        if ($total_visitors == 0) {
+            $data2 = [
                 "sEcho" => 0,
                 "iTotalRecords" => "0",
                 "iTotalDisplayRecords" => "0",
-                "aaData" => array()
-            ));
-        }else {
-            echo json_encode($data2);
+                "aaData" => []
+            ];
         }
+        echo json_encode($data2);
     }
-	
-	function change_private_visit_status(){
-		$id=$this->input->post('id');
-		$status=$this->input->post('status');
-		if($status=="PENDING"){
-			$status="MARKED";
-		}else{
-			$status="PENDING";
-		}
-		$this->visitor_model->change_private_visit_status($id,$status);
-		echo $status;
-		
-		
-	}
+
+    function change_private_visit_status()
+    {
+        $id = $this->input->post('id');
+        $status = $this->input->post('status');
+        $statusUpdate = ($status == "PENDING") ? 'MARKED' : 'PENDING';
+        $this->visitor_model->change_private_visit_status($id, $statusUpdate);
+        echo $status;
+    }
 	
 	function getEmployeeName($id){
 		$this->db->select('employee_name');
@@ -370,24 +364,23 @@ class Visitor extends CI_Controller {
 		$this->db->where('employee_id',$id);
 		$query = $this->db->get();
 		$result= $query->row_array();
-		if(!empty($result)){
-			return  $result['employee_name'];
-		}else{
-			return "Not Found";
-		}
+        if (!empty($result)) {
+            return $result['employee_name'];
+        }
+        return "Not Found";
 	}
-	
-	function getTenantName($id){
-		$this->db->select('tenant_name');
-		$this->db->from('tenant');
-		$this->db->where('id',$id);
-		$query = $this->db->get();
-		$result= $query->row_array();
-		if(!empty($result)){
-			return  $result['tenant_name'];
-		}else{
-			return "Not Found";
-		}
+
+    function getTenantName($id)
+    {
+        $this->db->select('tenant_name');
+        $this->db->from('tenant');
+        $this->db->where('id', $id);
+        $query = $this->db->get();
+        $result = $query->row_array();
+        if (!empty($result)) {
+            return $result['tenant_name'];
+        }
+        return "Not Found";
 	}
 	
     public function create_image($image){
@@ -737,6 +730,8 @@ class Visitor extends CI_Controller {
 
                     $add_visit['created_by'] = sessiondata('login_user_id');
                     $add_visit['created_at'] = date('Y-m-d H:i:s');
+                    $add_visit['created_at'] = date('Y-m-d H:i:s');
+                    $add_visit['visit_code'] = generateRandomString();
 
 //print_r($add_visit); die();
                     $this->db->insert('visit', $add_visit);
@@ -772,8 +767,6 @@ class Visitor extends CI_Controller {
                         } else {
                             $this->session->set_flashdata('message', array('message' => "Visit created successfully !!!", 'type' => 'success'));
                         }
-
-
                     }
                     redirect(base_url() . 'visitor/addvisitor');
                 } else {
@@ -984,7 +977,7 @@ class Visitor extends CI_Controller {
                             'identity_type' => $visitor_type,
 //                            'next_location_id' => $this->input->post('next_location_id'),
                         );
-
+                        $add_visit['visit_code'] = generateRandomString();
                         $this->db->insert('visit', $add_visit);
                         $visit_id = $this->db->insert_id();
                         //create log
@@ -1286,41 +1279,33 @@ class Visitor extends CI_Controller {
             date_default_timezone_set('Asia/Karachi');
             $end_date=date("Y-m-d H:i:s",time());
             $visit_status="<font color='orange'>IN PROGRESS</font>";
-        }else{
-            if($start_action=="CHECK_IN" && $end_action=="CHECK_OUT" && $start_location_title==$end_location_title){
-                $visit_status="<font color='green'>COMPLETED</font>";
-            }else{
-                $visit_status="<font color='orange'>IN PROGRESS</font>";
+        } else {
+            if ($start_action == "CHECK_IN" && $end_action == "CHECK_OUT" && $start_location_title == $end_location_title) {
+                $visit_status = "<font color='green'>COMPLETED</font>";
+            } else {
+                $visit_status = "<font color='orange'>IN PROGRESS</font>";
             }
         }
         $date1 = $end_date;
         $date2 = $start_date;
         $diff = strtotime($date1) - strtotime($date2);
         $diff_in_hrs = $diff/3600;
-        if($diff_in_hrs<1){
-            return "<b>Visit Duration : </b> <font color='orange'> ".round(abs($diff) / 60,2). " Minutes</font>
+        if ($diff_in_hrs < 1) {
+            return "<b>Visit Duration : </b> <font color='orange'> " . round(abs($diff) / 60, 2) . " Minutes</font>
                             | <b>Visit Status:</b> $visit_status";
-        }else {
-            return "<b>Visit Duration : </b> <font color='orange'>".round(abs($diff) / 3600,2). " Hours</font>
+        } else {
+            return "<b>Visit Duration : </b> <font color='orange'>" . round(abs($diff) / 3600, 2) . " Hours</font>
                             | <b>Visit Status:</b> $visit_status";
         }
-
-
     }
 
 
     function verify_black_listed($cnic)
     {
-        $query = "SELECT * FROM black_listed WHERE visitor_cnic = '".$cnic."'";
-
+        $query = "SELECT * FROM black_listed WHERE visitor_cnic = '" . $cnic . "'";
         $execution = $this->db->query($query);
 
-        if($execution->num_rows()>0)
-        {
-            return true;
-        }else{
-                return false;
-             }
+        return ($execution->num_rows() > 0);
     }
 
 }

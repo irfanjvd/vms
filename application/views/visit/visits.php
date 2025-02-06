@@ -77,12 +77,6 @@
                               <p id="renderingCheckoutFilter"></p>
                           </div>
                       </div>
-                      <div class="row">
-
-                          
-                          
-                      </div>
-
                       
                       
 <!--                  </form>-->
@@ -95,6 +89,7 @@
                       <th class="sorting" role="columnheader">Visitor Cell</th>
                       <th class="sorting" role="columnheader">Identity Type</th>
                       <th class="sorting" role="columnheader">Identity No</th>
+                      <th class="sorting" role="columnheader">Visit Code</th>
                       <th class="sorting" role="columnheader">Visit Reason</th>
 <!--                      <th class="sorting" role="columnheader">Company</th>-->
 

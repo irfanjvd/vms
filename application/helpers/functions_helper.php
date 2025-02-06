@@ -415,37 +415,50 @@ function str_to_hex($string){
     return $hex;
 }
 
-function send_sms($mobile_no,$message){
-    $post_data=array(
-        'sec_key'=>'451319be9caefc0904db10a735ab0708',
-        'sms_text'=>$message,
-        'phone_no'=>$mobile_no,
-        'sms_language'=>'english'
-    );
-    $url="https://smsgateway.pitb.gov.pk/api/send_sms";
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL,$url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS,$post_data);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-    $return_data = curl_exec($ch);
-    if(curl_errno($ch)){
-        echo 'Request Error:' . curl_error($ch);die;
+if (!function_exists('send_sms')) {
+    function send_sms($mobile_no, $message)
+    {
+        $post_data = array(
+            'sec_key' => '451319be9caefc0904db10a735ab0708',
+            'sms_text' => $message,
+            'phone_no' => $mobile_no,
+            'sms_language' => 'english'
+        );
+        $url = "https://smsgateway.pitb.gov.pk/api/send_sms";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        $return_data = curl_exec($ch);
+        if (curl_errno($ch)) {
+            echo 'Request Error:' . curl_error($ch);
+            die;
+        }
+        curl_close($ch);
     }
-    curl_close ($ch);
 }
 
+if (!function_exists('sessiondata')) {
+    function sessiondata($session_index)
+    {
+        $_ci =& get_instance();
 
-function sessiondata($session_index)
-{
-    $_ci =& get_instance();
+        $all_session_data = $_ci->session->userdata;
+        $logged_in_data = $all_session_data['logged_in'];
 
-    $all_session_data = $_ci->session->userdata;
-    $logged_in_data   = $all_session_data['logged_in'];
+        return $logged_in_data[$session_index];
 
-    return $logged_in_data[$session_index];
+    }
+}
 
+if (!function_exists('generateRandomString')) {
+    function generateRandomString($length = 8)
+    {
+        $characters = '23456789abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ'; // Excluding 0, O, 1, l, I
+        return substr(str_shuffle($characters), 0, $length);
+    }
 }
 
 /* End of file array_helper.php */

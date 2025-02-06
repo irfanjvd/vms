@@ -70,7 +70,7 @@
                             <label class="form_label">Check In Time *:</label>
                             <input type="text"  class="form-control checkin_datepicker" placeholder="Check In Time" name="visit_checkin" id="visit_checkin" value="<?php echo date("Y-m-d H:i:s",strtotime($info['visit_checkin']));  ?>">
                         </div>
-                        <div class="col-xs-2">
+                        <div class="col-xs-2 hidden">
                             <label class="form_label">Issued Visitor Card *:</label>
                             <input type="text" class="form-control" placeholder="Visitor Card" name="visit_issued_card" id="visit_issued_card" value="<?php echo (isset($info['visit_issued_card']))?$info['visit_issued_card']:"";  ?>">
                         </div>
@@ -105,14 +105,14 @@
 <!---->
 <!--                        </div>-->
                         <div class="col-xs-3">
-                            <label class="form_label">Regitration No :</label>
+                            <label class="form_label">Registration No :</label>
                             <input type="text" class="form-control" placeholder="Regitration No" name="visit_transport_registration_no" id="visit_transport_registration_no" value="<?php echo (isset($info['visit_transport_registration_no']))?$info['visit_transport_registration_no']:"";  ?>">
                         </div>
                         <div class="col-xs-3">
-                            <label class="form_label">Tenant:</label>
+                            <label class="form_label">Branch:</label>
 <!--                            <input type="text" class="form-control" placeholder="visit to tenant" name="visit_to_tenant" id="visit_to_tenant" value="--><?php //echo (isset($info['visit_to_tenant']))?$info['visit_to_tenant']:""; ?><!--">-->
                             <select class="form-control" name="visit_to_tenant" id="visit_to_tenant" onchange="get_employees(value)">
-                                <option value="">Select Tenant</option>
+                                <option value="">Select Branch</option>
                                 <?php
                                 $trigger=0;
                                 foreach($tenants as $key=>$val){
@@ -137,7 +137,7 @@
                                 ?>
                             </select>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hidden">
                             <label class="form_label">Employee:</label>
 <!--                            <input type="text" class="form-control" placeholder="visit to employee" name="visit_to_employee" id="visit_to_employee" value="--><?php //echo (isset($info['visit_to_employee']))?$info['visit_to_employee']:""; ?><!--">-->
                             <select class="form-control" name="visit_to_employee" id="visit_to_employee">

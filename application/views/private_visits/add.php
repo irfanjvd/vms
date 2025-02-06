@@ -264,34 +264,49 @@
         $('.spopinfo').fadeOut('fast');
     }, 5000);
 
+    $('.my_date').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy',
+        todayHighlight: true
+    }).on('changeDate', function() {
+        verify_date(); // Trigger validation when date changes
+    });
+
     function verify_date() {
-        from_date = $('#date_from').val();
-        if (from_date == '') {
+        let from_date = $('#date_from').val();
+        let to_date = $('#date_to').val();
+
+        if (!from_date) {
             swal("", "From Date can't be empty", "error");
             $("#date_to").val("");
-        } else {
-            //check from date is less than to date or not???
-            var from_date = $('#date_from').val();
-            var yourdate = from_date.split("-").reverse();
-            var x = yourdate.join("-");
+            return;
+        }
 
-            var to_date = $('#date_to').val();
-            var yourdate = to_date.split("-").reverse();
-            var y = yourdate.join("-");
+        if (!to_date) return; // Avoid unnecessary execution if to_date is empty
 
-            var xx = new Date(x);
-            var yy = new Date(y);
-            if (yy < xx) {
-                swal("", "Date To must be greeater than Date From !!!", "error");
-                $('#date_to').val("");
-            }
+        // Convert to Date object
+        let fromDateObj = new Date(from_date.split("-").reverse().join("-"));
+        let toDateObj = new Date(to_date.split("-").reverse().join("-"));
 
-            const timeDiff = (new Date(to_date)) - (new Date(from_date));
-            const days = timeDiff / (1000 * 60 * 60 * 24)
-            if (days + 1 > 30) {
-                alert("Days cannot be greater than 1 month");
-                $('#date_to').val("");
-            }
+        if (isNaN(fromDateObj) || isNaN(toDateObj)) {
+            swal("", "Invalid date format!", "error");
+            $('#date_to').val("");
+            return;
+        }
+
+        if (toDateObj < fromDateObj) {
+            swal("", "Date To must be greater than Date From!", "error");
+            $('#date_to').val("");
+            return;
+        }
+
+        // Difference in days
+        const timeDiff = toDateObj - fromDateObj;
+        const days = timeDiff / (1000 * 60 * 60 * 24);
+
+        if (days + 1 > 30) {
+            swal("", "Days cannot be greater than 1 month!", "error");
+            $('#date_to').val("");
         }
     }
 </script>

@@ -197,8 +197,8 @@
                                     <input type="text" class="form-control checkin_datepicker" placeholder="Check In Time" name="visit_checkin" id="visit_checkin" value="" readonly="">
                                 </div> -->
                                 <div class="col-xs-3 checkout marginTop20" >
-                                    <label class="form_label">Visitor City *:</label>
-                                    <select required="required" class="form-control" placeholder="Visitor City" name="visitor_city" id="visitor_city">
+                                    <label class="form_label">Visitor City:</label>
+                                    <select class="form-control" placeholder="Visitor City" name="visitor_city" id="visitor_city">
                                     <option value="">Please Select</option>
                                     <?php
                                     foreach($cities as $key=>$val) {
@@ -258,7 +258,7 @@
                                         ?>
                                     </select>
                                 </div>
-                                <div class="col-xs-3 marginTop20">
+                                <div class="col-xs-3 marginTop20 hidden">
                                     <label class="form_label">Officers :</label>
                                     <select class="form-control chosen-select" name="employee_id" id="employee_id">
 
@@ -275,19 +275,17 @@
                                 <div class="col-md-2 col-xs-2">
                                 <label class="form_label ">Date From <span class="text-red">*</span>:</label>
                                 <input type="text" class="form-control my_date required-field" name="date_from"
-                                       id="date_from"
-                                       placeholder="Enter date_from" value="" readonly="">
+                                       id="date_from" placeholder="Enter date_from" value="" required="required" >
                             </div>
                             <div class="col-md-2 col-xs-2">
                                 <label class="form_label ">Date To <span class="text-red">*</span>:</label>
                                 <input type="text" class="form-control my_date required-field" name="date_to"
-                                       id="date_to"
-                                       onblur="verify_date()" placeholder="Enter date_to" value="" readonly="">
+                                       id="date_to" onblur="verify_date()" placeholder="Enter date_to" required="required"  >
                             </div>
                             <div class="col-md-2 col-xs-2">
-                                <label class="form_label ">Time <span class="text-red">*</span>:</label>
-                                <input type="text" class="form-control required-field" id="visit_time" name="visit_time"
-                                       placeholder="Enter time" value="">
+                                <label class="form_label ">Time:</label>
+                                <input type="text" class="form-control" id="visit_time" name="visit_time"
+                                       placeholder="Enter time" value="00:00">
                             </div>
                             </div>
 
@@ -319,7 +317,7 @@
                                 <div class="col-xs-12 marginTop20">
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row hidden">
                                 <div class="col-xs-2">
                                 </div>
                                 <div class="col-xs-2 marginTop20">

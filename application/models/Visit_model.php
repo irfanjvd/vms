@@ -111,6 +111,7 @@ Class Visit_model extends CI_Model {
             '',
             'v.identity_type',
             'vp.visitor_identity_no',
+            'v.visit_code',
             '',
             '',
             '',

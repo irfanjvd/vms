@@ -757,6 +757,7 @@ $(document).ready(function() {
             ,{"mDataProp":"visitor_cell_no","bSortable": false}
             ,{"mDataProp":"identity_type"}
             ,{"mDataProp":"identity_no"}
+            ,{"mDataProp":"visit_code"}
             ,{"mDataProp":"visit_reason","bSortable": false}
             ,{"mDataProp":"visit_transport_mode","bSortable": false}
             ,{"mDataProp":"visit_transport_registration_no","bSortable": false}
