@@ -179,16 +179,15 @@ Class Visit_model extends CI_Model {
             $this->db->like('vp.visitor_identity_no', "$identity_no");
         }
 
-        if($date_range!=null && $date_range!="-yadcf_delim-"){
-            if(strpos($date_range,"-yadcf_delim-") >= 0){
-                $dates=explode("-yadcf_delim-",$date_range);
-            }else {
+        if ($date_range != null && $date_range != "-yadcf_delim-") {
+            if (strpos($date_range, "-yadcf_delim-") >= 0) {
+                $dates = explode("-yadcf_delim-", $date_range);
+            } else {
                 $dates = explode("~", $date_range);
             }
-            $from=date("Y-m-d",strtotime($dates[0]));
-            $to=date("Y-m-d",strtotime($dates[1]));
-            $this->db->where("date(v.visit_checkin) BETWEEN '$from' AND '$to' ");
-
+//            $from = date("Y-m-d", strtotime($dates[0]));
+//            $to = date("Y-m-d", strtotime($dates[1]));
+//            $this->db->where("date(v.visit_checkin) BETWEEN '$from' AND '$to' ");
         }
         $this->db->join('locations l', 'l.id = v.location_id', 'left');
         $this->db->join('locations nl', 'nl.id = v.next_location_id', 'left');
@@ -198,15 +197,15 @@ Class Visit_model extends CI_Model {
         
         //check if guard is logged-in. guard can only see approved requests
         
-        if (sessiondata('login_user_type') == "VIEW_ONLY" || sessiondata('login_user_type') == "NORMAL") 
-        {
+        if (sessiondata('login_user_type') == "VIEW_ONLY" ||
+            sessiondata('login_user_type') == "NORMAL")  {
             $this->db->where('v.status', 'Approved');
         }
 
         //check if guard / viewonly has assigned any branch
         if (sessiondata('login_user_type') == "VIEW_ONLY" && sessiondata('login_branch_id') > 0) 
         {
-            $this->db->where('v.tenant_id', sessiondata('login_branch_id'));
+//            $this->db->where('v.tenant_id', sessiondata('login_branch_id'));
         }
 
         if($sort_column!=null && $sort_order!=null){
