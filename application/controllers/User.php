@@ -58,6 +58,8 @@ class User extends CI_Controller
                     if ($row->is_deleted == 1) {
                         $message['status'] = 'Your account has been deleted by admin.';
                     } else {
+                        // sess_expiration for others: 5 min, view-only users: 30 days
+                        $this->session->sess_expiration = ($row->type == 'VIEW_ONLY') ? 2592000 : 300;
                         $message['status'] = 'success';
                     }
                 }
@@ -71,8 +73,8 @@ class User extends CI_Controller
                 // 	$tenant=1;
                 //     redirect(base_url().'visitor/private_visits');
                 // }else{
-                //     $message['status'] = 'Invalid Email or Password';
-                // }
+                     $message['status'] = 'Invalid Email or Password';
+//                 }
             }
 
             //$recaptcha = $this->input->post('g-recaptcha-response');
@@ -532,6 +534,7 @@ class User extends CI_Controller
                 if ($row->is_deleted == 1) {
                     $message['status'] = 'Your account has been deleted by admin';
                 } else {
+//                    $this->session->sess_expiration = ($row->type == 'VIEW_ONLY') ? 2592000 : 300; // others: 5 min, view-only: 30 days
                     $message['status'] = 'success';
                 }
             }
