@@ -185,9 +185,9 @@ Class Visit_model extends CI_Model {
             } else {
                 $dates = explode("~", $date_range);
             }
-//            $from = date("Y-m-d", strtotime($dates[0]));
-//            $to = date("Y-m-d", strtotime($dates[1]));
-//            $this->db->where("date(v.visit_checkin) BETWEEN '$from' AND '$to' ");
+            $from = date("Y-m-d", strtotime($dates[0]));
+            $to = date("Y-m-d", strtotime($dates[1]));
+            $this->db->where("date(v.visit_checkin) BETWEEN '$from' AND '$to' ");
         }
         $this->db->join('locations l', 'l.id = v.location_id', 'left');
         $this->db->join('locations nl', 'nl.id = v.next_location_id', 'left');

@@ -212,7 +212,12 @@ class Visit extends CI_Controller
                     $current_status = '<span class="btn btn-default">Blacklisted</span>';
                     break;
             }
-
+            if ($val['status'] == 'Approved' && $val['visit_checkin'] == "") {
+                $edit_visit = base_url() . "visitor/edit_visitor/".$val['visitor_id'];
+                $visit_checkin = "<a href='$edit_visit'>Check-in</a>";
+            } else {
+                $visit_checkin = $val['visit_checkin'];
+            }
             $data2['aaData'][$loop_index] = array(
                 'visitor_picture' => $this->create_image($val['visitor_picture']),
                 'visitor_name' => $val['visitor_name'],
@@ -229,7 +234,7 @@ class Visit extends CI_Controller
                 'visit_to_tenant' => $val['tenant_name'],
                 'visit_to_employee' => $val['employee_name'],
                 'visit_issued_card' => $val['visit_issued_card'],
-                'visit_checkin' => $val['visit_checkin'],
+                'visit_checkin' => $visit_checkin,
                 //'visit_checkout' => $this->create_checkout_link($val,$id),
                 'visit_date' => $val['visit_date'],
                 'location' => $val['location'],
