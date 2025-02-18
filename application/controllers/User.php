@@ -31,8 +31,7 @@ class User extends CI_Controller
     {
         $this->load->library('recaptcha');
 
-        if ($this->session->userdata('logged_in')) 
-        {
+        if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
 
             if ($session_data['login_user_type'] == "SUPER") {
@@ -73,7 +72,7 @@ class User extends CI_Controller
                 // 	$tenant=1;
                 //     redirect(base_url().'visitor/private_visits');
                 // }else{
-                     $message['status'] = 'Invalid Email or Password';
+                $message['status'] = 'Invalid Email or Password';
 //                 }
             }
 
@@ -150,36 +149,30 @@ class User extends CI_Controller
 
     public function add_user()
     {
-        if(sessiondata('login_user_type')=="VIEW_ONLY")
-            {
-                redirect(base_url().'visit/visits');
-            }
+        if (sessiondata('login_user_type') == "VIEW_ONLY") {
+            redirect(base_url() . 'visit/visits');
+        }
 
         $session_data = $this->session->userdata('logged_in');
 
-        if ($this->session->userdata('logged_in') && $session_data['login_user_type'] == "SUPER") 
-        {
+        if ($this->session->userdata('logged_in') && $session_data['login_user_type'] == "SUPER") {
             $session_data = $this->session->userdata('logged_in');
 
-            if ($session_data['login_user_type'] == "TENANT") 
-            {
+            if ($session_data['login_user_type'] == "TENANT") {
                 redirect(base_url() . 'visitor/private_visits');
             }
 //            echo "<pre>";
 //            print_r($session_data['type']);die;
-            if ($session_data['login_user_type'] != "SUPER") 
-            {
+            if ($session_data['login_user_type'] != "SUPER") {
                 redirect(base_url() . 'visitor/visitors');
             }
 
 
-            if ($session_data['login_user_type'] == "VIEW_ONLY") 
-            {
+            if ($session_data['login_user_type'] == "VIEW_ONLY") {
                 redirect(base_url() . 'visit/visits');
             }
 
-            if (!empty($_POST)) 
-            {
+            if (!empty($_POST)) {
                 unset($_POST['submit']);
                 $message = '';
 
@@ -199,8 +192,7 @@ class User extends CI_Controller
                 }
 
                 //upload profile picture...
-                if ($_FILES['image_file']['name'] != '') 
-                {
+                if ($_FILES['image_file']['name'] != '') {
                     $image_name = $_FILES['image_file']['name'];
                     $name_arr = explode(".", $image_name);
                     $image_type = strtolower($name_arr[1]);
@@ -233,15 +225,14 @@ class User extends CI_Controller
                         //already exist...
                         $this->session->set_flashdata('message', array('message' => 'Email Already Taken !!!', 'type' => 'error'));
                     } else {
-                                //save user...
-                                $insert_id = $this->user_model->add_user($_POST);
-                                if ($insert_id) 
-                                {
-                                    $this->session->set_flashdata('message', array('message' => 'User Created Successfully !!!', 'type' => 'success'));
-                                    $this->log_model->create_log("ADD USER", $_POST, $insert_id);
-                                    redirect(base_url() . 'user/add_user');
-                                }
-                            }
+                        //save user...
+                        $insert_id = $this->user_model->add_user($_POST);
+                        if ($insert_id) {
+                            $this->session->set_flashdata('message', array('message' => 'User Created Successfully !!!', 'type' => 'success'));
+                            $this->log_model->create_log("ADD USER", $_POST, $insert_id);
+                            redirect(base_url() . 'user/add_user');
+                        }
+                    }
                 } else {
                     $this->session->set_flashdata('message', array('message' => "$message", 'type' => 'error'));
                 }
@@ -249,21 +240,18 @@ class User extends CI_Controller
 
             }
 
-            $data               = array();
+            $data = array();
             $data['page_title'] = 'Add New User';
 
-            if (isset($_POST)) 
-            {
+            if (isset($_POST)) {
                 $data['info'] = $_POST;
             }
 
             $this->load->view('common/header', $data);
 
-            if ($session_data['login_user_type'] == "SUPER") 
-            {
+            if ($session_data['login_user_type'] == "SUPER") {
                 $this->load->view('user/add_user');
-            } else if ($session_data['login_user_type'] == "VIEW_ONLY") 
-            {
+            } else if ($session_data['login_user_type'] == "VIEW_ONLY") {
                 redirect(base_url() . 'visit/visits');
             } else {
                 redirect(base_url() . 'visitor/addvisitor');
@@ -271,28 +259,24 @@ class User extends CI_Controller
 
             $this->load->view('common/footer');
         } else {
-                    redirect("visitor/visitors");
-               }
+            redirect("visitor/visitors");
+        }
     }
 
     public function edit_user($id)
     {
-        if(sessiondata('login_user_type')=="VIEW_ONLY")
-            {
-                redirect(base_url().'visit/visits');
-            }
+        if (sessiondata('login_user_type') == "VIEW_ONLY") {
+            redirect(base_url() . 'visit/visits');
+        }
 
-        if ($this->session->userdata('logged_in')) 
-        {
+        if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
 
-            if ($session_data['login_user_type'] == "TENANT") 
-            {
+            if ($session_data['login_user_type'] == "TENANT") {
                 redirect(base_url() . 'visitor/private_visits');
             }
 
-            if ($session_data['login_user_type'] == "VIEW_ONLY") 
-            {
+            if ($session_data['login_user_type'] == "VIEW_ONLY") {
                 redirect(base_url() . 'visit/visits');
             }
 
@@ -380,10 +364,9 @@ class User extends CI_Controller
 
     public function delete_user($id)
     {
-        if(sessiondata('login_user_type')=="VIEW_ONLY")
-            {
-                redirect(base_url().'visit/visits');
-            }
+        if (sessiondata('login_user_type') == "VIEW_ONLY") {
+            redirect(base_url() . 'visit/visits');
+        }
 
         if ($this->session->userdata('logged_in')) {
             $data = array();
@@ -404,10 +387,9 @@ class User extends CI_Controller
 
     public function add_visitor()
     {
-        if(sessiondata('login_user_type')=="VIEW_ONLY")
-            {
-                redirect(base_url().'visit/visits');
-            }
+        if (sessiondata('login_user_type') == "VIEW_ONLY") {
+            redirect(base_url() . 'visit/visits');
+        }
 
         $data = array();
         $this->load->view('common/header', $data);
@@ -620,10 +602,9 @@ class User extends CI_Controller
 
     public function list_users()
     {
-        if(sessiondata('login_user_type')=="VIEW_ONLY")
-            {
-                redirect(base_url().'visit/visits');
-            }
+        if (sessiondata('login_user_type') == "VIEW_ONLY") {
+            redirect(base_url() . 'visit/visits');
+        }
 
         $session_data = $this->session->userdata('logged_in');
         if ($this->session->userdata('logged_in') && $session_data['login_user_type'] == "SUPER") {
@@ -645,10 +626,9 @@ class User extends CI_Controller
 
     public function get_ajax_users()
     {
-        if(sessiondata('login_user_type')=="VIEW_ONLY")
-            {
-                redirect(base_url().'visit/visits');
-            }
+        if (sessiondata('login_user_type') == "VIEW_ONLY") {
+            redirect(base_url() . 'visit/visits');
+        }
 
         $result = $this->user_model->get_all_users($_GET['iDisplayStart'], $_GET['iDisplayLength'], $_GET['sSearch'], $_GET['iSortCol_0'], $_GET['sSortDir_0']);
         $total_result = $this->user_model->get_all_users(null, null, $_GET['sSearch'], $_GET['iSortCol_0'], $_GET['sSortDir_0']);
@@ -789,10 +769,9 @@ class User extends CI_Controller
 
     public function create_user()
     {
-        if(sessiondata('login_user_type')=="VIEW_ONLY")
-            {
-                redirect(base_url().'visit/visits');
-            }
+        if (sessiondata('login_user_type') == "VIEW_ONLY") {
+            redirect(base_url() . 'visit/visits');
+        }
 
         $data = array();
         if (!empty($_POST)) {
@@ -868,7 +847,7 @@ class User extends CI_Controller
 
     public function user_visit_details()
     {
-        
+
         $session_data = $this->session->userdata('logged_in');
         if ($this->session->userdata('logged_in') && $session_data['login_user_type'] == "SUPER") {
             if ($session_data['login_user_type'] == "TENANT") {

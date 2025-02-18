@@ -9,15 +9,15 @@ class Visit_Types_model extends CI_Model
 
    function visit_typeslisting($offset=0, $limit=30, $id=false)
    {
-     $query = "SELECT  visit_types.* 
-				FROM visit_types
+     $query = "SELECT  vt.* , t.tenant_name
+				FROM visit_types vt LEFT JOIN tenant t ON vt.tenant_id = t.id
 			  ";
 	 $query .= " ";
 	 $query .= " WHERE 1=1  ";
 
 	if($id)     
     {
-      $query .= " AND  visit_types.id  = ".$id."";
+      $query .= " AND  vt.id  = ".$id."";
     }
 								
 		$executionTotal = $this->db->query($query)->num_rows();

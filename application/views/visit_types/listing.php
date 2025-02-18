@@ -44,13 +44,13 @@
                         <input type="button" value="Add Record"
                                onclick="window.location='<?php echo base_url() . 'Visit_Types/adding'; ?>'"
                                class='btn btn-primary pull-right'/>
-
                         <table id='example1' class='table table-bordered table-striped'>
                             <thead>
                             <tr>
-                                <th>#</th>
-                                <th>name</th>
-                                <th>Actions</th>
+                                <th class="col-md-1">#</th>
+                                <th class="col-md-4">Branch</th>
+                                <th class="col-md-4">Name</th>
+                                <th class="col-md-3">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -67,9 +67,13 @@
 
                                     <tr>
                                         <td><?php echo $loopIndex; ?></td>
+                                        <td><?php echo $rec->tenant_name; ?></td>
                                         <td><?php echo $rec->name; ?></td>
                                         <td>
                                             <a href="<?php echo base_url() . 'Visit_Types/updating/' . $rec->id; ?>">Edit</a>
+                                            <?php if (in_array($this->session->userdata('logged_in')['login_user_type'], ['SUPER','TENANT'])) { ?>
+                                            | <a href="<?php echo base_url() . 'Visit_Types/deleting/' . $rec->id; ?>">Delete</a>
+                                            <?php } ?>
                                             <!-- <a href="<?php echo base_url() . 'Visit_Types/adding/detail/' . $rec->id; ?>">Detail</a> /  -->
 
                                         </td>

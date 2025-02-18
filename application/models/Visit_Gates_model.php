@@ -9,15 +9,16 @@ class Visit_Gates_model extends CI_Model
 
    function visit_gateslisting($offset=0, $limit=30, $id=false)
    {
-     $query = "SELECT  visit_gates.* 
-				FROM visit_gates
+       $query = "SELECT  vt.* , t.tenant_name
+				FROM visit_gates vt LEFT JOIN tenant t ON vt.tenant_id = t.id
 			  ";
+
 	 $query .= " ";
 	 $query .= " WHERE 1=1  ";
 
 	if($id)     
     {
-      $query .= " AND  visit_gates.id  = ".$id."";
+      $query .= " AND  vt.id  = ".$id."";
     }
 								
 		$executionTotal = $this->db->query($query)->num_rows();
