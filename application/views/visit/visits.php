@@ -96,13 +96,13 @@
                       <th class="sorting" role="columnheader">Transport</th>
                       <th class="sorting" role="columnheader">Vehicle Number</th>
                       <th class="sorting" role="columnheader">Branches</th>
-                      <th class="sorting" role="columnheader">Officers</th>
-                      <th class="sorting" role="columnheader">Issued Card</th>
+                      <th class="sorting" role="columnheader">Officer Name</th>
+                      <th class="sorting" role="columnheader">No. of Minors</th>
                       <th class="sorting" role="columnheader">Company From</th>
                       <th class="sorting" role="columnheader">Check In</th>
                       <th class="sorting" role="columnheader">Check Out</th>
                       <th class="sorting" role="columnheader">Visit Date</th>
-                      <th class="sorting" role="columnheader">Location</th>
+                      <th class="sorting" role="columnheader">Allowed Gate</th>
                       <th class="sorting" role="columnheader">Status</th>
 <!--                        <th class="sorting" role="columnheader">Next Location</th>-->
 <?php //if(sessiondata('login_user_type')!="VIEW_ONLY") { ?>

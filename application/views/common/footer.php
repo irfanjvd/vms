@@ -830,6 +830,7 @@ $(document).ready(function() {
         ,"fnRowCallback": function( nRow, aData, iDisplayIndex) {
             var endTime = new Date();
             visit_date = aData.visit_checkin;
+            visit_status = aData.status;
             //visit_date = visit_date.replace(/-/g, '/');
             visit_checkout_date = aData.visit_checkout.replace(/-/g, '/');
 //                   console.log(visit_checkout_date);
@@ -856,9 +857,29 @@ $(document).ready(function() {
             //console.log(startTime);
             console.log(difference);
             console.log("mm="+resultInMinutes);
-            if(resultInMinutes >= 10  && isNaN(timestamp)==true){
-                $('td', nRow).closest('tr').css('background', '#ED4337');
+            /*switch (visit_status) {
+                case 'Pending':
+                    bgColor = (visit_date.length > 0) ? '#FFFF00' : '#0000FF';
+                    break;
+                case 'Approved':
+                    bgColor = ''; break;
+                case 'Rejected':
+                    bgColor = ''; break;
+                case 'Blacklisted':
+                    bgColor = ''; break;
+                default:
+                    bgColor = '#ED4337';
+            }*/
+            // console.log('visit_status:' + visit_status + ' visit_date:' + visit_date);
+            if (visit_status === '<span class="btn btn-warning">Pending</span>') {
+                bgColor = (visit_date !== null) ? '#FFFF00' : '#0000FF';
+            } else if (resultInMinutes >= 10  && isNaN(timestamp)==true){
+                // critical check
+                var bgColor = '#ED4337';
             }
+
+            $('td', nRow).closest('tr').css('background', bgColor);
+
             return nRow;
         }
 
@@ -868,11 +889,11 @@ $(document).ready(function() {
             {column_number : 4, filter_type:"text", filter_container_id: "renderingIdentityNoFilter",filter_default_label: "Visitor Identity No"},
             {column_number : 7, filter_type:"text", filter_container_id: "renderingVehicleNoFilter",filter_default_label: "Visitor Vehicle No"},
             {column_number : 8 ,filter_container_id: "renderingTenantFilter",filter_default_label: "Branch",data:getTenants()},
-            {column_number : 10, filter_type:"text", filter_container_id: "renderingIssuedCardFilter",filter_default_label: "Issued Card"},
+            {column_number : 10, filter_type:"text", filter_container_id: "renderingIssuedCardFilter",filter_default_label: "No. of Minors"},
             {column_number : 11, filter_type:"text", filter_container_id: "renderingCompanyFromFilter",filter_default_label: "Company From"},
             {column_number : 13, filter_container_id: "renderingCheckoutFilter",filter_default_label: "Check Out", data: ["Not Checkout", "Critical"]},
             {column_number : 14, filter_type:"range_date", filter_container_id: "renderingDateFilter",date_format: 'YYYY-MM-DD',datepicker_type: 'bootstrap-datetimepicker',filter_default_label: "Visit Date"},
-            {column_number : 15, filter_container_id: "renderingLocationFilter",filter_default_label: "Location",data:getLocations()}
+            {column_number : 15, filter_container_id: "renderingLocationFilter",filter_default_label: "Allowed Gate",data:getLocations()}
 
         ]);
     <?php

@@ -60,7 +60,10 @@
                     <div class="row">
                             <div class="col-xs-3 checkout marginTop20"  >
                                     <label class="form_label">Check In Time:</label>
-                                    <input type="text" class="form-control checkin_datepicker" placeholder="Check In Time" name="visit_checkin" id="visit_checkin" value="<?php echo ($info['visit_checkin'])?$info['visit_checkin']:''; ?>" readonly="">
+                                    <input type="text" class="form-control checkin_datepicker" placeholder="Check In Time"
+                                           name="visit_checkin" id="visit_checkin"
+                                           value="<?php echo isset($info['visit_checkin']) ? $info['visit_checkin']:''; ?>"
+                                           readonly="">
                                 </div>
 
                         <!-- <div class="col-xs-3">
