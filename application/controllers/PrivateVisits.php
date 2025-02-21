@@ -193,8 +193,11 @@ class PrivateVisits extends CI_Controller
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
+            $response = ['total' => 0];
             $result = $this->common_model->find("notifications", "*", true, array('id' => 1));
-            $response['total'] = $result['total'];
+            if (is_array($result)) {
+                $response['total'] = $result['total'];
+            }
             $response['status'] = 'success';
             $response['user_type'] = $session_data['login_user_type'];
         } else {

@@ -67,14 +67,14 @@ if(!empty($visit_info)) {
         <tr>
             <td><b>Visitor Name : </b></td>
             <td><?php echo $visit_info['visitor_name'];  ?></td>
-            <td><b>Address : </b></td>
-            <td><?php echo $visit_info['visitor_address'];  ?></td>
+            <td><b>Visit Type : </b></td>
+            <td><?php echo $visit_info['visit_type'];  ?></td>
         </tr>
         <tr>
-            <td><b>Tenant : </b></td>
-            <td><?php echo $visit_info['visit_to_tenant'];  ?></td>
-            <td><b>Employee : </b></td>
-            <td><?php echo $visit_info['visit_to_employee'];  ?></td>
+            <td><b>Branch : </b></td>
+            <td><?php echo $visit_info['tenant_name'];  ?></td>
+            <td><b>Officer : </b></td>
+            <td><?php echo $visit_info['officer_name'];  ?></td>
         </tr>
         <tr>
             <td><b>Transport : </b></td>
@@ -91,8 +91,8 @@ if(!empty($visit_info)) {
         <tr>
             <td><b>Visit From Company : </b></td>
             <td><?php echo $visit_info['visit_from_company'];  ?></td>
-            <td><b>Issued Card : </b></td>
-            <td><?php echo $visit_info['visit_issued_card'];  ?></td>
+            <td><b>No. of Minors: </b></td>
+            <td><?php echo $visit_info['number_of_minors'];  ?></td>
         </tr>
         <tr>
             <td><b>Identity Type : </b></td>

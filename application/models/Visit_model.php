@@ -355,6 +355,27 @@ Class Visit_model extends CI_Model {
         return $query->result_array();
     }
 
+    function getVisitorByVisitId($visit_id){
+        $this->db->select("vp.visitor_id,vp.visitor_name,v.visit_id,v.visit_checkin,v.visit_checkout,vp.visitor_identity_no,vp.visitor_picture");
+        $this->db->from("visit v");
+        $this->db->join('visitor_profile vp', 'vp.visitor_id = v.visit_visitor_id_fk');
+        $this->db->where('v.visit_id', $visit_id);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    function getVisitorTrack($visitor_id,$sort='desc'){
+        $this->db->select("vt.*,v.visit_checkin,v.visit_checkout,concat(u.first_name, ' ',u.last_name) as officer_name,v.status,typ.name as visit_type");
+        $this->db->from("visit_track vt");
+        $this->db->join('visit v', 'v.visit_id = vt.visit_id_fk');
+        $this->db->join('visit_types typ', 'typ.id = v.visit_types','left');
+        $this->db->join('user u', 'u.id = vt.user_id');
+        $this->db->where('v.visit_visitor_id_fk', $visitor_id);
+        $this->db->order_by('vt.created_datetime', $sort);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
     function get_all_visits_dashboard($limit,$length,$type){
         if($type=="today") {
             $date1 = date('Y-m-d');
@@ -458,10 +479,13 @@ Class Visit_model extends CI_Model {
 
     function get_visit_info($visit_id){
 
-        $this->db->select("v.*,vp.*,l.location as location_title");
+        $this->db->select("v.*,vp.*,l.location as location_title,typ.name as visit_type,concat(u.first_name, ' ',u.last_name) as officer_name,t.tenant_name");
         $this->db->from("visit v");
         $this->db->where('v.visit_id', "$visit_id");
+        $this->db->join('user u', 'u.id = v.created_by');
+        $this->db->join('tenant t', 't.id = v.tenant_id');
         $this->db->join('visitor_profile vp', 'vp.visitor_id = v.visit_visitor_id_fk');
+        $this->db->join('visit_types typ', 'typ.id = v.visit_types','left');
         $this->db->join('locations l', 'l.id = v.location_id', 'left');
 
         $this->db->order_by('v.visit_id', "DESC");

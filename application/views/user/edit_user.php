@@ -10,7 +10,7 @@
           </ul>
           
         </div>
-        <h2>Add User <span>VMS - Visitors Management System</span></h2>
+        <h2>Edit User <span>VMS - Visitors Management System</span></h2>
       </div>
       
      
@@ -24,7 +24,7 @@
             
             <!-- tile header -->
             <div class="tile-header dvd dvd-btm">
-              <h1 class="custom-font"><strong>Add </strong>User</h1>
+              <h1 class="custom-font"><strong>Edit </strong>User</h1>
               
             </div>
             <!-- /tile header --> 
@@ -91,11 +91,11 @@
                     </div>
                           <!--owner profile form row ends here-->
                           
-                    <div class="row" style="margin-top:20px;">
+                    <!--<div class="row" style="margin-top:20px;">
                             <div class="col-xs-3">
                               <label class="form_label">Password :</label>
-                              <input type="password" class="form-control" name="password" placeholder="Password" value="">
-                            </div>
+                              <input type="password" class="form-control" autocomplete="off" name="password" placeholder="Password" value="">
+                            </div>-->
                         <?php
                         /*if($_SESSION['logged_in']['login_user_type']=="SUPER") {
                             ?>

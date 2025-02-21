@@ -120,7 +120,7 @@
                                         $trigger=1;
                                     }
                                     ?>
-                                    <option <?php echo ($info['visit_to_tenant']==$val['tenant_name'])?"selected":""; ?> value="<?php echo $val['tenant_name']; ?>"><?php echo $val['tenant_name']; ?></option>
+                                    <option <?php echo ($info['tenant_id']==$val['id'])?"selected":""; ?> value="<?php echo $val['tenant_name']; ?>"><?php echo $val['tenant_name']; ?></option>
                                 <?php
                                 }
 
@@ -137,8 +137,16 @@
                                 ?>
                             </select>
                         </div>
+                        <div class="col-xs-2 col-md-2">
+                            <label class="form_label">Visitor Cell No :</label>
+
+                            <input type="hidden" name="visitor_id" value="<?php echo (isset($info['visitor_id'])) ? $info['visitor_id']:""; ?>">
+                            <input type="hidden" name="old_visitor_cell_no" value="<?php echo (isset($info['visitor_cell_no'])) ? $info['visitor_cell_no']:""; ?>">
+                            <input type="text" class="form-control" placeholder="03009999999" name="visitor_cell_no"
+                                   id="visitor_cell_no" value="<?php echo (isset($info['visitor_cell_no'])) ? $info['visitor_cell_no']:""; ?>">
+                        </div>
                         <div class="col-xs-3 hidden">
-                            <label class="form_label">Employee:</label>
+                            <label class="form_label">Officer:</label>
 <!--                            <input type="text" class="form-control" placeholder="visit to employee" name="visit_to_employee" id="visit_to_employee" value="--><?php //echo (isset($info['visit_to_employee']))?$info['visit_to_employee']:""; ?><!--">-->
                             <select class="form-control" name="visit_to_employee" id="visit_to_employee">
                                 <!--                                        <option value="Sardar Ali Syed">Sardar Ali Syed</option>-->
@@ -153,6 +161,15 @@
                         <div class="col-xs-6">
                             <label class="form_label">Reason for Visit :</label>
                             <textarea class="form-control" id="visit_reason" name="visit_reason" placeholder="Enter Comments" style="width:100%; height:100px; border-bottom:" ><?php echo (isset($info['visit_reason']))?trim($info['visit_reason']):"";  ?></textarea>
+                        </div>
+                        <div class="col-xs-6">
+                            <label class="form_label">Visitor Photo :</label><br/>
+                            <?php if(!empty($info['visitor_picture'])) { ?>
+                                <img src="<?php echo $info['visitor_picture']; ?>" style="width: 124px;height:124px;border: 1px solid black;" alt="no image">
+                            <?php } else { ?>
+                            <img id="img_visitor" src="<?php echo base_url().'assets/data/visitor_profile/no_image.png'; ?>"
+                                 style="width: 124px;height:124px;border: 1px solid blue;"/>
+                            <?php } ?>
                         </div>
 
                     </div>

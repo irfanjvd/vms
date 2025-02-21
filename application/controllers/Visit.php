@@ -88,11 +88,21 @@ class Visit extends CI_Controller
 
 
                 if ($message == '') {
+                    if (!empty($_POST['visitor_cell_no']) && $_POST['visitor_cell_no'] != $_POST['old_visitor_cell_no']) {
+                        $visitor_cell_no = $_POST['visitor_cell_no'];
+                        $this->db->where('visitor_id',$_POST['visitor_id']);
+                        $this->db->update('visitor_profile', ['visitor_cell_no' => $visitor_cell_no]);
+                    }
+                    unset($_POST['visitor_id']);
+                    unset($_POST['visitor_cell_no']);
+                    unset($_POST['old_visitor_cell_no']);
+
                     //update user...
                     $result = $this->visit_model->update_visit($_POST, $id);
                     if ($result) {
                         $this->log_model->create_log("EDIT VISIT", $_POST, $id);
                         $this->session->set_flashdata('message', array('message' => 'Visit Info Updated Successfully !!!', 'type' => 'success'));
+                        redirect(base_url('visit/edit_visit/'.$id));
                     }
 
                 } else {
@@ -233,7 +243,7 @@ class Visit extends CI_Controller
                 'visit_transport_registration_no' => strtoupper($val['visit_transport_registration_no']),
                 'visit_to_tenant' => $val['tenant_name'],
                 'visit_to_employee' => $val['employee_name'],
-                'visit_issued_card' => $val['visit_issued_card'],
+                'number_of_minors' => $val['number_of_minors'],
                 'visit_checkin' => $visit_checkin,
                 //'visit_checkout' => $this->create_checkout_link($val,$id),
                 'visit_date' => $val['visit_date'],
@@ -266,9 +276,16 @@ class Visit extends CI_Controller
                 // if($val['status'] == 'Pending')
                 // {
                 //     $data2['aaData'][$loop_index]['action'] = $this->create_visits_edit_button($id);
-                // }else{
+                // } else {
                 //         $data2['aaData'][$loop_index]['action'] = '';
-                //      }
+                // }
+
+                if (empty($val['visitor_picture']) || empty($val['visit_transport_registration_no'])
+                    || empty($val['visit_reason'])|| empty($val['visitor_cell_no'])) {
+                    $url = base_url() . "visit/edit_visit/$id";
+                    $editLink = "<a href='$url'><i class='fa fa-pencil'></i></a>";
+                    $data2['aaData'][$loop_index]['action'] .= $editLink;
+                }
 
             } else {
                 $data2['aaData'][$loop_index]['action'] = '';
@@ -364,8 +381,9 @@ class Visit extends CI_Controller
     {
         //get visit track info
         $data = array();
-        $result = $this->visit_model->get_visit_track($visit_id);
-        $data['track_info'] = $result;
+        $visitor = $this->visit_model->getVisitorByVisitId($visit_id); //print_r($visitor);
+        $visits_log = $this->visit_model->getVisitorTrack($visitor[0]['visitor_id']);
+        $data['track_info'] = ['visitor' => $visitor, 'logs' => $visits_log];
         $this->load->view('visit/track_visit', $data);
     }
 
@@ -392,7 +410,6 @@ class Visit extends CI_Controller
     public function create_visits_edit_button($id)
     {
         $session_data = $this->session->userdata('logged_in');
-        $url = base_url() . "visit/edit_visit/$id";
         $track_url = base_url() . "visit/track_visit/$id";
         $visit_info_url = base_url() . "visit/visit_info/$id";
         $visit_blacklist = base_url() . "visit/black_list/$id";
@@ -402,7 +419,7 @@ class Visit extends CI_Controller
 
 //        if($session_data['login_user_type']=="SUPER"){
         $links = "
-            <a href='$url'><i class='fa fa-pencil'></i></a>
+            
             <a href='javascript:void(0)' rel='$track_url' onclick='open_track(rel)' title='Open track'>
                 <i class='fa fa-book track_color_box' ></i>
             </a>
@@ -466,7 +483,7 @@ class Visit extends CI_Controller
         $result = $this->visit_model->get_single_visit_by_id($id); //print_r($result);
 //echo "<pre>".print_r($result); die();
         if ($result['visit_checkin'] == "") {
-            $links .= "<a href='$edit_visit'>Check-in</a>";
+//            $links .= "<a href='$edit_visit'>Check-in</a>";
         }
 
 

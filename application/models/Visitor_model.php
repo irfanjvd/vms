@@ -290,18 +290,24 @@ Class Visitor_model extends CI_Model {
         return $result=$this->db->update('private_visits', $data);
 	}
 
-    public function visit_types()
+    public function visit_types($tenant_id=false)
     {
         $this->db->select('id, name'); // Replace 'id' and 'name' with your actual column names
         $this->db->from('visit_types'); // Replace 'your_table_name' with your table name
+        if ($tenant_id) {
+            $this->db->where('tenant_id', $tenant_id);
+        }
         $query = $this->db->get();
         return $query->result_array(); // Returns the data as an array
     }
 
-    public function visit_gates()
+    public function visit_gates($tenant_id=false)
     {
         $this->db->select('id, name'); // Replace 'id' and 'name' with your actual column names
         $this->db->from('visit_gates'); // Replace 'your_table_name' with your table name
+        if ($tenant_id) {
+            $this->db->where('tenant_id', $tenant_id);
+        }
         $query = $this->db->get();
         return $query->result_array(); // Returns the data as an array
     }

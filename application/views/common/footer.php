@@ -763,7 +763,7 @@ $(document).ready(function() {
             ,{"mDataProp":"visit_transport_registration_no","bSortable": false}
             ,{"mDataProp":"visit_to_tenant","bSortable": false}
             ,{"mDataProp":"visit_to_employee","bSortable": false}
-            ,{"mDataProp":"visit_issued_card","bSortable": false}
+            ,{"mDataProp":"number_of_minors","bSortable": false}
             ,{"mDataProp":"visit_from_company","bSortable": false}
             ,{"mDataProp":"visit_checkin","bSortable": false}
             ,{"mDataProp":"visit_checkout","bSortable": false}

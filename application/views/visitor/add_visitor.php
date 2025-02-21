@@ -292,13 +292,20 @@
                             <div class="row" >
                                 <div class="col-xs-2"></div>
                                 <div class="col-xs-10 marginTop20">
-                                    <label class="form_label ">Gate <span class="text-red">*</span>:</label>
 
-                                    <input type="radio" name="gate_number" value="" checked="checked" /> Any
-                                    <?php if($visit_gates) { foreach ($visit_gates as $gate) { ?> 
-                                    <input type="radio" name="gate_number" value="<?php echo $gate['id']; ?>" /> <?php echo $gate['name']; ?>
-                                    <?php } } ?>
-                                     
+                                    <label class="form_label">Gate <span class="text-red">*</span>:</label>
+                                    <label class="form_label"><input type="radio" name="gate_number" value="" checked="checked"/> Any</label>
+
+                                    <span id="radioContainer">
+                                        <?php if ($visit_gates) {
+                                            foreach ($visit_gates as $gate) { ?>
+                                                <label>
+                                                    <input type="radio" name="gate_number"
+                                                       value="<?php echo $gate['id']; ?>"/> <?php echo $gate['name']; ?>
+                                                </label>
+                                            <?php }
+                                        } ?>
+                                    </span>
                                 </div>
                             </div>
                             
@@ -643,6 +650,32 @@ $( document ).ready(function() {
         }
 
     });
+
+$('#tenant_id').change(function () {
+    $.getJSON("<?php echo base_url() . 'visitor/get_types_and_gates/'; ?>" + $('#tenant_id').val(), {
+        ajax: 'true'
+    }, function (data) {
+        vt = data.visit_types;
+        var options = '<option value=""></option>';
+        for (var i = 0; i < vt.length; i++) {
+            options += '<option value="' + vt[i].id + '">' + vt[i].name + '</option>';
+        }
+        $("select#visit_types").html(options);
+
+        let container = $("#radioContainer");
+        container.empty(); // Clear existing radio buttons
+        let radioHtml = "";
+        $.each(data.visit_gates, function (index, gate) {
+            radioHtml += `
+                        <label>
+                            <input type="radio" name="gate_number" value="${gate.id}"> ${gate.name}
+                        </label>
+                    `;
+        });
+        container.html(radioHtml);
+
+    });
+});
 
 
 

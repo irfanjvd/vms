@@ -106,7 +106,7 @@ class User extends CI_Controller
 
                 $this->session->set_userdata('logged_in', $sess_array);
 
-                if ($result[0]->type == "BARRIER") {
+                if ($result[0]->type == "BARRIER") { die('user controller line 109');
                     redirect(base_url() . 'visitor/private_visits');
                 }
 
@@ -295,7 +295,7 @@ class User extends CI_Controller
                 if (isset($_POST['password']) && $_POST['password'] == '') {
                     unset($_POST['password']);
                 } else {
-                    $_POST['password'] = md5($_POST['password']);
+//                    $_POST['password'] = md5($_POST['password']);
                 }
 
                 //upload profile picture...

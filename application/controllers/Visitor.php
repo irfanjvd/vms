@@ -1029,8 +1029,8 @@ class Visitor extends CI_Controller {
 
                 $member_info = $this->common_model->find("private_visits", "private_visits.tenant_id,private_visits.agenda,private_visits.employee_id as emp_id,pm.*,te.employee_name,te.id as system_employee_id", true, array('pm.id' => $id), $joins, $joins_on);
 
-                if($member_info && !empty($member_info))
-                {
+                if($member_info && !empty($member_info)) {
+
                     $cnic = $member_info['cnic'];
                     //check this member already exist in our system or not???
                     $visitor_profile = $this->common_model->find("visitor_profile", "*", true, array('visitor_identity_no' => $cnic));
@@ -1041,18 +1041,15 @@ class Visitor extends CI_Controller {
                         $member_info['already_member'] = 0;
                     }
                     //get tenant name...
-                    if(isset($member_info['tenant_id']))
-                    {
-                         $tenant_result = $this->common_model->find("tenant", "*", true, array('id' => $member_info['tenant_id']));
-                     }else{
-                             $tenant_result = [];  
-                          }
+                    if (isset($member_info['tenant_id'])) {
+                        $tenant_result = $this->common_model->find("tenant", "*", true, array('id' => $member_info['tenant_id']));
+                    } else {
+                        $tenant_result = [];
+                    }
                    
                     $member_info['tenant_name'] = is_array($tenant_result) && !empty($tenant_result) ? $tenant_result['tenant_name'] : '';
                     $data['member_info']=$member_info;
                 }
-
-                
 			}
             $data['locations']=$locations;
             $data['cities']=$cities;
@@ -1060,8 +1057,8 @@ class Visitor extends CI_Controller {
             $data['issue_card_required']=$issue_card_required;
 			$data['private_visit_check'] = $private_visit_check;
             $data['page_title'] = 'Add New Visitor';
-            $data['visit_types'] = $this->visitor_model->visit_types(); //print_r($data['visit_types']); die();
-            $data['visit_gates'] = $this->visitor_model->visit_gates();
+            $data['visit_types'] = $this->visitor_model->visit_types($session_data['login_tenant_id']); //print_r($data['visit_types']); die();
+            $data['visit_gates'] = $this->visitor_model->visit_gates($session_data['login_tenant_id']);
 
             $this->load->view('common/header', $data);
             $this->load->view('visitor/add_visitor',$data);
@@ -1072,6 +1069,13 @@ class Visitor extends CI_Controller {
         }else{
             redirect(base_url());
         }
+    }
+
+    public function get_types_and_gates($tenant_id)
+    {
+        $response = ['visit_types' => $this->visitor_model->visit_types($tenant_id),
+            'visit_gates' => $this->visitor_model->visit_gates($tenant_id)];
+        echo json_encode($response);
     }
     
     public function takepicture() {
