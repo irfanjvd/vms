@@ -36,8 +36,9 @@ Class User_model extends CI_Model {
      * @author Zahid Nadeem <zahidiubb@yahoo.com>
      */
     function get_user($id) {
-        $this->db->select('u.*');
+        $this->db->select('u.*, te.tenant_id');
         $this->db->from('user u');
+        $this->db->join('tenant_employees te','te.user_id=u.id','left');
         $this->db->where('u.id', $id);
         $this->db->where('u.is_deleted', 0);
         $query = $this->db->get();
@@ -334,7 +335,20 @@ Class User_model extends CI_Model {
 
     public function add_user($data) {
         $this->db->insert('user', $data);
-        return $this->db->insert_id();
+        $user_id = $this->db->insert_id();
+
+        $this->db->insert('tenant_employees', [
+            'user_id' => $user_id,
+            'tenant_id' => $data['branch_id'],
+            'employee_name' => $data['first_name'] . ' ' . $data['last_name'],
+            'status' => 1,
+            'created_datetime' => date('Y-m-d H:i:s')
+        ]);
+        $employee_id = $this->db->insert_id();
+
+        $this->db->where('id', $employee_id)
+            ->update('tenant_employees', ['employee_id' => $employee_id]);
+        return $user_id;
     }
 
     public function update_user($data,$user_id) {

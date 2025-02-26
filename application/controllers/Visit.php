@@ -135,7 +135,6 @@ class Visit extends CI_Controller
             // 	redirect(base_url().'visitor/private_visits');
             // }
 
-
             $data = array();
             $data['page_title'] = 'Visits list';
             $this->load->view('common/header', $data);
@@ -223,8 +222,9 @@ class Visit extends CI_Controller
                     break;
             }
             if ($val['status'] == 'Approved' && $val['visit_checkin'] == "") {
-                $edit_visit = base_url() . "visitor/edit_visitor/".$val['visitor_id'];
-                $visit_checkin = "<a href='$edit_visit'>Check-in</a>";
+//                $edit_visit = base_url() . "visitor/edit_visitor/".$val['visitor_id']."?vid=".$val['visit_id'];
+//                $visit_checkin = "<a href='$edit_visit'>Check-in</a>";
+                $visit_checkin = "<a onclick='opencolorbox(rel)' href='javascript:void(0)' rel='checkin_modal?id=".$val['visit_id']."' id='checkoutbox' class='checkoutbox' style='text-decoration: none;'> Check-in</a>";
             } else {
                 $visit_checkin = $val['visit_checkin'];
             }
@@ -564,6 +564,49 @@ class Visit extends CI_Controller
         );
         echo json_encode($jsone_array);
         exit;
+    }
+
+    function checkin_modal() {
+        $data = array();
+        $data['id'] = $_GET['id'];
+        $visit = $this->visit_model->get_visit_by_id($data['id']);
+        $data['visit'] = $visit;
+
+        $this->load->view('visit/checkin_modal', $data);
+    }
+
+    function checkin_store()
+    {
+        $data = array();
+
+        if (isset($_POST['visit_id']) && !empty($_POST['visit_checkin'])) {
+            $data['id'] = $_POST['visit_id'];
+            $update_visit = array(
+                'visit_checkin' => ($this->input->post('visit_checkin') == "") ? date("Y-m-d H:i:s") :
+                    trim($this->input->post('visit_checkin')),
+            );
+            $id = isset($_POST['visit_id']) ? $_POST['visit_id'] : 0;
+            if ($this->db->update('visit', $update_visit, array('visit_id' => $id))) {
+                $session_data = $this->session->userdata('logged_in');
+                $this->log_model->create_log("VISIT CHECK_IN", $update_visit, $id);
+                $add_track = array(
+                    "visit_id_fk" => $id,
+                    "user_id" => $session_data['login_user_id'],
+                    "location_id" => $session_data['login_user_location'],
+                    "location_title" => $session_data['login_user_location_title'],
+                    "action" => "CHECK_IN"
+                );
+                $this->db->insert('visit_track', $add_track);
+                $message = 'Visit checked in successfully!'; $status = true;
+                $this->session->set_flashdata('message', array('message' => $message, 'type' => 'success'));
+            } else {
+                $message = 'Unable to update record.'; $status = false;
+                $this->session->set_flashdata('message', array('message' => $message, 'type' => 'error'));
+            }
+            echo json_encode(['status' => $status, 'message' => $message], JSON_NUMERIC_CHECK);
+//            redirect(base_url() . 'visit/visits');
+            exit();
+        }
     }
 
     function checkout()

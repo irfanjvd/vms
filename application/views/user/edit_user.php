@@ -112,7 +112,36 @@
                             <?php
                         }*/
                         ?>
-                    </div>
+
+              <div class="row" style="margin-top:20px;">
+                  <div class="col-xs-3">
+                      <label class="form_label">Type:</label>
+                      <select class="form-control" disabled onchange="populateBranch(this.value)" id="userTypes">
+                          <option value="SUPER" <?php echo $info['type']=='SUPER' ? 'selected':''; ?> >Admin</option>
+                          <option value="NORMAL" <?php echo $info['type']=='NORMAL' ? 'selected':''; ?> >Operator</option>
+                          <option value="TENANT" <?php echo $info['type']=='TENANT' ? 'selected':''; ?> >Tenant/Department</option>
+                          <option value="VIEW_ONLY" <?php echo $info['type']=='VIEW_ONLY' ? 'selected':''; ?> >View Only</option>
+                      </select>
+                  </div>
+                  <div class="col-xs-3" id="userBranch">
+                      <label class="form_label">Branches: <span class="redcolor">*</span></label>
+                      <select class="form-control" disabled id="tenant_id" onchange="get_employees(value)">
+                            <option ></option>
+                          <?php
+                          foreach ($tenants as $key => $val) {
+                              ?>
+                              <option <?php if (isset($member_info) && !empty($member_info) && $member_info['tenant_id'] == $val['id']) {
+                                  echo "selected";
+                              } else if (isset($info['tenant_id']) && $info['tenant_id'] == $val['id']) {
+                                  echo "selected";
+                              } ?> value="<?php echo $val['id']; ?>"><?php echo $val['tenant_name']; ?></option>
+                              <?php
+                          }
+                          ?>
+                      </select>
+                  </div>
+              </div>
+            </div>
                           <!--owner profile form row ends here-->
 
                           <div class="row" style="margin-top:20px;">

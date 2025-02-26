@@ -236,8 +236,6 @@ class User extends CI_Controller
                 } else {
                     $this->session->set_flashdata('message', array('message' => "$message", 'type' => 'error'));
                 }
-
-
             }
 
             $data = array();
@@ -247,17 +245,16 @@ class User extends CI_Controller
                 $data['info'] = $_POST;
             }
 
-            $this->load->view('common/header', $data);
-
             if ($session_data['login_user_type'] == "SUPER") {
+                $this->load->view('common/header', $data);
                 $this->load->view('user/add_user');
+                $this->load->view('common/footer');
             } else if ($session_data['login_user_type'] == "VIEW_ONLY") {
                 redirect(base_url() . 'visit/visits');
             } else {
                 redirect(base_url() . 'visitor/addvisitor');
             }
 
-            $this->load->view('common/footer');
         } else {
             redirect("visitor/visitors");
         }
@@ -353,6 +350,7 @@ class User extends CI_Controller
             $data['page_title'] = "Edit User";
             //get users details...
             $result = $this->user_model->get_user($id);
+            $data['tenants'] = $this->tenant_model->get_all_tenants();
             $data['info'] = $result;
             $this->load->view('common/header', $data);
             $this->load->view('user/edit_user', $data);

@@ -35,6 +35,9 @@
 					'enctype' => "multipart/form-data"
 				);
 				echo form_open('', $attributes);
+				if ($_GET['vid']) {
+                    echo form_input(['name' => 'visit_id', 'value' => $_GET['vid'], 'type' => 'hidden']);
+                }
 			?>
               <!--<form name="edit_visitor" method="post" enctype="multipart/form-data" action="">-->
             <div class="tile-body table-custom">
@@ -63,7 +66,7 @@
                                     <input type="text" class="form-control checkin_datepicker" placeholder="Check In Time"
                                            name="visit_checkin" id="visit_checkin"
                                            value="<?php echo isset($info['visit_checkin']) ? $info['visit_checkin']:''; ?>"
-                                           readonly="">
+                                           >
                                 </div>
 
                         <!-- <div class="col-xs-3">

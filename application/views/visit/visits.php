@@ -140,6 +140,37 @@
 
 
 <script>
+    function checkinOnClick(id) {
+        console.log('vv:' + $('#visit_checkin').val());
+        if ($('#visit_checkin').val() === '') {
+            $('#modal-alert .alert').html('Please select checkin date').show();
+        } else {
+            $('#modal-alert .alert').html('').hide();
+        }
+        var csrf_value = '<?php echo $this->security->get_csrf_hash(); ?>';
+        $.ajax({
+            method: "POST",
+            url: "<?php echo base_url();?>visit/checkin_store",
+            data: "visit_id=" + id + "&visit_checkin=" + $('#visit_checkin').val() + "&csrf_test_name=" + csrf_value,
+            success: function (data) {
+                if (!data) {
+                    console.error("Empty response from server.");
+                    return;
+                }
+                try {
+                    var response = JSON.parse(data);
+                    console.log("Parsed JSON:", response);
+                    if (response.status) {
+                        window.open('<?php echo base_url('visit/visits');?>', '_self');
+                    }
+                } catch (error) {
+                    console.error("JSON Parse Error:", error.message);
+                    console.error("Response:", data); // Debugging
+                }
+            }
+
+        });
+    }
 
 
 </script>

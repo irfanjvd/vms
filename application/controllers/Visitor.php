@@ -111,18 +111,18 @@ class Visitor extends CI_Controller {
             if (!empty($_POST)) 
             {
                 $update_visit = array(
-                   'visit_checkin'         => ($this->input->post('visit_checkin') == "") ? date("Y-m-d H:i:s") : trim($this->input->post('visit_checkin')),
-                                    );
-
-                if($this->db->update('visit', $update_visit, array('visit_id' => $id)))
-                {
-                    $this->log_model->create_log("EDIT VISIT",$update_visit,$id);
+                    'visit_checkin' => ($this->input->post('visit_checkin') == "") ? date("Y-m-d H:i:s") :
+                        trim($this->input->post('visit_checkin')),
+                );
+                $id = isset($_POST['visit_id']) ? $_POST['visit_id'] : $id;
+                if ($this->db->update('visit', $update_visit, array('visit_id' => $id))) {
+                    $this->log_model->create_log("EDIT VISIT", $update_visit, $id);
                     $this->session->set_flashdata('message', array('message' => 'Visit Info Updated Successfully !!!', 'type' => 'success'));
-                         redirect(base_url().'visit/visits');
-                }else{
-                        $this->session->set_flashdata('message', array('message' => 'Unable to update record.', 'type' => 'error'));
-                     }
-
+                    redirect(base_url() . 'visit/visits');
+                } else {
+                    $this->session->set_flashdata('message', array('message' => 'Unable to update record.', 'type' => 'error'));
+                }
+//                print_r($_POST); die();
 //                 $visitor_type=$_POST['visitor_type'];
 
 

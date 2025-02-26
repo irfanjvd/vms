@@ -124,7 +124,7 @@ if ($this->session->userdata('logged_in')) {
             "bAutoWidth": false
         });
 		
-		setInterval(function(){ 
+		/*setInterval(function(){
 		var csrf_value = '<?php echo $this->security->get_csrf_hash(); ?>';
 			$.ajax({
 				method: "POST",
@@ -151,7 +151,7 @@ if ($this->session->userdata('logged_in')) {
 
 			});
 			
-		}  , 5000 );
+		}  , 5000 );*/
 		
 		
     });
