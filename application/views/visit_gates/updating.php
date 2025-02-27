@@ -44,7 +44,7 @@
                                         <select name='tenant_id' class='form-control'>
                                             <?php foreach ($tenants as $tenant) { ?>
                                                 <option value="<?php echo $tenant->id; ?>"
-                                                    <?php $tenant->id == $rec->tenant_id ? 'selected' : '' ?> ><?php echo $tenant->tenant_name; ?></option>
+                                                    <?php echo $tenant->id == $rec->tenant_id ? 'selected' : '' ?> ><?php echo $tenant->tenant_name; ?></option>
                                             <?php } ?>
                                         </select>
                                     </td>
