@@ -58,20 +58,38 @@ if (!empty($track_info)) {
     } else {
         $visit_status = "<font color='orange'>PENDING</font>";
     }
+    $identityLabel = 'CNIC';
+    $identityValue = '--';
+        if (!empty($visitor['visitor_identity_no'])) {
+            $identityLabel = 'CNIC';
+            $identityValue = $visitor['visitor_identity_no'];
+        } elseif (!empty($visitor['visitor_employee_card'])) {
+            $identityLabel = 'Employee Card';
+            $identityValue = $visitor['visitor_employee_card'];
+        } elseif (!empty($visitor['visitor_driving_license'])) {
+            $identityLabel = 'Driving License';
+            $identityValue = $visitor['visitor_driving_license'];
+        } elseif (!empty($visitor['visitor_passport_id'])) {
+            $identityLabel = 'Passport ID';
+            $identityValue = $visitor['visitor_passport_id'];
+        } elseif (!empty($visitor['visitor_family_no'])) {
+            $identityLabel = 'Family No';
+            $identityValue = $visitor['visitor_family_no'];
+        }
     ?>
     <h2>Visitor Track</h2>
 
     <table width="100%">
         <tr>
             <th style="text-align: left">Visitor Name</th>
-            <th style="text-align: left">CNIC</th>
+            <th style="text-align: left"><?php echo $identityLabel; ?></th>
             <th style="text-align: left">Total visits</th>
             <th style="text-align: left">Latest Visit Status</th>
             <td rowspan="2"><img src="<?php echo $visitor['visitor_picture']; ?>" width="80px" alt="no image"></td>
         </tr>
         <tr>
             <td><?php echo $visitor['visitor_name']; ?></td>
-            <td><?php echo $visitor['visitor_identity_no']; ?></td>
+            <td><?php echo $identityValue; ?></td>
             <td><?php echo $uniqueCount; ?></td>
             <td><?php echo $visit_status; ?></td>
 
@@ -103,7 +121,7 @@ if (!empty($track_info)) {
                 <?php echo $val['officer_name']; ?>
             </td>
             <td>
-                <?php echo $val['location_title']; ?>
+                <?php echo $val['tenant_name']; ?>
             </td>
             <td>
                 <?php echo $val['visit_type']; ?>

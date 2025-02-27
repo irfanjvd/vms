@@ -134,7 +134,7 @@ class Visit extends CI_Controller
             // if($session_data['login_user_type']=="TENANT"){
             // 	redirect(base_url().'visitor/private_visits');
             // }
-
+//            print_r($this->session->userdata('logged_in')); die;
             $data = array();
             $data['page_title'] = 'Visits list';
             $this->load->view('common/header', $data);
@@ -247,7 +247,7 @@ class Visit extends CI_Controller
                 'visit_checkin' => $visit_checkin,
                 //'visit_checkout' => $this->create_checkout_link($val,$id),
                 'visit_date' => $val['visit_date'],
-                'location' => $val['location'],
+                'location' => $val['allowed_gate'],
                 'status' => $current_status,
 //                'next_location' => $val['next_location'],
 //                'action' => $this->create_visits_edit_button($id)

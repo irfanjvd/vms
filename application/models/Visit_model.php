@@ -135,7 +135,7 @@ Class Visit_model extends CI_Model {
 		if($limit==null && $length==null){
 			$this->db->select('v.visit_id');	
 		}else{
-			$this->db->select('v.*,vp.*,l.location as location,nl.location as next_location,t.tenant_name,te.employee_name');	
+			$this->db->select('v.*,vp.*,vg.name as allowed_gate,l.location as location,nl.location as next_location,t.tenant_name,te.employee_name');
 		}
         
         $this->db->from('visit v');
@@ -189,6 +189,7 @@ Class Visit_model extends CI_Model {
             $to = date("Y-m-d", strtotime($dates[1]));
             $this->db->where("date(v.visit_checkin) BETWEEN '$from' AND '$to' ");
         }
+        $this->db->join('visit_gates vg', 'vg.id = v.gate_number', 'left');
         $this->db->join('locations l', 'l.id = v.location_id', 'left');
         $this->db->join('locations nl', 'nl.id = v.next_location_id', 'left');
         $this->db->join('visitor_profile vp', 'v.visit_visitor_id_fk = vp.visitor_id', 'left');
@@ -356,7 +357,9 @@ Class Visit_model extends CI_Model {
     }
 
     function getVisitorByVisitId($visit_id){
-        $this->db->select("vp.visitor_id,vp.visitor_name,v.visit_id,v.visit_checkin,v.visit_checkout,vp.visitor_identity_no,vp.visitor_picture");
+        $this->db->select("vp.visitor_id,vp.visitor_name,v.visit_id,v.visit_checkin,v.visit_checkout");
+        $this->db->select("vp.visitor_driving_license,vp.visitor_passport_id,vp.visitor_family_no");
+        $this->db->select("vp.visitor_identity_no,vp.visitor_employee_card,vp.visitor_picture");
         $this->db->from("visit v");
         $this->db->join('visitor_profile vp', 'vp.visitor_id = v.visit_visitor_id_fk');
         $this->db->where('v.visit_id', $visit_id);
@@ -365,9 +368,11 @@ Class Visit_model extends CI_Model {
     }
 
     function getVisitorTrack($visitor_id,$sort='desc'){
-        $this->db->select("vt.*,v.visit_checkin,v.visit_checkout,concat(u.first_name, ' ',u.last_name) as officer_name,v.status,typ.name as visit_type");
+        $this->db->select("vt.*,v.visit_checkin,v.visit_checkout,concat(u.first_name, ' ',u.last_name) as officer_name");
+        $this->db->select("v.status,typ.name as visit_type,t.tenant_name");
         $this->db->from("visit_track vt");
         $this->db->join('visit v', 'v.visit_id = vt.visit_id_fk');
+        $this->db->join('tenant t', 't.id = v.tenant_id','left');
         $this->db->join('visit_types typ', 'typ.id = v.visit_types','left');
         $this->db->join('user u', 'u.id = vt.user_id');
         $this->db->where('v.visit_visitor_id_fk', $visitor_id);

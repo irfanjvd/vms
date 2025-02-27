@@ -128,7 +128,8 @@ if(!empty($visit_info)) {
             <td><b>Visit CHECK IN : </b></td>
             <td><?php echo $visit_info['visit_checkin'];  ?></td>
             <td><b>Visit CHECK OUT : </b></td>
-            <td><?php echo (isset($visit_info['visit_checkout']) && $visit_info['visit_checkout']!="")?$visit_info['visit_checkout']:"Not Set";  ?></td>
+            <td><?php echo (isset($visit_info['visit_checkout']) && $visit_info['visit_checkout']!="")?
+                    $visit_info['visit_checkout'] : "No Action";  ?></td>
         </tr>
 
         </tbody>

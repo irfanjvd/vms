@@ -673,7 +673,8 @@ class Visitor extends CI_Controller {
                         'visit_transport_mode'  => trim($this->input->post('visit_transport_mode')),
                         'visit_transport_registration_no' => trim($this->input->post('visit_transport_registration_no')),
                         'tenant_id'             => trim($this->input->post('tenant_id')),
-                        'employee_id'           => trim($this->input->post('employee_id')),
+                        'employee_id'           => !empty($this->input->post('employee_id')) ?
+                            $this->input->post('employee_id') : $session_data['login_employee_id'],
                         'visit_issued_card'     => trim($this->input->post('visit_issued_card')),
                         'visit_from_company'    => trim($this->input->post('visit_from_company')),
                         'location_id'           => $session_data['login_user_location'],
@@ -878,8 +879,10 @@ class Visitor extends CI_Controller {
                                 "user_id" => $session_data['login_user_id'],
                                 "location_id" => $session_data['login_user_location'],
                                 "location_title" => $session_data['login_user_location_title'],
+//                                "tenant_id" => $visit_info['tenant_id'],
+//                                "tenant_name" => $visit_info['tenant_name'],
+//                                "visit_type" => $visit_info['visit_types'],
                                 "action" => "$action"
-
                             );
                             $this->db->insert('visit_track', $add_track);
                             $track_id = $this->db->insert_id();

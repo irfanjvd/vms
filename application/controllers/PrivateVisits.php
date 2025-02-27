@@ -189,6 +189,18 @@ class PrivateVisits extends CI_Controller
         return $code;
     }
 
+    function getTenantGatesArray()
+    {
+        $tenant = sessiondata('login_tenant_id');
+        $query = $this->db->get_where('visit_gates', ['tenant_id' => $tenant]);
+        //echo $this->db->last_query();
+        $result = $query->result_array();
+        if (sizeof($result)) {
+            return array_column($result, 'name', 'id');
+        }
+        return [];
+    }
+
     public function get_notifications()
     {
         if ($this->session->userdata('logged_in')) {
@@ -285,13 +297,16 @@ class PrivateVisits extends CI_Controller
                         } else {
                             $visit_code = $this->generateRandomNumber(7);
                         }
+                        $tenantGates = $this->getTenantGatesArray();
+                        $gateNumbers = array_flip($tenantGates);
                         $response = true;
                         foreach ($csvData as $key => $row) {
                             if (!isset($row['name'])) {
                                 $error_msg .= "In CSV Please Enter Name Column as 'name'<br>";
                             }
-                            if (!isset($row['cnic'])) {
-                                $error_msg .= "In CSV Please Enter Cnic Column as 'cnic'<br>";
+                            if (!isset($row['identity_value'])) {
+
+                                $error_msg .= "In CSV Please Enter Cnic/Emp Code/Driving Licence/Passport ID Column as 'identity_value'<br>";
                             }
                             if (!isset($row['mobile'])) {
                                 $error_msg .= "In CSV Please Enter Mobile Column as 'mobile'<br>";
@@ -317,11 +332,11 @@ class PrivateVisits extends CI_Controller
 
                             $this->db->trans_start(); // Begin Transaction
 
-                            $visitor_query = $this->db->get_where('visitor_profile', ['visitor_identity_no' => trim($row['cnic'])]);
+                            $visitor_query = $this->db->get_where('visitor_profile', ['visitor_'.$row['identity_type'] => trim($row['identity_value'])]);
                             if ($visitor_query->num_rows() === 0) {
                                 $add_visitor = array(
                                     'visitor_name' => trim($row['name']),
-                                    'visitor_identity_no' => trim($row['cnic']),
+                                    'visitor_'.$row['identity_type'] => trim($row['identity_value']),
                                     'visitor_address' => trim($row['address']),
                                     'visitor_cell_no' => trim($row['mobile']),
                                     'visitor_city' => trim($row['city']),
@@ -333,7 +348,8 @@ class PrivateVisits extends CI_Controller
                                 $visitor = $visitor_query->row();
                                 $visitor_id = $visitor->visitor_id;
                             }
-
+                            $gate_number = array_key_exists(trim($row['allowed_gate']),$gateNumbers) ?
+                                $gateNumbers[trim($row['allowed_gate'])] : reset($gateNumbers);
                             $add_visit = array(
                                 'private_visit_id' => 0,
                                 'visit_visitor_id_fk' => $visitor_id,
@@ -347,12 +363,13 @@ class PrivateVisits extends CI_Controller
                                 'employee_id' => sessiondata('login_employee_id'),
                                 'visit_from_company' => trim($row['from_company']),
                                 'location_id' => sessiondata('login_user_location'),
-                                'identity_type' => 1,
+                                'identity_type' => 'visitor_'.$row['identity_type'],
+                                'gate_number' => $gate_number,
                                 'created_by' => sessiondata('login_user_id'),
                                 'created_at' => date('Y-m-d H:i:s'),
                                 'visit_code' => generateRandomString()
                             );
-
+//                            print_r($add_visit);
                             $this->db->insert('visit', $add_visit);
 
                             $this->db->trans_complete(); // Commit if all queries are successful, otherwise rollback
@@ -362,9 +379,9 @@ class PrivateVisits extends CI_Controller
                             }
                         }
 
-                        if ($response) {
+                        if ($response) { echo 'done?';
                             $this->session->set_flashdata('success_msg', 'Visitor Data Imported Successfully!!!');
-                            redirect(base_url() . 'PrivateVisits/import_csv');
+//                            redirect(base_url() . 'PrivateVisits/import_csv');
                         } else {
                             $this->session->set_userdata('no_success_msg', 'Data cannot be imported! Please try later');
                         }
