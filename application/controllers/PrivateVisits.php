@@ -379,9 +379,9 @@ class PrivateVisits extends CI_Controller
                             }
                         }
 
-                        if ($response) { echo 'done?';
+                        if ($response) { //echo 'done?';
                             $this->session->set_flashdata('success_msg', 'Visitor Data Imported Successfully!!!');
-//                            redirect(base_url() . 'PrivateVisits/import_csv');
+                            redirect(base_url() . 'PrivateVisits/import_csv');
                         } else {
                             $this->session->set_userdata('no_success_msg', 'Data cannot be imported! Please try later');
                         }
