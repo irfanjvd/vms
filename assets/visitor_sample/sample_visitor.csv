@@ -1,4 +1,7 @@
-name,cnic,address,city,mobile,date_from,date_to,time,from_company,visit_reason,visit_transport_mode,registration_no
-Visitor One,35201-44444433-5,vistor address11,Fsd,3456575676,2/19/2025,2/22/2025,9:20,PTCL,meeting,Car,LHE -12-123
-Visitor Two,35201-44444422-5,vistor address13,Lhr,3456575675,2/18/2025,2/22/2025,7:20,MEPCO,interview,Motorcycle,LES -22-123
-Visitor Three,35201-44444411-5,vistor address12,Bwp,3456575674,2/18/2025,2/22/2025,7:20,MEPCO,personal,Pedestrian,
+name,identity_type,identity_value,address,city,mobile,date_from,date_to,time,from_company,visit_reason,visit_transport_mode,registration_no,allowed_gate
+Visitor One,identity_no,35201-44444433-5,vistor address11,Fsd,3456575676,2/19/2025,2/22/2025,9:20,PTCL,meeting,Car,LHE -12-123,Gate 1
+Visitor Two,identity_no,35201-44444422-5,vistor address13,Lhr,3456575675,2/18/2025,2/22/2025,7:20,MEPCO,interview,Motorcycle,LES -22-123,Gate 1
+Visitor Three,identity_no,35201-44444411-5,vistor address12,Bwp,3456575674,2/18/2025,2/22/2025,7:20,MEPCO,personal,Pedestrian,None,Gate 5
+Fourth,employee_card,1234,Address 4,Lahore,3001234567,2/28/2025,3/3/2025,8:30,ABC,Official,Pedestrian,None,Gate 1
+Fifth,driving_license,LE-25-1234,Address 4,Lahore,3001234568,2/28/2025,3/3/2025,8:30,ABC,Official,Pedestrian,None,Gate 5
+Sixth,passport_id,BR1234567,Address 4,Lahore,3001234569,2/28/2025,3/3/2025,8:30,ABC,Official,Pedestrian,None,Gate 5
